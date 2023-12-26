@@ -3,7 +3,7 @@
 1. close the repository using git clone ...
 2. open the the project
 3. open 2 ternimal for client and backed
-4. in every terminal to npm i
+4. in every terminal do npm i
 5. before running the project create database and tables in mysql db. (all quries mentioned in projects resources folder)
 6. after creation of tables and database for login use the following quries:
    --- insert into companymanagement values(1,'test','','', '', '', 'active');
@@ -11,6 +11,8 @@
 7. upgrade .env file in backend and change the configuration things
 8. now do npm start in both terminal
 9. after landing page open do forgot password first then try to login
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
 
 *ongoing works updated[26-12-2023]
 1. leaves
