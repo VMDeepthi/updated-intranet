@@ -920,7 +920,7 @@ function ViewUser() {
                     <Typography variant='h5' component={'h5'} m={2} textAlign={'center'} >View Users</Typography>
                     <div style={{ height: '400px', width: '95%' }}>
                         <Card >
-                            <Container>
+                            
                             <DataTable
                                 title=" "
                                 fixedHeader={true}
@@ -935,7 +935,7 @@ function ViewUser() {
                                 customStyles={customStyles}
                             />
 
-                            </Container>
+                           
                             
                         </Card>
                     </div>

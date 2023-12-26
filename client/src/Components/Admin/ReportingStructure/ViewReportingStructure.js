@@ -359,8 +359,10 @@ function ViewReportingStructure() {
             else {
                 if (destination.droppableId === 'reportingHead' && source.droppableId !== "selectedUser") {
 
-                    // console.log(selectedUser)
-                    if (selectedUser.map(user => JSON.stringify(user)).includes(JSON.stringify([filterUserData[source.index]][0]))) {
+                     console.log(selectedUser,source.index)
+                     console.log(filterUserData,filterUserData[source.index][0])
+                     console.log('res',data.employee_id,selectedUser.map(user => user.employee_id),selectedUser.map(user => user.employee_id).includes(data.employee_id))
+                    if (selectedUser.map(user => user.employee_id).includes(data.employee_id)) {
                         toast.warning('user already added in Users Section')
                     }
                     else {
@@ -378,7 +380,7 @@ function ViewReportingStructure() {
                 }
                 else if (destination.droppableId === 'selectedUser' && source.droppableId === 'UserList') {
                     // console.log(Array.from(new Set(selectedUser.map(str=>JSON.stringify(str)))).map(res=>JSON.parse(res)))
-                    if (selectedRepordingHead.map(user => JSON.stringify(user)).includes(JSON.stringify([filterUserData[source.index]][0]))) {
+                    if (selectedRepordingHead.map(user => user.employee_id).includes(data.employee_id)) {
                         toast.warning('user already added in reporting Head Section')
                     }
                     else {

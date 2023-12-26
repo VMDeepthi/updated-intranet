@@ -61,11 +61,15 @@ function uploadExcelData(name) {
             }
             //console.log(files[1])
             // console.log(files[0].type)
+            let shouldSkip = false;
             files.slice(startReadFile,).forEach((filedata) => {
                 const filepath = ProjectPath + "\\uploads\\ExtractedFiles\\" + filedata.path.replace('/', '\\')
                 //console.log(filepath)
                 const readFile = reader.readFile(filepath)
                 let data = []
+                if (shouldSkip) {
+                    return;
+                }
 
                 const sheets = readFile.SheetNames
                 //console.log(sheets)
@@ -73,14 +77,27 @@ function uploadExcelData(name) {
                     const temp = reader.utils.sheet_to_json(
                         readFile.Sheets[readFile.SheetNames[i]])
                     temp.forEach((res) => {
-                        if (!res.Emp_code) return "error occured check uploaded files"
+                        if (shouldSkip) {
+                            return;
+                        }
+                        
+                        if (!res.Emp_code){
+                            shouldSkip = true;
+                            return "error occured check uploaded files"
+                            
+                        } 
                         //let pdate = (new Date(Date.UTC(0, 0, res.PDate - 1)))
+                        console.log('pdate',res.PDate)
                         res.PDate = new Date(Date.UTC(0, 0, res.PDate - 1))
                         //console.log(pdate.getDate(),``)
                         console.log(res)
                         try {
                             db.query('select * from attendance where emp_id=? and pdate=date(?)', [res.Emp_code, res.PDate], async (err, result) => {
-                                if (err) return ('error occured!')
+                                if (!res.Emp_code){
+                                    shouldSkip = true;
+                                    return "error occured check uploaded files"
+                                    
+                                } 
                                 //console.log(result)
                                 let status ='AA'
                                 if(['WH','HH'].includes(res.Status)){
@@ -109,6 +126,7 @@ function uploadExcelData(name) {
                                 }
                                 catch(err) {
                                     console.log(err)
+                                    shouldSkip = true;
                                     return ('error with excel data please check excel file!')
                                 }
 

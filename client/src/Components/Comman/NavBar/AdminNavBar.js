@@ -31,7 +31,7 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 //import CssBaseline from '@mui/material/CssBaseline';
 import BusinessIcon from '@mui/icons-material/Business';
-import { AccountBox, AddAlert, Announcement, BadgeRounded,  Campaign,  Description, EventAvailable, ExpandLess, ExpandMore,  GroupAdd,  LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, NoteAdd, PersonAdd, Settings, SupervisedUserCircle, UploadFile } from '@mui/icons-material';
+import { AccountBalanceWallet, AccountBox, AddAlert, Announcement, BadgeRounded,  Campaign,  Description, EventAvailable, ExpandLess, ExpandMore,  ForwardToInbox,  GroupAdd,  LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, NoteAdd, PersonAdd, Send, Settings, SupervisedUserCircle, TrendingUp, UploadFile, WorkOff } from '@mui/icons-material';
 
 
 import {CgListTree} from 'react-icons/cg'
@@ -83,12 +83,17 @@ export default function AdminNavBar(props) {
   const [openAnnouncementMenu,setOpenAnnouncementMenu]=useState(false)
   const [openLeaveManagementMenu,setOpenLeaveManagementMenu]=useState(false)
 
+  const [openLeavesMenu, setOpenLeavesMenu] = useState(false)
+
 
   const handleSubMenuOpen = (item) => {
     //
     console.log(openCompanyManagementMenu, drawerOpen)
     setDrawerOpen(true)
     switch(item){
+      case "leaves":
+        setOpenLeavesMenu(true)
+        break
       case 'company management':
         setOpenCompanyManagementMenu(true)
         break
@@ -104,6 +109,7 @@ export default function AdminNavBar(props) {
       case 'leave management':
         setOpenLeaveManagementMenu(true)
         break
+  
       default:
         setDrawerOpen(false)
        
@@ -355,6 +361,7 @@ export default function AdminNavBar(props) {
         anchor="left"
 
       >
+         <Box sx={{ overflow: 'auto' }}>
         <List sx={{ mt: 8 }}>
           {['Dashboard', 'Attendance'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
@@ -379,6 +386,31 @@ export default function AdminNavBar(props) {
               </ListItemButton>
             </ListItem>
           ))}
+          {/*----------------------------------Leaves---------------------------*/}
+          <ListItem  disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('leaves')}>
+              <ListItemButton
+              title={'Leaves'}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: 'initial',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <WorkOff />
+                  
+                </ListItemIcon>
+                {openLeavesMenu ? <ExpandLess /> : <ExpandMore />}
+
+              </ListItemButton>
+            </ListItem>
           
           <Divider />
           {/*------------------------company management---------------------- */}
@@ -519,8 +551,10 @@ export default function AdminNavBar(props) {
           <Divider />
 
           </List>
+          </Box>
         
       </Drawer>
+      
       <Drawer
         container={container}
         variant="temporary"
@@ -535,6 +569,7 @@ export default function AdminNavBar(props) {
         }}
 
       >
+        <Box sx={{ overflow: 'auto',height:'auto'}}>
         <List sx={{ mt: 8 }}>
           {['Dashboard', 'Attendance'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
@@ -558,6 +593,88 @@ export default function AdminNavBar(props) {
               </ListItemButton>
             </ListItem>
           ))}
+          {/*--------------------------------------Leaves----------------------------------*/}
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenLeavesMenu(!openLeavesMenu)} >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: 3,
+                  justifyContent: 'initial',
+                  alignItems: 'center'
+                }}
+
+              >
+                <WorkOff />
+              </ListItemIcon>
+              <ListItemText primary={'Leaves'} />
+              {openLeavesMenu ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+           
+            {openLeavesMenu ? <>
+            <Divider />
+            <Fade in={openLeavesMenu} >
+              <List>
+                
+                <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>navigate('/applyleave')}>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: 3,
+                        ml:3,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+
+                    >
+                      <ForwardToInbox />
+                    </ListItemIcon>
+                    <ListItemText primary={'Apply Leave'} />
+                  </ListItemButton>
+                </ListItem>
+
+                <ListItem disablePadding sx={{ display: 'flex'}} >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: 3,
+                        ml: 3,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+
+                    >
+                      <AccountBalanceWallet />
+                    </ListItemIcon>
+                    <ListItemText primary={'Balance Leaves'}  />
+                  </ListItemButton>
+                </ListItem>
+                
+              </List>
+            </Fade>
+            </>:null}
+
+          </ListItem>
           <Divider > Admin Features </Divider>
           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenCompanyManagementMenu(!openCompanyManagementMenu)} >
             <ListItemButton
@@ -799,6 +916,31 @@ export default function AdminNavBar(props) {
                     <ListItemText primary={'View Users '}  />
                   </ListItemButton>
                 </ListItem>
+
+                <ListItem disablePadding sx={{ display: 'block'}} onClick={()=>navigate("/experience")}>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: 3,
+                        ml: 3,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+
+                    >
+                      <TrendingUp/>
+                    </ListItemIcon>
+                    <ListItemText primary={'Experience'}  />
+                  </ListItemButton>
+                </ListItem>
+
                 <Divider />
               </List>
              
@@ -1025,6 +1167,7 @@ export default function AdminNavBar(props) {
 
           
         </List>
+        </Box>
       </Drawer>
       {renderMobileMenu}
       {renderMenu}

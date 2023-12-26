@@ -31,6 +31,9 @@ import UserProfileSection from './Components/Comman/UserProfile/UserProfileSecti
 import CrossRoadsSection from './Components/Comman/CrossRoads/CrossRoadsSection'
 import TeamsSection from './Components/Comman/Teams/TeamsSection'
 import ApplyLeave from './Components/Comman/Leave/ApplyLeave'
+import ReportingHeadLogin from './Components/Comman/Login/ReportingHeadLogin'
+import PaySlips from './Components/Comman/PaySlips/PaySlips'
+import Experience from './Components/Admin/UserManagement/Experience'
 
 export default function App() {
   //console.log(useContext(UserContext))
@@ -40,6 +43,7 @@ export default function App() {
         <UserProvider>
           <Routes>
             <Route path='/login' element={<Login />} />
+            <Route path='/reportingheadlogin/application/:status?' Component={ReportingHeadLogin} />
             <Route path='/forgotpassword' Component={ForgotPassword} />
             {Cookies.get('USERAUTHID') === undefined ? <Route path='*' element={<Navigate to='/login' replace />} /> : <Route path='*' element={<Navigate replace to='/' />} />}
             <Route path='/' element={<CommanProtectedRoute component={<Dashboard />} />} />
@@ -52,6 +56,7 @@ export default function App() {
             <Route path='/crossroads' element={<CommanProtectedRoute component={<CrossRoadsSection />} />} />
             <Route path='/teams' element={<CommanProtectedRoute component={<TeamsSection />} />} />
             <Route path='/applyleave' element={<CommanProtectedRoute component={<ApplyLeave />} />} />
+            <Route path='/payslips' element={<CommanProtectedRoute component={<PaySlips />} />} />
             
             {/*----------------------------ADMIN------------------------------------------------------------------------------------ */}
             <Route path='/addcompany' element={<AdminProtectedRoute component={<AddCompany />} />} />
@@ -60,6 +65,7 @@ export default function App() {
             <Route path='/viewcompanypages' element={<AdminProtectedRoute component={<ViewCompanyPages />} />} />
             <Route path='/adduser' element={<AdminProtectedRoute component={<AddUser />} />} />
             <Route path='/viewusers' element={<AdminProtectedRoute component={<ViewUser />} />} />
+            <Route path='/experience' element={<AdminProtectedRoute component={<Experience />} />} />
             <Route path='/addannouncement' element={<AdminProtectedRoute component={<AddAnnouncement />} />} />
             <Route path='/viewannouncements' element={<AdminProtectedRoute component={<ViewAnnouncements />} />} />
             <Route path='/uploadattendance' element={<AdminProtectedRoute component={<UploadAttendance />} />} />

@@ -10,7 +10,7 @@ import 'react-calendar/dist/Calendar.css';
 import './OfficeCalender.css'
 import { useState, useEffect } from 'react';
 //import axios from 'axios';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Stack } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, Tooltip } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 
@@ -168,8 +168,30 @@ export default function OfficeCalender(props) {
               if (highlightedDays.length !== 0 && highlightedDays.includes(day)) {
                 return 'highlight'; // your class name
               }
-
+              
             }}
+            tileContent={({ date, view }) => {
+              const day = date.toLocaleString('en-CA').slice(0, 10);
+              const holiday = displayHolidays.find(
+                (item) => item.holiday_date === formatDay(day)
+              );
+
+              return (
+                <Tooltip title={holiday ? holiday.holiday_title : ''} arrow>
+                  <div
+                    className={`calendar-day ${highlightedDays.includes(day) ? 'highlight' : ''}`}
+                  >
+                    {holiday ? (
+                      <div className="tooltip">
+                        {view !== 'month' && holiday.holiday_date}
+                      </div>
+                    ) : null}
+                  </div>
+                </Tooltip>
+              );
+            }}
+
+            
           />
         </Box>
         <Divider light />

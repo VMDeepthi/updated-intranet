@@ -87,7 +87,7 @@ function TimeZone() {
                 </div>
                 <Typography m={1} color={'gray'} component={'h4'} variant='p'>{zone}</Typography>
                 <Typography m={0.5} color={'gray'} component={'p'} variant='p'>{date[zone].toLocaleString()}</Typography>
-                <p></p>
+                
             </>
         )
 

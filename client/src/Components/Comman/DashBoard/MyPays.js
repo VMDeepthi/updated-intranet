@@ -1,5 +1,7 @@
-import { Paper,Box, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Paper,Box,Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
+
 
 function MyPays() {
     function createData(name, calories, fat) {
@@ -10,6 +12,12 @@ function MyPays() {
         createData('June', 20917, 1800),
         createData('May', 20917, 1800),
     ];
+    const navigate = useNavigate()
+
+    const onNavigate = () => {
+        navigate('/payslips');
+      };
+
     return (
         <Box >
             <Typography component='h4' variant='p' sx={{p:1,ml:1}}>
@@ -45,10 +53,8 @@ function MyPays() {
             </TableContainer>
             
             </Container>
-            <Container sx={{display:'bloack',p:2}}>
-            <a href="/"  rel="noopener noreferrer"  >
-                Pay slips
-            </a>
+            <Container sx={{display:'bloack',p:2}}  onClick={()=>navigate("/payslips")}>
+                <Button onClick={onNavigate} variant="contained">Pay slips</Button>
             </Container>
         </Box>
     )
