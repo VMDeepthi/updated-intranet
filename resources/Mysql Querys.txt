@@ -24,5 +24,5 @@
 --- create table timezoneinformation(timezone varchar(100) not null, emp_id int not null,foreign key(emp_id) references usermanagement(employee_id)on delete cascade);
 13. funinformation table
 --- create table funinformation(favorite_movie varchar(100) not null, favorite_place varchar(100) not null, favorite_sport varchar(100) not null, favorite_food varchar(100) not null, favorite_actor  varchar(100) not null, favorite_actress varchar(100) not null, quote varchar(300) not null, good_quality varchar(500) not null, bad_quality varchar(300) not null, emp_id int not null, foreign key(emp_id) references usermanagement(employee_id)on delete cascade);
----test---
-select * from companypagesmanagement inner join officeholidays on id=pageId where company_name='Brightcomgroup India' and company_pagename='Holiday list' and holidaylist_title!='weekend' and holidaylist_title='Holiday list 2023' and pageId='a24f2d61-8c82-4ec8-86bb-9b0358db1eb5';
+14. applyleaves table
+--- create table applyleaves(id varchar(40) not null primary key,mail_approved_by varchar(100) not null, cc_mail varchar(300) not null, leave_type varchar(30) not null, leave_option varchar(30) not null, from_date varchar(10) not null, to_date varchar(10) not null, selected_dates varchar(300) not null, half_day varchar(10) not null, total_leaves float not null, reason varchar(300) not null, status varchar(30) not null,emp_id int not null, applicant_name varchar(150) not null, applicant_email varchar(200) not null, foreign key(emp_id) references usermanagement(employee_id)); 
