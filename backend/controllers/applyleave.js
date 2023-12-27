@@ -6,6 +6,12 @@ import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt"
 
 
+const leaveTypes = {
+    'Casual':'CL',
+    'Special':'SL'
+}
+
+
 export const getreportinghead = (req, res) => {
     const { emp_id } = req.body
     const q = `select concat(first_name,' ', last_name) as name, email from usermanagement inner join reportingstructure on employee_id = reporting_head where users=? `
@@ -121,13 +127,17 @@ export const reportingheadlogin = (req, res) => {
                             const token = jwt.sign({ employee_id: result.employee_id, email: result.email }, process.env.HEAD_JWT_SECRET)
                             console.log(token)
                             //delete result.password
+                            const { applicant_name, applicant_email, emp_id, from_date, to_date, leave_type, leave_option, selected_dates, half_day, total_leaves } = checkres[0]
 
 
 
                             if (checkres[0].status === 'pending') {
+                                
                                 const update_application_query = `update applyleaves set status=? where id=?`
                                 const update_application_values = [application_status, applicationId]
-                                const { applicant_name, applicant_email, emp_id, from_date, to_date, leave_type, leave_option, selected_dates, half_day, total_leaves } = checkres[0]
+                                const update_attendance_query = `update attendance set updated_status=? where pdate in (?)`
+                                const update_attendance_values = [leaveTypes[leave_type],[...selected_dates.split(','),half_day]]
+                                
                                 const mailOptions = {
                                     from: `"${result.first_name} ${result.last_name}" <${applicant_email}`,
                                     to: [applicant_email],
@@ -149,6 +159,11 @@ export const reportingheadlogin = (req, res) => {
 
                                 try {
                                     await db.promise().query(update_application_query, update_application_values)
+                                    if(application_status==='approved'){
+                                        await db.promise().query(update_attendance_query,update_attendance_values)                                        
+                                    }
+                                    
+
 
                                     transporter.sendMail(mailOptions, (err, info) => {
                                         if (err) {
@@ -244,9 +259,15 @@ export const checkapplicationerequest = (req, res) => {
                     }
                     const update_application_query = `update applyleaves set status=? where id=?`
                     const update_application_values = [application_status, applicationId]
+                    const update_attendance_query = `update attendance set updated_status=? where pdate in (?)`
+                    console.log([leaveTypes[leave_type],leaveTypes,leave_type,[...selected_dates.split(','),half_day]])
+                    const update_attendance_values = [leaveTypes[leave_type],[...selected_dates.split(','),half_day]]
                     try {
 
                         await db.promise().query(update_application_query, update_application_values)
+                        if(application_status==='approved'){
+                            await db.promise().query(update_attendance_query,update_attendance_values)                                        
+                        }
                         transporter.sendMail(mailOptions, (err, info) => {
                             if (err) {
                                 console.log(err)
