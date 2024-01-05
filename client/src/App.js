@@ -34,6 +34,8 @@ import ApplyLeave from './Components/Comman/Leave/ApplyLeave'
 import ReportingHeadLogin from './Components/Comman/Login/ReportingHeadLogin'
 import PaySlips from './Components/Comman/PaySlips/PaySlips'
 import Experience from './Components/Admin/UserManagement/Experience'
+import HistoryLog from './Components/Comman/HistoryLog/HistoryLog'
+import ReportingStructure from './Components/Comman/ReportingStrucure/ReportingStructure'
 
 export default function App() {
   //console.log(useContext(UserContext))
@@ -56,6 +58,8 @@ export default function App() {
             <Route path='/crossroads' element={<CommanProtectedRoute component={<CrossRoadsSection />} />} />
             <Route path='/teams' element={<CommanProtectedRoute component={<TeamsSection />} />} />
             <Route path='/applyleave' element={<CommanProtectedRoute component={<ApplyLeave />} />} />
+            <Route path='/reportingstructure' element={<CommanProtectedRoute component={<ReportingStructure />} />} />
+            <Route path='/historylog' element={<CommanProtectedRoute component={<HistoryLog />} />} />
             <Route path='/payslips' element={<CommanProtectedRoute component={<PaySlips />} />} />
             
             {/*----------------------------ADMIN------------------------------------------------------------------------------------ */}

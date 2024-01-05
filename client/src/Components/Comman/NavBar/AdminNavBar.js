@@ -31,10 +31,10 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 //import CssBaseline from '@mui/material/CssBaseline';
 import BusinessIcon from '@mui/icons-material/Business';
-import { AccountBalanceWallet, AccountBox, AddAlert, Announcement, BadgeRounded,  Campaign,  Description, EventAvailable, ExpandLess, ExpandMore,  ForwardToInbox,  GroupAdd,  LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, NoteAdd, PersonAdd, Send, Settings, SupervisedUserCircle, TrendingUp, UploadFile, WorkOff } from '@mui/icons-material';
+import { AccountBalanceWallet, AccountBox, AddAlert, Announcement, BadgeRounded, Campaign, Description, EventAvailable, ExpandLess, ExpandMore, ForwardToInbox, GroupAdd, LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, NoteAdd, PersonAdd, Send, Settings, SupervisedUserCircle, TrendingUp, UploadFile, WorkHistory, WorkOff } from '@mui/icons-material';
 
 
-import {CgListTree} from 'react-icons/cg'
+import { CgListTree } from 'react-icons/cg'
 import { Fade } from '@mui/material';
 
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
@@ -64,7 +64,7 @@ export default function AdminNavBar(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
- 
+
   const navigate = useNavigate()
 
   const { window } = props;
@@ -80,8 +80,8 @@ export default function AdminNavBar(props) {
 
   const [openCompanyPageManagementMenu, setOpenCompanyPageManagementMenu] = useState(false)
   const [openUserManagementMenu, setOpenUserManagementMenu] = useState(false);
-  const [openAnnouncementMenu,setOpenAnnouncementMenu]=useState(false)
-  const [openLeaveManagementMenu,setOpenLeaveManagementMenu]=useState(false)
+  const [openAnnouncementMenu, setOpenAnnouncementMenu] = useState(false)
+  const [openLeaveManagementMenu, setOpenLeaveManagementMenu] = useState(false)
 
   const [openLeavesMenu, setOpenLeavesMenu] = useState(false)
 
@@ -90,7 +90,7 @@ export default function AdminNavBar(props) {
     //
     console.log(openCompanyManagementMenu, drawerOpen)
     setDrawerOpen(true)
-    switch(item){
+    switch (item) {
       case "leaves":
         setOpenLeavesMenu(true)
         break
@@ -109,15 +109,15 @@ export default function AdminNavBar(props) {
       case 'leave management':
         setOpenLeaveManagementMenu(true)
         break
-  
+
       default:
         setDrawerOpen(false)
-       
-      }
+
     }
-    
-    
-  
+  }
+
+
+
 
   // const handleSubMenuClose = (item) => {
   //   setDrawerOpen(false)
@@ -130,9 +130,9 @@ export default function AdminNavBar(props) {
   //       break
   //     default:
   //       setDrawerOpen(false)
-       
+
   //     }
-    
+
   // }
 
 
@@ -164,18 +164,18 @@ export default function AdminNavBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleLogout = async() =>{
-    try{
+  const handleLogout = async () => {
+    try {
       const res = await axios.get('/api/logout')
       toast.success(res.data)
-      navigate('/login',{replace:true})
+      navigate('/login', { replace: true })
     }
-    catch(err){
+    catch (err) {
       console.log(err)
       toast.error('error occured!')
 
     }
-    
+
   }
 
 
@@ -183,61 +183,61 @@ export default function AdminNavBar(props) {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-        onClick={handleMenuClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
+      anchorEl={anchorEl}
+      id="account-menu"
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+      onClick={handleMenuClose}
+      PaperProps={{
+        elevation: 0,
+        sx: {
+          overflow: 'visible',
+          filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+          mt: 1.5,
+          '& .MuiAvatar-root': {
+            width: 32,
+            height: 32,
+            ml: -0.5,
+            mr: 1,
           },
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-       
-        
-        <MenuItem onClick={()=>navigate('/myprofile')}>
-          <ListItemIcon>
-            <AccountBox fontSize="small" />
-          </ListItemIcon>
-         Profile
-        </MenuItem>
-        <MenuItem onClick={()=>navigate('/changepassword')}>
-          <ListItemIcon>
-            <LockOpen fontSize="small" />
-          </ListItemIcon>
-          Change Password
-        </MenuItem>
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
+          '&:before': {
+            content: '""',
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+            right: 14,
+            width: 10,
+            height: 10,
+            bgcolor: 'background.paper',
+            transform: 'translateY(-50%) rotate(45deg)',
+            zIndex: 0,
+          },
+        },
+      }}
+      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+    >
+
+
+      <MenuItem onClick={() => navigate('/myprofile')}>
+        <ListItemIcon>
+          <AccountBox fontSize="small" />
+        </ListItemIcon>
+        Profile
+      </MenuItem>
+      <MenuItem onClick={() => navigate('/changepassword')}>
+        <ListItemIcon>
+          <LockOpen fontSize="small" />
+        </ListItemIcon>
+        Change Password
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <ListItemIcon>
+          <Logout fontSize="small" />
+        </ListItemIcon>
+        Logout
+      </MenuItem>
+    </Menu>
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -257,7 +257,7 @@ export default function AdminNavBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      
+
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -275,7 +275,7 @@ export default function AdminNavBar(props) {
 
 
   const container = window !== undefined ? () => window().document.body : undefined;
-  const {userDetails} = useContext(UserContext)
+  const { userDetails } = useContext(UserContext)
 
 
   return (
@@ -326,7 +326,7 @@ export default function AdminNavBar(props) {
               onClick={handleProfileMenuOpen}
               color="black"
             >
-              {userDetails.profile_pic===''?<AccountCircle />:<Avatar  sx={{ width: 24, height: 24 }} src={userDetails.profile_pic} />}
+              {userDetails.profile_pic === '' ? <AccountCircle /> : <Avatar sx={{ width: 24, height: 24 }} src={userDetails.profile_pic} />}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -361,35 +361,35 @@ export default function AdminNavBar(props) {
         anchor="left"
 
       >
-         <Box sx={{ overflow: 'auto' }}>
-        <List sx={{ mt: 8 }}>
-          {['Dashboard', 'Attendance'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
-              <ListItemButton
-              title={text}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+        <Box sx={{ overflow: 'auto' }}>
+          <List sx={{ mt: 8 }}>
+            {['Dashboard', 'Attendance'].map((text, index) => (
+              <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
+                <ListItemButton
+                  title={text}
                   sx={{
-                    minWidth: 0,
-                    mr:3,
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: 'initial',
+                    px: 2.5,
                   }}
                 >
-                  {iconList[index]}
-                </ListItemIcon>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: 3,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {iconList[index]}
+                  </ListItemIcon>
 
-              </ListItemButton>
-            </ListItem>
-          ))}
-          {/*----------------------------------Leaves---------------------------*/}
-          <ListItem  disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('leaves')}>
+                </ListItemButton>
+              </ListItem>
+            ))}
+            {/*----------------------------------Leaves---------------------------*/}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('leaves')}>
               <ListItemButton
-              title={'Leaves'}
+                title={'Leaves'}
                 sx={{
                   minHeight: 48,
                   justifyContent: 'initial',
@@ -405,156 +405,208 @@ export default function AdminNavBar(props) {
                   }}
                 >
                   <WorkOff />
-                  
+
                 </ListItemIcon>
                 {openLeavesMenu ? <ExpandLess /> : <ExpandMore />}
 
               </ListItemButton>
             </ListItem>
-          
-          <Divider />
-          {/*------------------------company management---------------------- */}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>handleSubMenuOpen('company management')}>
-            <ListItemButton
-            title='Company Management'
-              sx={{
-                minHeight: 48,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+
+
+            {/*----------------------------------History Log Of All applications---------------------------*/}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog')}>
+              <ListItemButton
+                title={'History Log for all Application'}
                 sx={{
-                  minWidth: 0,
-                  mr: 'auto',
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'initial',
+                  px: 2.5,
                 }}
-
               >
-                <BusinessIcon />
-              </ListItemIcon>
-              {openCompanyManagementMenu ? <ExpandLess /> : <ExpandMore />}
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <WorkHistory />
 
-            </ListItemButton>
+                </ListItemIcon>
 
-          </ListItem>
-          <Divider />
-          {/*------------------------company pages management---------------------- */}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>handleSubMenuOpen('company pages management')}>
-            <ListItemButton
-            title='Company Pages Management'
-              sx={{
-                minHeight: 48,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+
+              </ListItemButton>
+            </ListItem>
+            {/* ------------------------------------------reporting structure-------------------------------- */}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/reportingstructure')}>
+              <ListItemButton
+                title={'View Reporting Structure'}
                 sx={{
-                  minWidth: 0,
-                  mr: 'auto',
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'initial',
+                  px: 2.5,
                 }}
-
               >
-                <LocalLibrary />
-              </ListItemIcon>
-              {openCompanyPageManagementMenu ? <ExpandLess /> : <ExpandMore />}
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <CgListTree fontSize={20} />
 
-            </ListItemButton>
+                </ListItemIcon>
 
-          </ListItem>
-          <Divider />
-          {/*------------------------user management---------------------- */}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>handleSubMenuOpen('user management')}>
-            <ListItemButton
-            title='User Management'
-              sx={{
-                minHeight: 48,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+
+              </ListItemButton>
+            </ListItem>
+
+            <Divider sx={{ fontSize: 12, fontWeight: 'bold' }}>Admin</Divider>
+            {/*------------------------company management---------------------- */}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('company management')}>
+              <ListItemButton
+                title='Company Management'
                 sx={{
-                  minWidth: 0,
-                  mr: 'auto',
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'initial',
+                  px: 2.5,
                 }}
-
               >
-                <SupervisedUserCircle />
-              </ListItemIcon>
-              {openUserManagementMenu ? <ExpandLess /> : <ExpandMore />}
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
 
-            </ListItemButton>
+                >
+                  <BusinessIcon />
+                </ListItemIcon>
+                {openCompanyManagementMenu ? <ExpandLess /> : <ExpandMore />}
 
-          </ListItem>
-          <Divider />
-          {/*--------------------announcement-------------------------- */}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>handleSubMenuOpen('announcement')}>
-            <ListItemButton
-            title='Announcement'
-              sx={{
-                minHeight: 48,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+              </ListItemButton>
+
+            </ListItem>
+            <Divider />
+            {/*------------------------company pages management---------------------- */}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('company pages management')}>
+              <ListItemButton
+                title='Company Pages Management'
                 sx={{
-                  minWidth: 0,
-                  mr: 'auto',
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'initial',
+                  px: 2.5,
                 }}
-
               >
-                <Campaign />
-              </ListItemIcon>
-              {openUserManagementMenu ? <ExpandLess /> : <ExpandMore />}
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
 
-            </ListItemButton>
+                >
+                  <LocalLibrary />
+                </ListItemIcon>
+                {openCompanyPageManagementMenu ? <ExpandLess /> : <ExpandMore />}
 
-          </ListItem>
-          <Divider />
+              </ListItemButton>
 
-          {/*------------------------leave management---------------------- */}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>handleSubMenuOpen('leave management')}>
-            <ListItemButton
-            title='Leave Management'
-              sx={{
-                minHeight: 48,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+            </ListItem>
+            <Divider />
+            {/*------------------------user management---------------------- */}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('user management')}>
+              <ListItemButton
+                title='User Management'
                 sx={{
-                  minWidth: 0,
-                  mr: 'auto',
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'initial',
+                  px: 2.5,
                 }}
-
               >
-                <ManageHistory />
-              </ListItemIcon>
-              {openLeaveManagementMenu ? <ExpandLess /> : <ExpandMore />}
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
 
-            </ListItemButton>
+                >
+                  <SupervisedUserCircle />
+                </ListItemIcon>
+                {openUserManagementMenu ? <ExpandLess /> : <ExpandMore />}
 
-          </ListItem>
-          <Divider />
+              </ListItemButton>
+
+            </ListItem>
+            <Divider />
+            {/*--------------------announcement-------------------------- */}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('announcement')}>
+              <ListItemButton
+                title='Announcement'
+                sx={{
+                  minHeight: 48,
+                  justifyContent: 'initial',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+
+                >
+                  <Campaign />
+                </ListItemIcon>
+                {openUserManagementMenu ? <ExpandLess /> : <ExpandMore />}
+
+              </ListItemButton>
+
+            </ListItem>
+            <Divider />
+
+            {/*------------------------leave management---------------------- */}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('leave management')}>
+              <ListItemButton
+                title='Leave Management'
+                sx={{
+                  minHeight: 48,
+                  justifyContent: 'initial',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+
+                >
+                  <ManageHistory />
+                </ListItemIcon>
+                {openLeaveManagementMenu ? <ExpandLess /> : <ExpandMore />}
+
+              </ListItemButton>
+
+            </ListItem>
+            <Divider />
 
           </List>
-          </Box>
-        
+        </Box>
+
       </Drawer>
-      
+
       <Drawer
         container={container}
         variant="temporary"
@@ -569,10 +621,114 @@ export default function AdminNavBar(props) {
         }}
 
       >
-        <Box sx={{ overflow: 'auto',height:'auto'}}>
-        <List sx={{ mt: 8 }}>
-          {['Dashboard', 'Attendance'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
+        <Box sx={{ overflow: 'auto', height: 'auto' }}>
+          <List sx={{ mt: 8 }}>
+            {['Dashboard', 'Attendance'].map((text, index) => (
+              <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: 'center',
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: 3,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {iconList[index]}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+            {/*--------------------------------------Leaves----------------------------------*/}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenLeavesMenu(!openLeavesMenu)} >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 3,
+                    justifyContent: 'initial',
+                    alignItems: 'center'
+                  }}
+
+                >
+                  <WorkOff />
+                </ListItemIcon>
+                <ListItemText primary={'Leaves'} />
+                {openLeavesMenu ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+
+              {openLeavesMenu ? <>
+                <Divider />
+                <Fade in={openLeavesMenu} >
+                  <List>
+
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/applyleave')}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+
+                        >
+                          <ForwardToInbox />
+                        </ListItemIcon>
+                        <ListItemText primary={'Apply Leave'} />
+                      </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding sx={{ display: 'flex' }} >
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+
+                        >
+                          <AccountBalanceWallet />
+                        </ListItemIcon>
+                        <ListItemText primary={'Balance Leaves'} />
+                      </ListItemButton>
+                    </ListItem>
+
+                  </List>
+                </Fade>
+              </> : null}
+
+            </ListItem>
+            {/*----------------------------------History Log Of All application---------------------------*/}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog')} >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -587,586 +743,524 @@ export default function AdminNavBar(props) {
                     justifyContent: 'center',
                   }}
                 >
-                  {iconList[index]}
+                  <WorkHistory />
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={'History Log for all Application'} />
               </ListItemButton>
             </ListItem>
-          ))}
-          {/*--------------------------------------Leaves----------------------------------*/}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenLeavesMenu(!openLeavesMenu)} >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+            {/* --------------------reporting structure-------------------------------------------- */}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/reportingstructure')} >
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'initial',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'center',
+                  px: 2.5,
                 }}
-
               >
-                <WorkOff />
-              </ListItemIcon>
-              <ListItemText primary={'Leaves'} />
-              {openLeavesMenu ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-           
-            {openLeavesMenu ? <>
-            <Divider />
-            <Fade in={openLeavesMenu} >
-              <List>
-                
-                <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>navigate('/applyleave')}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml:3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-
-                    >
-                      <ForwardToInbox />
-                    </ListItemIcon>
-                    <ListItemText primary={'Apply Leave'} />
-                  </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding sx={{ display: 'flex'}} >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml: 3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-
-                    >
-                      <AccountBalanceWallet />
-                    </ListItemIcon>
-                    <ListItemText primary={'Balance Leaves'}  />
-                  </ListItemButton>
-                </ListItem>
-                
-              </List>
-            </Fade>
-            </>:null}
-
-          </ListItem>
-          <Divider > Admin Features </Divider>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenCompanyManagementMenu(!openCompanyManagementMenu)} >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 3,
+                    justifyContent: 'center',
+                  }}
+                >
+                  < CgListTree fontSize={20} />
+                </ListItemIcon>
+                <ListItemText primary={'View Reporting Structure'} />
+              </ListItemButton>
+            </ListItem>
+            <Divider > Admin Features </Divider>
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenCompanyManagementMenu(!openCompanyManagementMenu)} >
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'initial',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'center',
+                  px: 2.5,
                 }}
-
               >
-                <BusinessIcon />
-              </ListItemIcon>
-              <ListItemText primary={'Company Managment'} />
-              {openCompanyManagementMenu ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Divider />
-            {openCompanyManagementMenu ? <>
-            <Fade in={openCompanyManagementMenu} >
-              <List>
-                
-                <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>navigate('/addcompany')}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml:3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 3,
+                    justifyContent: 'initial',
+                    alignItems: 'center'
+                  }}
 
-                    >
-                      <AddBusinessIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'Add Company '} />
-                  </ListItemButton>
-                </ListItem>
+                >
+                  <BusinessIcon />
+                </ListItemIcon>
+                <ListItemText primary={'Company Managment'} />
+                {openCompanyManagementMenu ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Divider />
+              {openCompanyManagementMenu ? <>
+                <Fade in={openCompanyManagementMenu} >
+                  <List>
 
-                <ListItem disablePadding sx={{ display: 'block'}} onClick={()=>navigate('/viewcompany')}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml: 3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/addcompany')}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
 
-                    >
-                      <StoreIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'View Company '}  />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-              </List>
-            </Fade>
-            </>:null}
+                        >
+                          <AddBusinessIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Add Company '} />
+                      </ListItemButton>
+                    </ListItem>
 
-          </ListItem>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/viewcompany')}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
 
-          {/*-----------comapany pages management-------------------*/}
+                        >
+                          <StoreIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'View Company '} />
+                      </ListItemButton>
+                    </ListItem>
+                    <Divider />
+                  </List>
+                </Fade>
+              </> : null}
 
-           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenCompanyPageManagementMenu(!openCompanyPageManagementMenu)} >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+            </ListItem>
+
+            {/*-----------comapany pages management-------------------*/}
+
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenCompanyPageManagementMenu(!openCompanyPageManagementMenu)} >
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'initial',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'center',
+                  px: 2.5,
                 }}
-
               >
-                <LocalLibrary />
-              </ListItemIcon>
-              <ListItemText primary={'Company Page Managment'} />
-              {openCompanyPageManagementMenu ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Divider />
-            {openCompanyPageManagementMenu ? <>
-            <Fade in={openCompanyPageManagementMenu} >
-              
-              <List>
-                
-                <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>navigate("/addcompanypages")}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml:3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 3,
+                    justifyContent: 'initial',
+                    alignItems: 'center'
+                  }}
 
-                    >
-                      <NoteAdd />
-                    </ListItemIcon>
-                    <ListItemText primary={'Add Company Page '} />
-                  </ListItemButton>
-                </ListItem>
+                >
+                  <LocalLibrary />
+                </ListItemIcon>
+                <ListItemText primary={'Company Page Managment'} />
+                {openCompanyPageManagementMenu ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Divider />
+              {openCompanyPageManagementMenu ? <>
+                <Fade in={openCompanyPageManagementMenu} >
 
-                <ListItem disablePadding sx={{ display: 'block'}} onClick={()=>navigate("/viewcompanypages")}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml: 3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                  <List>
 
-                    >
-                      <Description />
-                    </ListItemIcon>
-                    <ListItemText primary={'View Company Page '}  />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-              </List>
-             
-            </Fade>
-            </>:null}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/addcompanypages")}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
 
-          </ListItem> 
-          {/*---------------user manegement-----------------------*/}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenUserManagementMenu(!openUserManagementMenu)} >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+                        >
+                          <NoteAdd />
+                        </ListItemIcon>
+                        <ListItemText primary={'Add Company Page '} />
+                      </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewcompanypages")}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+
+                        >
+                          <Description />
+                        </ListItemIcon>
+                        <ListItemText primary={'View Company Page '} />
+                      </ListItemButton>
+                    </ListItem>
+                    <Divider />
+                  </List>
+
+                </Fade>
+              </> : null}
+
+            </ListItem>
+            {/*---------------user manegement-----------------------*/}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenUserManagementMenu(!openUserManagementMenu)} >
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'initial',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'center',
+                  px: 2.5,
                 }}
-
               >
-                <SupervisedUserCircle />
-              </ListItemIcon>
-              <ListItemText primary={'User Managment'} />
-              {openUserManagementMenu ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Divider />
-            {openUserManagementMenu ? <>
-            <Fade in={openUserManagementMenu} >
-              
-              <List>
-                
-                <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>navigate("/adduser")}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml:3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <PersonAdd />
-                    </ListItemIcon>
-                    <ListItemText primary={'Add User '} />
-                  </ListItemButton>
-                </ListItem>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 3,
+                    justifyContent: 'initial',
+                    alignItems: 'center'
+                  }}
 
-                <ListItem disablePadding sx={{ display: 'block'}} onClick={()=>navigate("/viewusers")}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml: 3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                >
+                  <SupervisedUserCircle />
+                </ListItemIcon>
+                <ListItemText primary={'User Managment'} />
+                {openUserManagementMenu ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Divider />
+              {openUserManagementMenu ? <>
+                <Fade in={openUserManagementMenu} >
 
-                    >
-                      <BadgeRounded/>
-                    </ListItemIcon>
-                    <ListItemText primary={'View Users '}  />
-                  </ListItemButton>
-                </ListItem>
+                  <List>
 
-                <ListItem disablePadding sx={{ display: 'block'}} onClick={()=>navigate("/experience")}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml: 3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/adduser")}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <PersonAdd />
+                        </ListItemIcon>
+                        <ListItemText primary={'Add User '} />
+                      </ListItemButton>
+                    </ListItem>
 
-                    >
-                      <TrendingUp/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Experience'}  />
-                  </ListItemButton>
-                </ListItem>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewusers")}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
 
-                <Divider />
-              </List>
-             
-            </Fade>
-            </>:null}
+                        >
+                          <BadgeRounded />
+                        </ListItemIcon>
+                        <ListItemText primary={'View Users '} />
+                      </ListItemButton>
+                    </ListItem>
 
-          </ListItem> 
-          {/*---------------Announcement-----------------------*/}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenAnnouncementMenu(!openAnnouncementMenu)} >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/experience")}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+
+                        >
+                          <TrendingUp />
+                        </ListItemIcon>
+                        <ListItemText primary={'Experience'} />
+                      </ListItemButton>
+                    </ListItem>
+
+                    <Divider />
+                  </List>
+
+                </Fade>
+              </> : null}
+
+            </ListItem>
+            {/*---------------Announcement-----------------------*/}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenAnnouncementMenu(!openAnnouncementMenu)} >
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'initial',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'center',
+                  px: 2.5,
                 }}
-
               >
-                <Campaign />
-              </ListItemIcon>
-              <ListItemText primary={'Announcements'} />
-              {openAnnouncementMenu ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Divider />
-            {openAnnouncementMenu ? <>
-            <Fade in={openAnnouncementMenu} >
-              
-              <List>
-                
-                <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>navigate("/addannouncement")}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml:3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <AddAlert />
-                    </ListItemIcon>
-                    <ListItemText primary={'Add Announcement '} />
-                  </ListItemButton>
-                </ListItem>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 3,
+                    justifyContent: 'initial',
+                    alignItems: 'center'
+                  }}
 
-                <ListItem disablePadding sx={{ display: 'block'}} onClick={()=>navigate("/viewannouncements")}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml: 3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                >
+                  <Campaign />
+                </ListItemIcon>
+                <ListItemText primary={'Announcements'} />
+                {openAnnouncementMenu ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Divider />
+              {openAnnouncementMenu ? <>
+                <Fade in={openAnnouncementMenu} >
 
-                    >
-                      <Announcement/>
-                    </ListItemIcon>
-                    <ListItemText primary={'View Announcement '}  />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-              </List>
-             
-            </Fade>
-            </>:null}
+                  <List>
 
-          </ListItem> 
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/addannouncement")}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <AddAlert />
+                        </ListItemIcon>
+                        <ListItemText primary={'Add Announcement '} />
+                      </ListItemButton>
+                    </ListItem>
 
-          {/*---------------leave manegement-----------------------*/}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenLeaveManagementMenu(!openLeaveManagementMenu)} >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewannouncements")}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+
+                        >
+                          <Announcement />
+                        </ListItemIcon>
+                        <ListItemText primary={'View Announcement '} />
+                      </ListItemButton>
+                    </ListItem>
+                    <Divider />
+                  </List>
+
+                </Fade>
+              </> : null}
+
+            </ListItem>
+
+            {/*---------------leave manegement-----------------------*/}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenLeaveManagementMenu(!openLeaveManagementMenu)} >
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'initial',
-                  alignItems: 'center'
+                  minHeight: 48,
+                  justifyContent: 'center',
+                  px: 2.5,
                 }}
-
               >
-                <ManageHistory />
-              </ListItemIcon>
-              <ListItemText primary={'Leave Managment'} />
-              {openLeaveManagementMenu ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Divider />
-            {openLeaveManagementMenu ? <>
-            <Fade in={openLeaveManagementMenu} >
-              
-              <List>
-                
-                <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>navigate("/uploadattendance")}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml:3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <UploadFile />
-                    </ListItemIcon>
-                    <ListItemText primary={'Upload Attendance '} />
-                  </ListItemButton>
-                </ListItem>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: 3,
+                    justifyContent: 'initial',
+                    alignItems: 'center'
+                  }}
 
-                <ListItem disablePadding sx={{ display: 'block'}} onClick={()=>navigate("/viewattendance")}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml: 3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                >
+                  <ManageHistory />
+                </ListItemIcon>
+                <ListItemText primary={'Leave Managment'} />
+                {openLeaveManagementMenu ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Divider />
+              {openLeaveManagementMenu ? <>
+                <Fade in={openLeaveManagementMenu} >
 
-                    >
-                      <EventAvailable/>
-                    </ListItemIcon>
-                    <ListItemText primary={'View Attendance '}  />
-                  </ListItemButton>
-                </ListItem>
+                  <List>
 
-                <ListItem disablePadding sx={{ display: 'block'}} onClick={()=>navigate('/createreportingstructure')}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml: 3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/uploadattendance")}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <UploadFile />
+                        </ListItemIcon>
+                        <ListItemText primary={'Upload Attendance '} />
+                      </ListItemButton>
+                    </ListItem>
 
-                    >
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewattendance")}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
 
-                      <GroupAdd />
-                    </ListItemIcon>
-                    <ListItemText primary={'Create Reporting Structure '}  />
-                  </ListItemButton>
-                </ListItem>
+                        >
+                          <EventAvailable />
+                        </ListItemIcon>
+                        <ListItemText primary={'View Attendance '} />
+                      </ListItemButton>
+                    </ListItem>
 
-                <ListItem disablePadding sx={{ display: 'block'}} onClick={()=>navigate('/viewreportingstructure')}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: 3,
-                        ml: 3,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/createreportingstructure')}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
 
-                    >
-                      < CgListTree fontSize={20} />
-                     
-                    </ListItemIcon>
-                    <ListItemText primary={'View Reporting Structure '}  />
-                  </ListItemButton>
-                </ListItem>
+                        >
 
-                <Divider />
-              </List>
-             
-            </Fade>
-            </>:null}
+                          <GroupAdd />
+                        </ListItemIcon>
+                        <ListItemText primary={'Create Reporting Structure '} />
+                      </ListItemButton>
+                    </ListItem>
 
-          </ListItem> 
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/viewreportingstructure')}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 48,
+                          justifyContent: 'center',
+                          px: 2.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
 
-          
-        </List>
+                        >
+                          < CgListTree fontSize={20} />
+
+                        </ListItemIcon>
+                        <ListItemText primary={'View Reporting Structure '} />
+                      </ListItemButton>
+                    </ListItem>
+
+                    <Divider />
+                  </List>
+
+                </Fade>
+              </> : null}
+
+            </ListItem>
+
+
+          </List>
         </Box>
       </Drawer>
       {renderMobileMenu}

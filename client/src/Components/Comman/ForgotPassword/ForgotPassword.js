@@ -34,7 +34,7 @@ function ForgotPassword() {
               console.log(res)
               setActiveView(1)
               setOtp(res.data.data.otp)
-              return res.data.data.msg
+              return (res.data.data.msg)
             }
           },
           error: {

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Box, Chip, Container, Paper, Stack, FormControl, Button, Typography } from '@mui/material'
+import { Box, Chip, Container, Paper, Stack, FormControl, Button, Typography, Tooltip } from '@mui/material'
 import DataTable from 'react-data-table-component';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -53,7 +53,7 @@ const columns = [
     },
     {
         name: 'Status',
-        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.status === 'XX' ? '#3FA8FC' : row.status === 'XA' ? '#FF9D36' : row.status === 'WH'?'88888882':  '#FF6868', color: 'white' }} size='small' label={row.status} />,
+        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.status === 'XX' ? '#037700' : row.status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status ==='HH')?'88888882':  '#FF6868', color: 'white' }} size='small' label={row.status} />,
         center: 'true',
     },
     {
@@ -63,7 +63,7 @@ const columns = [
     },
     {
         name: 'Updated Status',
-        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#3FA8FC' : row.updated_status === 'XA' ? '#FF9D36' : row.updated_status === 'WH' ? '88888882' : '#FF6868', color: 'white' }} size='small' label={row.updated_status} />,
+        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#037700' : row.updated_status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status ==='HH') ? '88888882' :(row.updated_status === 'CL' || row.updated_status ==='SL')?'#3FA8FC' :'#FF6868', color: 'white' }} size='small' label={row.updated_status} />,
         center: 'true',
 
     },
@@ -129,9 +129,39 @@ const Attendance = () => {
 
         }
         return (
-            <Box>
-                <Stack component={'form'} onSubmit={handleFilterAttendace} direction={{ xs: 'column', lg: 'row' }} spacing={2} display={'flex'} justifyContent={'center'} m={2}>
+            // <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#037700' : row.updated_status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status ==='HH') ? '88888882' :(row.updated_status === 'CL' || row.updated_status ==='SL')?'#3FA8FC' :'#FF6868', color: 'white' }} size='small' label={row.updated_status} />
+            <Container sx={{display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+
+                
+                
+                <Stack spacing={1} display={'flex'} justifyContent={'center'} alignItems={'center'} direction={'row'} sx={{ p: 0.5, height: '100%' }} >
+                <Typography component={'h5'} variant='p'>Color Codes:</Typography>
+                <Tooltip title='shift completed' arrow>
+                <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: '#037700', color:'white', borderRadius:'50%' }} size='small' />
+
+                </Tooltip>
+                <Tooltip title='shift can be compensate' arrow>
+                <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: '#FF9D36', color:'white', borderRadius:'50%' }} size='small' />
+
+                </Tooltip>
+                <Tooltip title='Absent' arrow>
+                <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: '#FF6868', color:'white', borderRadius:'50%' }} size='small'  />
+
+                </Tooltip>
+                <Tooltip title='Weekend/Holiday' arrow>
+                <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: "88888882", color:'white', borderRadius:'50%' }} size='small' />
+
+                </Tooltip>
+                <Tooltip title='Leaves' arrow>
+                <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: '#3FA8FC', color:'white', borderRadius:'50%' }} size='small' />
+
+                </Tooltip>
                    
+                    </Stack>
+                <Stack component={'form'} onSubmit={handleFilterAttendace} direction={{ xs: 'column', lg: 'row' }} spacing={2} display={'flex'} justifyContent={'center'} m={2}>
+                
+                    
+               
                     <FormControl fullWidth sx={{ mb: 2 }} variant="outlined">
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
@@ -165,7 +195,7 @@ const Attendance = () => {
                         <Button type='submit' size='small' color='success' variant='contained'>submit</Button>
                     </Box>
                 </Stack>
-            </Box>
+            </Container>
 
         );
     }, [date,userDetails]);

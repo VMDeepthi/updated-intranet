@@ -31,14 +31,15 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 //import CssBaseline from '@mui/material/CssBaseline';
 import { useContext, useState } from 'react';
-import { Avatar } from '@mui/material';
+import { Avatar, Fade } from '@mui/material';
 //import CompanyManagementPages from '../CompanyPagesManagement/AddCompanyManagementPages';
 
 import UserContext from '../../context/UserContext';
 //import Cookies from 'js-cookie';
 import axios from 'axios';
-import {  toast } from 'react-toastify';
-import { AccountBox, LockOpen, Logout } from '@mui/icons-material';
+import { toast } from 'react-toastify';
+import { AccountBalanceWallet, AccountBox, ExpandLess, ExpandMore, ForwardToInbox, LockOpen, Logout, WorkHistory, WorkOff } from '@mui/icons-material';
+import { CgListTree } from 'react-icons/cg';
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -57,13 +58,30 @@ export default function UserNavBar(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
- 
+
   const navigate = useNavigate()
 
   const { window } = props;
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const {userDetails} = useContext(UserContext)
+  const { userDetails } = useContext(UserContext)
+
+  const [openLeavesMenu, setOpenLeavesMenu] = useState(false)
+
+
+  const handleSubMenuOpen = (item) => {
+
+    setDrawerOpen(true)
+    switch (item) {
+      case "leaves":
+        setOpenLeavesMenu(true)
+        break
+
+      default:
+        setDrawerOpen(false)
+
+    }
+  }
 
   const handleDrawerToggle = () => {
     //
@@ -71,12 +89,12 @@ export default function UserNavBar(props) {
     setDrawerOpen(!drawerOpen);
   };
 
-  
 
 
- 
-    
-  
+
+
+
+
 
   // const handleSubMenuClose = (item) => {
   //   setDrawerOpen(false)
@@ -89,9 +107,9 @@ export default function UserNavBar(props) {
   //       break
   //     default:
   //       setDrawerOpen(false)
-       
+
   //     }
-    
+
   // }
 
 
@@ -122,17 +140,17 @@ export default function UserNavBar(props) {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-  const handleLogout = async() =>{
-    try{
+  const handleLogout = async () => {
+    try {
       const res = await axios.get('/api/logout')
       toast.success(res.data)
-      navigate('/login',{replace:true})
+      navigate('/login', { replace: true })
     }
-    catch{
+    catch {
       toast.error('error occured!')
 
     }
-    
+
   }
 
 
@@ -141,61 +159,61 @@ export default function UserNavBar(props) {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-        onClick={handleMenuClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
+      anchorEl={anchorEl}
+      id="account-menu"
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+      onClick={handleMenuClose}
+      PaperProps={{
+        elevation: 0,
+        sx: {
+          overflow: 'visible',
+          filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+          mt: 1.5,
+          '& .MuiAvatar-root': {
+            width: 32,
+            height: 32,
+            ml: -0.5,
+            mr: 1,
           },
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-       
-        
-        <MenuItem onClick={()=>navigate('/myprofile')}>
-          <ListItemIcon>
-            <AccountBox fontSize="small" />
-          </ListItemIcon>
-         Profile
-        </MenuItem>
-        <MenuItem onClick={()=>navigate('/changepassword')}>
-          <ListItemIcon>
-            <LockOpen fontSize="small" />
-          </ListItemIcon>
-          Change Password
-        </MenuItem>
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
+          '&:before': {
+            content: '""',
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+            right: 14,
+            width: 10,
+            height: 10,
+            bgcolor: 'background.paper',
+            transform: 'translateY(-50%) rotate(45deg)',
+            zIndex: 0,
+          },
+        },
+      }}
+      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+    >
+
+
+      <MenuItem onClick={() => navigate('/myprofile')}>
+        <ListItemIcon>
+          <AccountBox fontSize="small" />
+        </ListItemIcon>
+        Profile
+      </MenuItem>
+      <MenuItem onClick={() => navigate('/changepassword')}>
+        <ListItemIcon>
+          <LockOpen fontSize="small" />
+        </ListItemIcon>
+        Change Password
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <ListItemIcon>
+          <Logout fontSize="small" />
+        </ListItemIcon>
+        Logout
+      </MenuItem>
+    </Menu>
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -302,7 +320,7 @@ export default function UserNavBar(props) {
               onClick={handleProfileMenuOpen}
               color="black"
             >
-              {userDetails.profile_pic===''?<AccountCircle />:<Avatar  sx={{ width: 24, height: 24 }} src={userDetails.profile_pic} />}
+              {userDetails.profile_pic === '' ? <AccountCircle /> : <Avatar sx={{ width: 24, height: 24 }} src={userDetails.profile_pic} />}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -350,7 +368,7 @@ export default function UserNavBar(props) {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr:3,
+                    mr: 3,
                     justifyContent: 'center',
                   }}
                 >
@@ -360,10 +378,86 @@ export default function UserNavBar(props) {
               </ListItemButton>
             </ListItem>
           ))}
+          {/*----------------------------------Leaves---------------------------*/}
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('leaves')}>
+            <ListItemButton
+              title={'Leaves'}
+              sx={{
+                minHeight: 48,
+                justifyContent: 'initial',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: 'auto',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <WorkOff />
+
+              </ListItemIcon>
+              {openLeavesMenu ? <ExpandLess /> : <ExpandMore />}
+
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog')}>
+            <ListItemButton
+              title={'History Log for all Application'}
+              sx={{
+                minHeight: 48,
+                justifyContent: 'initial',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: 'auto',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <WorkHistory />
+
+              </ListItemIcon>
+
+
+            </ListItemButton>
+          </ListItem>
+
+          {/* ------------------------------------------reporting structure-------------------------------- */}
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/reportingstructure')}>
+            <ListItemButton
+              title={'View Reporting Structure'}
+              sx={{
+                minHeight: 48,
+                justifyContent: 'initial',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: 'auto',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <CgListTree fontSize={20} />
+
+              </ListItemIcon>
+
+
+            </ListItemButton>
+          </ListItem>
+
           <Divider />
 
-          </List>
-        
+        </List>
+
       </Drawer>
       <Drawer
         container={container}
@@ -402,10 +496,140 @@ export default function UserNavBar(props) {
               </ListItemButton>
             </ListItem>
           ))}
-          <Divider ></Divider>
-          
-          
+          {/*--------------------------------------Leaves----------------------------------*/}
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenLeavesMenu(!openLeavesMenu)} >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: 3,
+                  justifyContent: 'initial',
+                  alignItems: 'center'
+                }}
+
+              >
+                <WorkOff />
+              </ListItemIcon>
+              <ListItemText primary={'Leaves'} />
+              {openLeavesMenu ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+
+            {openLeavesMenu ? <>
+              <Divider />
+              <Fade in={openLeavesMenu} >
+                <List>
+
+                  <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/applyleave')}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: 3,
+                          ml: 3,
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+
+                      >
+                        <ForwardToInbox />
+                      </ListItemIcon>
+                      <ListItemText primary={'Apply Leave'} />
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem disablePadding sx={{ display: 'flex' }} >
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: 3,
+                          ml: 3,
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+
+                      >
+                        <AccountBalanceWallet />
+                      </ListItemIcon>
+                      <ListItemText primary={'Balance Leaves'} />
+                    </ListItemButton>
+                  </ListItem>
+
+                </List>
+              </Fade>
+            </> : null}
+
+          </ListItem>
+
+          {/*----------------------------------History Log Of All application---------------------------*/}
+
+
+
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog')} >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: 3,
+                  justifyContent: 'center',
+                }}
+              >
+                <WorkHistory />
+              </ListItemIcon>
+              <ListItemText primary={'History Log for all Application'} />
+            </ListItemButton>
+          </ListItem>
+
+          {/* ------------------------------------------reporting structure-------------------------------- */}
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/reportingstructure')} >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: 3,
+                  justifyContent: 'center',
+                }}
+              >
+                < CgListTree fontSize={20} />
+              </ListItemIcon>
+              <ListItemText primary={'View Reporting Structure'} />
+            </ListItemButton>
+          </ListItem>
+
+
+
         </List>
+
       </Drawer>
       {renderMobileMenu}
       {renderMenu}

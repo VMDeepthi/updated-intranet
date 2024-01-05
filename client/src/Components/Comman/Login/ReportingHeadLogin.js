@@ -72,7 +72,7 @@ function ReportingHeadLogin() {
 
   //console.log('search', searchParams.get('id'))
   //console.log('status', status)
-  if (status === undefined || searchParams.get('id') === null || (status !== 'approve' && status !== 'deny')) {
+  if (status === undefined || searchParams.get('id') === null || (status !== 'approve' && status !== 'deny' && status !== 'cancel')) {
     toast.warning('invalid url for reporting head login')
     return <Navigate to='/login' replace={true} />
 

@@ -93,8 +93,14 @@ export const forgotpassword =(req,res)=>{
                         return res.status(500).json('Not able send validation try again after some time!');
                     }
                     //console.log(info)
-                    console.log('Message sent: ' + info.response);
-                    return res.status(200).json({'otp':otp,'msg':'validation code sended successully'})
+                    else{
+                        return res.status(200).json({'otp':otp,'msg':'validation code sended successully'})
+
+                    }
+                    
+                    
+                    //console.log('Message sent: ' + info.response);
+                   
                 })
                 
                 

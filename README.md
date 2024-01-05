@@ -1,6 +1,6 @@
 *Setup And Configuration
 
-1. close the repository using git clone ...
+1. clone the repository using git clone ...
 2. open the the project
 3. open 2 ternimal for client and backed
 4. in every terminal do npm i

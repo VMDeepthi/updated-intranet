@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AdminNavBar from '../NavBar/AdminNavBar';
 //import NavBar from '../sidenav/navbar';
 import Box from '@mui/material/Box';
-import {  Container, Grid,  } from '@mui/material';
+import { Container, Grid, } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -20,7 +20,7 @@ import IconButton from '@mui/material/IconButton';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PersonIcon from '@mui/icons-material/Person';
- 
+
 import UserContext from '../../context/UserContext';
 import UserNavBar from '../NavBar/UserNavBar';
 import AttendanceGraph from './AttendanceGraph';
@@ -31,68 +31,73 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../Loader';
 
-const convertDateFormat = (date) =>{
+import useWindowSize from 'react-use/lib/useWindowSize'
+import Confetti from 'react-confetti'
+
+const convertDateFormat = (date) => {
     let day = date.getDate()
-    if (day < 10){
-     day='0'+day
+    if (day < 10) {
+        day = '0' + day
     }
-    let month = date.getMonth()+1
-    if (month < 10){
-     month='0'+month
+    let month = date.getMonth() + 1
+    if (month < 10) {
+        month = '0' + month
     }
-    return date.getFullYear()+'-'+month+'-'+day
-  }
+    return date.getFullYear() + '-' + month + '-' + day
+}
 
 var d = new Date();
-var getTot = daysInMonth(d.getMonth(),d.getFullYear()); //Get total days in a month
-console.log('tot',getTot)
+var getTot = daysInMonth(d.getMonth(), d.getFullYear()); //Get total days in a month
+console.log('tot', getTot)
 var sat = [];   //Declaring array for inserting Saturdays
 var sun = [];   //Declaring array for inserting Sundays
 
-for(var i=1;i<=getTot;i++){    //looping through days in month
-    var newDate = new Date(d.getFullYear(),d.getMonth(),i)
+for (var i = 1; i <= getTot; i++) {    //looping through days in month
+    var newDate = new Date(d.getFullYear(), d.getMonth(), i)
     //console.log(newDate)
-    if(newDate.getDay()===0){   //if Sunday
+    if (newDate.getDay() === 0) {   //if Sunday
         sun.push(convertDateFormat(newDate))
     }
-    if(newDate.getDay()===6){   //if Saturday
+    if (newDate.getDay() === 6) {   //if Saturday
         sat.push(convertDateFormat(newDate));
     }
 
 }
-console.log('sat:',sat);
-console.log('sun:',sun);
+console.log('sat:', sat);
+console.log('sun:', sun);
 
 
-function daysInMonth(month,year) {
+function daysInMonth(month, year) {
     return new Date(year, month, 0).getDate();
 }
 
-const lastTenDays = new Date ((new Date ()).getTime () - (11 * 86400000))
-console.log('10:',lastTenDays)
-const tenDays=[]
+const lastTenDays = new Date((new Date()).getTime() - (11 * 86400000))
+console.log('10:', lastTenDays)
+const tenDays = []
 
-for(let i=1;i<=10;i++){
-    tenDays.push(convertDateFormat(new Date(lastTenDays.getTime()+(i*86400000))))
+for (let i = 1; i <= 10; i++) {
+    tenDays.push(convertDateFormat(new Date(lastTenDays.getTime() + (i * 86400000))))
 
 }
-console.log('TenDays:',tenDays)
+console.log('TenDays:', tenDays)
 
 
 const Dashboard = () => {
     const [value, setValue] = React.useState(0);
-    const {userDetails} = useContext(UserContext)
-    const [graphData, setGraphData] = useState({date:[],totalhrs:[],bal_hr:0})
+    const { userDetails } = useContext(UserContext)
+    const [graphData, setGraphData] = useState({ date: [], totalhrs: [], bal_hr: 0 })
     const [birthdayData, setBirthdayData] = useState([])
     const [calenderData, setCalenderData] = useState([])
     const [loader, setLoader] = useState(true)
+    
 
     const navigate = useNavigate()
+    const { width, height } = useWindowSize()
 
-    useEffect(()=>{
-        const fetchData = async()=>{
-            try{
-                const res = await axios.post('/api/attendancegraphdata',{emp_id:userDetails.employee_id})
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.post('/api/attendancegraphdata', { emp_id: userDetails.employee_id })
                 let options = [{ day: 'numeric' }, { month: 'short' }];
                 function join(date, options, separator) {
                     function format(option) {
@@ -102,13 +107,13 @@ const Dashboard = () => {
                     return options.map(format).join(separator);
                 }
                 const date = res.data.graphData.map(d => (join(new Date(d.pdate), options, '-')))
-                const dateData = date.reverse().slice(0,10).reverse()
+                const dateData = date.reverse().slice(0, 10).reverse()
                 const totalhrs = res.data.graphData.map(d => d.totalhrs)
-                const totalhrsData = totalhrs.reverse().slice(0,10).reverse()
+                const totalhrsData = totalhrs.reverse().slice(0, 10).reverse()
                 const bal_hr = res.data.balance
-                setGraphData({date:dateData,totalhrs:totalhrsData,bal_hr:bal_hr})
-                
-                const holidays = await  axios.get('/api/holidaylist')
+                setGraphData({ date: dateData, totalhrs: totalhrsData, bal_hr: bal_hr })
+
+                const holidays = await axios.get('/api/holidaylist')
                 setCalenderData(holidays.data)
                 const birthdays = await axios.get('/api/birthdaylist')
                 setBirthdayData(birthdays.data)
@@ -116,20 +121,20 @@ const Dashboard = () => {
 
 
             }
-            catch{
+            catch {
                 setLoader(false)
 
             }
-            
+
         }
         fetchData()
-    },[userDetails])
+    }, [userDetails])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     //const yesterday = new Date().getDate()-1
-    
+
 
     // const [open, setOpen] = useState(false);
     // const handleClose = () => {
@@ -143,7 +148,7 @@ const Dashboard = () => {
 
     // const myPays = () => {
 
-        
+
     //     return (
     //         <div>
     //              <Button onClick={handleOpen}>Show backdrop</Button>
@@ -154,23 +159,23 @@ const Dashboard = () => {
     //   >
     //                 <img src='loader.gif' alt='loader' style={{ mixBlendMode: 'lighten' }} />
     //             </Backdrop>
-                
+
     //         </div>
     //     );
 
-        
+
 
     // }
 
 
-    
+
 
 
 
     const personalSetion = (
         <Card sx={{ height: 390, p: 1 }}>
             <Typography variant="p" component="div" sx={{ display: 'flex', justifyContent: 'center', fontSize: 20, alignItems: 'center' }}>
-                Personal Section <PersonIcon sx={{m:0.5, color:'gray'}} fontSize='8' />
+                Personal Section <PersonIcon sx={{ m: 0.5, color: 'gray' }} fontSize='8' />
             </Typography>
             <Divider light />
 
@@ -182,7 +187,7 @@ const Dashboard = () => {
                 </Tabs>
                 <Box sx={{ height: 290, width: '100%', display: 'flex', flexDirection: 'column' }}>
                     {
-                        value === 0 ? <AttendanceGraph graphData={graphData}/> : value === 1 ? <MyPays/> : value === 2 ? <MyAccounts /> : null
+                        value === 0 ? <AttendanceGraph graphData={graphData} /> : value === 1 ? <MyPays /> : value === 2 ? <MyAccounts /> : null
                     }
                 </Box>
             </Box>
@@ -203,14 +208,14 @@ const Dashboard = () => {
             </Container>
 
 
-    </Card>)
+        </Card>)
 
-    
+
     return (
         <>
             <Box sx={{ display: 'flex', }}>
-                
-                {userDetails.access==='admin'?<AdminNavBar />:<UserNavBar/>}
+
+                {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
                 <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 6 }}>
 
                     <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex' }}>
@@ -218,11 +223,12 @@ const Dashboard = () => {
                             <Notice />
                         </Grid>
                         <Grid item xs={12} sm={6} md={8} >
-                            <Card  sx={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center', height: 80, p: 2 }} >
+                            <Card sx={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center', height: 80, p: 2 }} >
+
                                 <CardMedia
                                     component="img"
                                     sx={{ display: 'flex', maxWidth: 70, maxHeight: 70, borderRadius: '50%', justifyContent: 'center', alignItems: 'center' }}
-                                    image={userDetails.profile_pic!==''?userDetails.profile_pic:userDetails.gender==='male'?'maleavatar.png':'femaleavatar.png'}
+                                    image={userDetails.profile_pic !== '' ? userDetails.profile_pic : userDetails.gender === 'male' ? 'maleavatar.png' : 'femaleavatar.png'}
                                     alt="profile"
                                 />
                                 <CardContent  >
@@ -233,6 +239,7 @@ const Dashboard = () => {
                                         {userDetails.designation}
                                     </Typography>
                                 </CardContent>
+
                             </Card>
                         </Grid>
                         <Grid item xs={12} sm={6} md={4} lg={4}>
@@ -245,7 +252,7 @@ const Dashboard = () => {
                                             }
                                         }}
                                             size="small"
-                                            onClick={()=>navigate("/teams",{relative:true})}
+                                            onClick={() => navigate("/teams", { relative: true })}
                                         >
                                             <img className="static" alt='img' src="bcgteams.png" style={{ width: 50, height: 50 }} /><img className="active" alt='imgs' style={{ width: 50, height: 50 }} src="bcgteams.gif" />
                                         </IconButton>
@@ -262,9 +269,9 @@ const Dashboard = () => {
                                             '&:hover, &:focus': {
                                                 bgcolor: 'unset',
                                             }
-                                        }} 
-                                        size="small"
-                                        onClick={()=>navigate("/directorysearch",{relative:true})}
+                                        }}
+                                            size="small"
+                                            onClick={() => navigate("/directorysearch", { relative: true })}
                                         >
                                             <img className="static" alt='img' src="directory.png" style={{ width: 50, height: 50 }} /><img className="active" alt='imgs' style={{ width: 50, height: 50 }} src="directory.gif" />
                                         </IconButton>
@@ -280,7 +287,7 @@ const Dashboard = () => {
                                                 bgcolor: 'unset',
                                             }
                                         }} size="small"
-                                        onClick={()=>navigate("/crossroads",{relative:true})}
+                                            onClick={() => navigate("/crossroads", { relative: true })}
                                         >
                                             <img className="static" alt='img' src="cross.png" style={{ width: 50, height: 50 }} /><img className="active" alt='imgs' style={{ width: 50, height: 50 }} src="cross.gif" />
                                         </IconButton>
@@ -298,13 +305,19 @@ const Dashboard = () => {
                             <BirthDayList birthdayData={birthdayData} />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
-                            <OfficeCalender data={calenderData}/>
+                            <OfficeCalender data={calenderData} />
                         </Grid>
                     </Grid>
 
                 </Box>
             </Box>
             <Loader loader={loader} />
+            <Confetti
+                width={width}
+                height={height}
+                run={new Date(userDetails.date_of_birth).getMonth()===new Date().getMonth()&& new Date(userDetails.date_of_birth).getDate()===new Date().getDate()}
+            />
+
         </>
 
     );
