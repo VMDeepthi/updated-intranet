@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
 import UserContext from '../../context/UserContext'
-import AdminNavBar from '../NavBar/AdminNavBar'
-import UserNavBar from '../NavBar/UserNavBar'
-import { Box, Button, Card, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Tooltip, Typography, Zoom } from '@mui/material'
+import AdminNavBar from '../../Comman/NavBar/AdminNavBar'
+import UserNavBar from '../../Comman/NavBar/UserNavBar'
+import { Box, Button, Card, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, TextField, Tooltip, Typography, Zoom } from '@mui/material'
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import DataTable from 'react-data-table-component'
@@ -24,13 +24,14 @@ const PatchTooltip = ({ children, ...props }) =>
 
 
 
-function HistoryLog() {
+function HistoryLogAdmin() {
     const { userDetails } = useContext(UserContext)
 
     const [historyLogSearch, setHistoryLogSearch] = useState({
         applicationType: '',
         fromDate: null,
-        toDate: null
+        toDate: null,
+        emp_id:''
     })
     const [dateError, setDateError] = useState(false)
     const [historyLogData, setHistoryLogData] = useState([])
@@ -56,14 +57,14 @@ function HistoryLog() {
             },
 
             center: true,
-            maxWidth: '150px'
+            
 
         },
         {
             name: 'No of days',
             selector: (row) => row.total_leaves,
             center: true,
-            maxWidth: '30px'
+           
         },
         {
             name: 'Reason',
@@ -96,81 +97,81 @@ function HistoryLog() {
             name: 'Status',
             selector: (row) => <Typography component={'h4'} variant='p' sx={{ color: (row.status === 'approved' ? 'green' : row.status === 'pending' ? 'orange' : 'red') }}>{row.status}</Typography>,
             center: true,
-            maxWidth: '80px'
+            
         },
-        {
-            name: 'Action',
-            cell: (row) => {
-                let isDisable = false;
-                if (row.status === 'denied' || row.status === 'cancelled') {
-                    isDisable = true
-                }
-                if (row.total_leaves === 0.5 && row.status !== 'denied' && row.status !== 'cancelled') {
-                    const day = new Date(row.half_day)
-                    const today = new Date()
-                    if (day.getDate() > 26) {
-                        const expiry = new Date(day.getFullYear(), day.getMonth() + 1, 25)
-                        if (today < expiry) {
-                            isDisable = false
-                        }
-                        else {
-                            isDisable = true
-                        }
+        // {
+        //     name: 'Action',
+        //     cell: (row) => {
+        //         let isDisable = false;
+        //         if (row.status === 'denied' || row.status === 'cancelled') {
+        //             isDisable = true
+        //         }
+        //         if (row.total_leaves === 0.5 && row.status !== 'denied' && row.status !== 'cancelled') {
+        //             const day = new Date(row.half_day)
+        //             const today = new Date()
+        //             if (day.getDate() > 26) {
+        //                 const expiry = new Date(day.getFullYear(), day.getMonth() + 1, 25)
+        //                 if (today < expiry) {
+        //                     isDisable = false
+        //                 }
+        //                 else {
+        //                     isDisable = true
+        //                 }
 
-                    }
-                    else {
-                        const expiry = new Date(day.getFullYear(), day.getMonth(), 25)
-                        if (today < expiry) {
-                            isDisable = false
-                        }
-                        else {
-                            isDisable = true
-                        }
+        //             }
+        //             else {
+        //                 const expiry = new Date(day.getFullYear(), day.getMonth(), 25)
+        //                 if (today < expiry) {
+        //                     isDisable = false
+        //                 }
+        //                 else {
+        //                     isDisable = true
+        //                 }
 
-                    }
-                }
-                else if (row.total_leaves > 0.5 && row.status !== 'denied' && row.status !== 'cancelled') {
-                    console.log(row.total_leaves, row.from_date)
-                    const day = new Date(row.from_date)
-                    const today = new Date()
-                    if (day.getDate() > 26) {
-                        const expiry = new Date(day.getFullYear(), day.getMonth() + 1, 25)
-                        console.log('check cl', today < expiry)
-                        if (today < expiry) {
-                            isDisable = false
-                        }
-                        else {
-                            isDisable = true
-                        }
+        //             }
+        //         }
+        //         else if (row.total_leaves > 0.5 && row.status !== 'denied' && row.status !== 'cancelled') {
+        //             console.log(row.total_leaves, row.from_date)
+        //             const day = new Date(row.from_date)
+        //             const today = new Date()
+        //             if (day.getDate() > 26) {
+        //                 const expiry = new Date(day.getFullYear(), day.getMonth() + 1, 25)
+        //                 console.log('check cl', today < expiry)
+        //                 if (today < expiry) {
+        //                     isDisable = false
+        //                 }
+        //                 else {
+        //                     isDisable = true
+        //                 }
 
-                    }
-                    else {
-                        const expiry = new Date(day.getFullYear(), day.getMonth(), 25)
-                        console.log('check1 cl', today < expiry)
-                        if (today < expiry) {
-                            isDisable = false
-                        }
-                        else {
-                            isDisable = true
-                        }
+        //             }
+        //             else {
+        //                 const expiry = new Date(day.getFullYear(), day.getMonth(), 25)
+        //                 console.log('check1 cl', today < expiry)
+        //                 if (today < expiry) {
+        //                     isDisable = false
+        //                 }
+        //                 else {
+        //                     isDisable = true
+        //                 }
 
-                    }
+        //             }
 
-                    console.log(day.getDate(), day.getMonth(), today.getDate(), today.getMonth())
-                }
-                return (
-                    <Stack display={'flex'} spacing={1} direction={'row'} height={25} width={'80%'} >
-                        <Button color='error' endIcon={<Cancel />} sx={{ fontSize: 10 }} variant='outlined' size='small' disabled={isDisable} onClick={() => handleCancelletion(isDisable, row)} >Cancel</Button>
+        //             console.log(day.getDate(), day.getMonth(), today.getDate(), today.getMonth())
+        //         }
+        //         return (
+        //             <Stack display={'flex'} spacing={1} direction={'row'} height={25} width={'80%'} >
+        //                 <Button color='error' endIcon={<Cancel />} sx={{ fontSize: 10 }} variant='outlined' size='small' disabled={isDisable} onClick={() => handleCancelletion(isDisable, row)} >Cancel</Button>
 
-                    </Stack >
-                )
-            },
-            ignoreRowClick: true,
-            maxWidth: '150px',
-            center: true,
+        //             </Stack >
+        //         )
+        //     },
+        //     ignoreRowClick: true,
+        //     maxWidth: '150px',
+        //     center: true,
 
 
-        },
+        // },
     ];
 
     const updateSearch = () =>{
@@ -179,7 +180,7 @@ function HistoryLog() {
         }
         else {
             setDateError(false)
-            axios.post('/api/historylogapplication', { ...historyLogSearch, emp_id: userDetails.employee_id })
+            axios.post('/api/historylogapplication',historyLogSearch)
                 .then((result) => {
                     console.log(result.data)
                     setShowRecord(true)
@@ -197,32 +198,32 @@ function HistoryLog() {
 
         
     }
-    const handleCancelletion = (disabled, row) => {
-        console.log(disabled, row)
-        if (!disabled) {
-            toast.promise(axios.post('/api/cancelapplication', row ),
-            {
-                pending: {
-                    render() {
-                        return ('Cancelling Application request')
-                    }
-                },
-                success: {
-                    render(res) {
-                        updateSearch()
-                        return (`${res.data.data} `)
-                    }
-                },
-                error: {
-                    render(err) {
-                        //console.log(err)
-                        return (`${err.data.response.data}`)
-                    }
-                }
-            })
+    // const handleCancelletion = (disabled, row) => {
+    //     console.log(disabled, row)
+    //     if (!disabled) {
+    //         toast.promise(axios.post('/api/cancelapplication', row ),
+    //         {
+    //             pending: {
+    //                 render() {
+    //                     return ('Cancelling Application request')
+    //                 }
+    //             },
+    //             success: {
+    //                 render(res) {
+    //                     updateSearch()
+    //                     return (`${res.data.data} `)
+    //                 }
+    //             },
+    //             error: {
+    //                 render(err) {
+    //                     //console.log(err)
+    //                     return (`${err.data.response.data}`)
+    //                 }
+    //             }
+    //         })
 
-        }
-    }
+    //     }
+    // }
 
 
     return (
@@ -258,7 +259,18 @@ function HistoryLog() {
 
                                         <Container component={'form'} onSubmit={handleHistoryLogSearch} sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, justifyContent: 'center', mt: 4, height: '100%', width: '100%', }}>
                                             <Stack spacing={2}  >
-                                                <FormControl fullWidth variant="outlined">
+                                            <Stack direction={{ xs: 'column', lg: 'row' }} spacing={2} display={'flex'} justifyContent={'center'} >
+                                            <FormControl  variant="outlined">
+                                            <TextField
+                                            type='number'
+                                            label='Employee Id'
+                                            size='small'
+                                            value={historyLogSearch.emp_id}
+                                            onChange={e => setHistoryLogSearch({ ...historyLogSearch, emp_id: e.target.value })}
+                                            />
+
+                                                </FormControl>
+                                            <FormControl fullWidth variant="outlined">
                                                     <InputLabel required size='small'>Application Type</InputLabel>
                                                     <Select size='small' value={historyLogSearch.applicationType} onChange={e => setHistoryLogSearch({ ...historyLogSearch, applicationType: e.target.value })} label='Application Type' required>
                                                         <MenuItem value='Leave'>Leave</MenuItem>
@@ -271,6 +283,8 @@ function HistoryLog() {
 
                                                     </Select>
                                                 </FormControl>
+                                                </Stack>
+                                                
                                                 <Stack direction={{ xs: 'column', lg: 'row' }} spacing={2} display={'flex'} justifyContent={'center'} >
 
 
@@ -362,4 +376,4 @@ function HistoryLog() {
     )
 }
 
-export default HistoryLog
+export default HistoryLogAdmin

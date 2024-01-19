@@ -12,7 +12,7 @@ function ApplyLeave() {
     const [applicationForm, setApplicationForm] = useState({
         reporting_head_name:'',
         mail_approved_by: '',
-        balence_leaves: 0,
+        balance_leaves: 0,
         to_be_approved_leaves: 0,
         cc_mail: '',
         leave_type: '',
@@ -39,10 +39,11 @@ function ApplyLeave() {
                 try {
                     const head = await axios.post('/api/getreportinghead', { emp_id: userDetails.employee_id })
                     const pending = await axios.post('/api/pendingleaves', { emp_id: userDetails.employee_id } )
+                    const balance = await axios.post('/api/getbalanceleaves', { emp_id: userDetails.employee_id })
                     setApplicationForm({
                         reporting_head_name:head.data[0].name,
                         mail_approved_by: head.data[0].email,
-                        balence_leaves: 0,
+                        balance_leaves: balance.data,
                         to_be_approved_leaves: pending.data[0].pending_leaves,
                         cc_mail: '',
                         leave_type: '',
@@ -244,7 +245,7 @@ function ApplyLeave() {
         setApplicationForm({
             reporting_head_name:'',
             mail_approved_by: '',
-            balence_leaves: 0,
+            balance_leaves: 0,
             to_be_approved_leaves: 0,
             cc_mail: '',
             leave_type: '',
@@ -311,7 +312,7 @@ function ApplyLeave() {
                                                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, sm: 1, md: 2, lg: 2 }}   >
                                                         <FormControl fullWidth variant="outlined">
                                                             <InputLabel size="small" required >Present balance leaves</InputLabel>
-                                                            <OutlinedInput size="small" name="balence_leaves" value={applicationForm.balence_leaves} disabled required={true} type={"number"} label="Present balance leaves" />
+                                                            <OutlinedInput size="small" name="balance_leaves" value={applicationForm.balance_leaves} disabled required={true} type={"number"} label="Present balance leaves" />
                                                         </FormControl>
                                                         <FormControl fullWidth variant="outlined">
                                                             <InputLabel size="small" required >Leaves still to be approved</InputLabel>

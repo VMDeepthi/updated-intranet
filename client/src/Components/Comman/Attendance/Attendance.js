@@ -124,6 +124,7 @@ const Attendance = () => {
                 })
                 .catch((err) => {
                     setLoader(false)
+                    setData([])
                     toast.error(err.response.data)
                 })
 

@@ -291,7 +291,7 @@ export default function UserNavBar(props) {
             sx={{ display: { xs: 'block', sm: 'block' } }}
           >
             <Link href="/" underline="none">
-              <img src='bcglogo.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '50%' }} />
+              <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '50%' }} />
             </Link>
           </Typography>
 
@@ -364,6 +364,7 @@ export default function UserNavBar(props) {
                   justifyContent: 'initial',
                   px: 2.5,
                 }}
+                title={text}
               >
                 <ListItemIcon
                   sx={{
@@ -549,7 +550,7 @@ export default function UserNavBar(props) {
                     </ListItemButton>
                   </ListItem>
 
-                  <ListItem disablePadding sx={{ display: 'flex' }} >
+                  <ListItem disablePadding sx={{ display: 'flex' }} onClick={() => navigate('/balanceleaves')} >
                     <ListItemButton
                       sx={{
                         minHeight: 48,

@@ -57,7 +57,7 @@ const columns = [
     },
     {
         name: 'Status',
-        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.status === 'XX' ? '#3FA8FC' : row.status === 'XA' ? '#FF9D36' : row.status === 'WH' ? '88888882' : '#FF6868', color: 'white' }} size='small' label={row.status} />,
+        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.status === 'XX' ? '#037700' : row.status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status ==='HH')?'88888882':  '#FF6868', color: 'white' }} size='small' label={row.status} />,
         center: 'true',
     },
     {
@@ -67,7 +67,7 @@ const columns = [
     },
     {
         name: 'Updated Status',
-        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#3FA8FC' : row.updated_status === 'XA' ? '#FF9D36' : row.updated_status === 'WH' ? '88888882' : '#FF6868', color: 'white' }} size='small' label={row.updated_status} />,
+        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#037700' : row.updated_status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status ==='HH') ? '88888882' :(row.updated_status === 'CL' || row.updated_status ==='SL')?'#3FA8FC' :'#FF6868', color: 'white' }} size='small' label={row.updated_status} />,
         center: 'true',
 
     },

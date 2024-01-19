@@ -36,6 +36,8 @@ import PaySlips from './Components/Comman/PaySlips/PaySlips'
 import Experience from './Components/Admin/UserManagement/Experience'
 import HistoryLog from './Components/Comman/HistoryLog/HistoryLog'
 import ReportingStructure from './Components/Comman/ReportingStrucure/ReportingStructure'
+import BalanceLeaves from './Components/Comman/BalanceLeaves/BalanceLeaves'
+import HistoryLogAdmin from './Components/Admin/LeaveManagement/HistoryLogAdmin'
 
 export default function App() {
   //console.log(useContext(UserContext))
@@ -58,6 +60,7 @@ export default function App() {
             <Route path='/crossroads' element={<CommanProtectedRoute component={<CrossRoadsSection />} />} />
             <Route path='/teams' element={<CommanProtectedRoute component={<TeamsSection />} />} />
             <Route path='/applyleave' element={<CommanProtectedRoute component={<ApplyLeave />} />} />
+            <Route path='/balanceleaves' element={<CommanProtectedRoute component={<BalanceLeaves />} />} />
             <Route path='/reportingstructure' element={<CommanProtectedRoute component={<ReportingStructure />} />} />
             <Route path='/historylog' element={<CommanProtectedRoute component={<HistoryLog />} />} />
             <Route path='/payslips' element={<CommanProtectedRoute component={<PaySlips />} />} />
@@ -76,6 +79,7 @@ export default function App() {
             <Route path='/viewattendance' element={<AdminProtectedRoute component={<ViewAttendance />} />} />
             <Route path='/createreportingstructure' element={<AdminProtectedRoute component={<CreateReportingStructure />} />} />
             <Route path='/viewreportingstructure' element={<AdminProtectedRoute component={<ViewReportingStructure />} />} />
+            <Route path='/historylog-admin' element={<AdminProtectedRoute component={<HistoryLogAdmin />} />} />
 
             {/*----------------------------USER------------------------------------------------------------------------------------ */}
 

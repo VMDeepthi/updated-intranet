@@ -32,7 +32,7 @@ function CrossRoadsSection() {
 
                             </Grid>
                             <Grid item xs={12} sm={3} lg={5}>
-                                <Paper>
+                                <Paper >
                                     <Tabs value={section} onChange={(e, new_value) => setSection(new_value)} variant='fullWidth' centered  >
                                         <Tab label="Birthday Calender 🎂" />
                                         <Tab label="Time Zones 🕒" />
@@ -42,7 +42,11 @@ function CrossRoadsSection() {
 
                             </Grid>
                             <Grid item xs={12} lg={12}>
-                                {section === 0 ? <BirthDayCalender /> : section === 1 ? <TimeZone /> : null}
+                                <Box >
+                                    {section === 0 ? <BirthDayCalender /> : section === 1 ? <TimeZone /> : null}
+
+                                </Box>
+                               
 
                             </Grid>
                         </Grid>

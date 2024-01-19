@@ -1,11 +1,12 @@
 import express from 'express'
-import { applyforleave, cancelapplication, checkapplicationerequest, getreportinghead, historylogapplication, pendingleaves, reportingheadlogin } from '../controllers/applyleave.js'
+import { applyforleave, cancelapplication, checkapplicationerequest, getbalanceleaves, getreportinghead, historylogapplication, pendingleaves, reportingheadlogin } from '../controllers/applyleave.js'
 
 const route = express.Router() 
 
 route.post('/getreportinghead',getreportinghead)
 route.post('/applyforleave', applyforleave)
 route.post('/pendingleaves', pendingleaves)
+route.post('/getbalanceleaves',getbalanceleaves)
 route.post('/reportingheadlogin',reportingheadlogin)
 route.post('/checkapplicationerequest',checkapplicationerequest)
 

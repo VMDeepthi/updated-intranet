@@ -51,8 +51,8 @@ function ReportingHeadLogin() {
 
         }
         catch (err) {
-          //console.log(err)
-          
+          console.log(err)
+          setApplicationStatus(err.response.data)
           setLoader(false)
 
         }
@@ -104,7 +104,7 @@ function ReportingHeadLogin() {
         .then(res => {
           //console.log(res)
 
-          //console.log(res.data)
+          console.log(res.data)
           setStep(1)
           setApplicationStatus(res.data)
           setLoadLogin(false)
@@ -113,6 +113,7 @@ function ReportingHeadLogin() {
           //navigate('/', { replace: true })
         })
         .catch(err => {
+
           toast.error(err.response.data)
           setSearchParams(searchParams)
           setLoadLogin(false)

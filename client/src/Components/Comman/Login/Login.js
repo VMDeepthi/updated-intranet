@@ -1,3 +1,4 @@
+
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -70,24 +71,11 @@ function Login() {
 
   return (
     <>
-      <style>
-        {`
-          html, body {
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-          }
 
-          #root {
-            height: 100%;
-          }
 
-          .no-scroll-bars {
-            overflow: hidden;
-          }
-        `}
-      </style>
 
+
+     
       <Grid container spacing={2} mt={1} paddingLeft={5} sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -104,27 +92,35 @@ function Login() {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
       }}>
+
+<Grid container spacing={0} mb={6} >
+<Grid item xs={12} lg={12}>
+{/* <Typography color={'#4B4747'} fontFamily={'Istok Web'} mb={3} component={'p'} sx={{ fontSize: { xs: '20px', lg: '45px' }, textAlign: { lg: 'center' },color: '#f720db'}} variant={'p'} > <span>Welcome To Grightcom Group</span>
+  </Typography> */}
+   <Typography color={'#4B4747'} fontFamily={'Miso-Light'} mb={3} component={'p'} sx={{ fontSize: { xs: '20px', lg: '50px' }, textAlign: { xs :'center',lg: 'center' }, backgroundImage: 'linear-gradient(to bottom, #f26deb ,#fc72e5,#e04fbc, #50048f, #4b12e6, #3152f7)', WebkitBackgroundClip: 'text', color: 'transparent',}} variant={'p'} > <span>Welcome To Brightcom Group </span>
+  </Typography>
+</Grid>
+{/* <Grid item xs={12}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 50, mb: 3}}>
+                      <img src='bcglogo.png' alt='logo' style={{ width: '390px', height: '85px' }} />
+                    </Box>
+                  </Grid> */}
+
+
         <Grid
           container spacing={0} >
           <Grid item xs={12} sm={9} lg={7.5}>
             {/* <Paper> */}
   <Container sx={{ display: "flex", flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-  {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80px' }}>
-    <img
-      src='https://i.ibb.co/qMBQsK1/welcome-removebg-preview.png'
-      alt='welcome'
-      style={{ height: '100%', width: '300px', maxWidth: '100%', objectFit: 'contain'}}
-    />
-    
-  </div> */}
+  
   <Container sx={{ mt:1, justifyContent: 'center', alignItems: 'center', textAlign: 'justify' }}>
-    <Typography variant="p" display="block"  fontSize={{xs:12,lg:17}} >
+    <Typography variant="p" display="block"  fontSize={{xs:12,lg:16.5}} >
       Brightcom Group consolidates Ad-tech, New Media and IoT based businesses across the globe, primarily in the digital eco-system. Our divisions include Brightcom Media, VoloMP, Consumer Products and Dyomo. Brightcom Group?s consumer products division is focused on IoT. Our LIFE product is dedicated to the future of communication and information management in which everyday objects will be connected to the internet, also known as the ?Internet of Things? (IoT).
     </Typography>
-    <Typography variant="p" mt={2} display="block"  fontSize={{xs:12,lg:17}} >
+    <Typography variant="p" mt={2} display="block"  fontSize={{xs:12,lg:16.5}} >
       Brightcom Group?s renowned global presence, including in the US, Israel, Latin America ME, Western Europe and Asia Pacific regions, positions us at the forefront of the digital landscape, enabling us to support partners in their efforts to leverage and benefit from current global trends. We have the technological platform and human knowledge to do so.
     </Typography>
-    <Typography variant="p" mt={2} display="block"  fontSize={{xs:12,lg:17}} >
+    <Typography variant="p" mt={2} display="block"  fontSize={{xs:12,lg:16.5}} >
       Our clients include leading blue chip advertisers such as Airtel, British Airways, Coca-Cola, Hyundai Motors, ICICI Bank, ITC, ING, Lenovo, LIC, Maruti Suzuki, MTV, P&G, Qatar Airways, Samsung, Viacom, Sony, Star India, Vodafone, Titan, and Unilever. Publishers include Facebook, LinkedIn, MSN, Twitter, and Yahoo! Brightcom works with agencies like Havas Digital, JWT, Mediacom, Mindshare, Neo@Ogilvy, Ogilvy One, OMD, Satchi&Satchi, TBWA, and ZenithOptiMedia, to name a few.
     </Typography>
   </Container>
@@ -140,7 +136,7 @@ function Login() {
 
           <Grid display={'flex'} justifyContent={'center'} flexDirection={'column'} alignItems={'center'} item xs={12} sm={12} lg={4} md={4}>
 
-            <Paper elevation={3} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', borderRadius: 6, width: { xs: '35ch', lg: '45ch' },height: "90%", p: 2 }} >  {/*pr:2, pl:2 */}
+          <Paper elevation={3} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', borderRadius: 6, width: { xs: '35ch', lg: '45ch' },height: "96%", pr:2, pl:2, mt:1, ml:2}} >  {/*pr:2, pl:2 */}
               {/* <Container style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}> */}
               <Box
                 component="form"
@@ -219,15 +215,16 @@ function Login() {
                   </LoadingButton>
 
                 </Box>
-                <Button style={{color: '#002db3'}} onClick={() => navigate('/forgotpassword')} sx={{ m: 1 }}>forgot password?</Button>
+                <Button style={{color: '#002db3'}} onClick={() => navigate('/forgotpassword',{relative:true})} sx={{ m: 1 }}>forgot password?</Button>
               </Box>
             </Paper>
           </Grid>
         </Grid >
         {Footer()}
       </Grid>
+      </Grid>
     </>
   );
 }
-
 export default Login;
+

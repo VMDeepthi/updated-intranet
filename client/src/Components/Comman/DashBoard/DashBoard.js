@@ -127,7 +127,11 @@ const Dashboard = () => {
             }
 
         }
-        fetchData()
+        if(userDetails.employee_id!==undefined){
+            fetchData()
+
+        }
+        
     }, [userDetails])
 
     const handleChange = (event, newValue) => {
@@ -216,10 +220,10 @@ const Dashboard = () => {
             <Box sx={{ display: 'flex', }}>
 
                 {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
-                <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 6 }}>
+                <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 6, }}>
 
-                    <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex' }}>
-                        <Grid item xs={12} sm={12} md={12} >
+                    <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex',}}>
+                        <Grid item xs={12} sm={12} md={12} lg={12} >
                             <Notice />
                         </Grid>
                         <Grid item xs={12} sm={6} md={8} >

@@ -154,7 +154,7 @@ const PaySlips = () => {
   };
 
   const exportPDF = async () => {
-    const doc = new jsPDF({ orientation: "landscape" });
+    const doc = new jsPDF({ orientation: "vertical" });
     doc.autoTable({
       html: "#payslip-table",
       theme: "grid",

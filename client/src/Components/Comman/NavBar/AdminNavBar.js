@@ -55,7 +55,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 // drawer width
-const drawerWidth = 280;
+const drawerWidth = 270;
 
 
 
@@ -361,22 +361,23 @@ export default function AdminNavBar(props) {
         anchor="left"
 
       >
-        <Box sx={{ overflow: 'auto' }}>
-          <List sx={{ mt: 8 }}>
+        <Box sx={{ overflowX: 'hidden' }}>
+          <List sx={{ mt: 7 }}>
             {['Dashboard', 'Attendance'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
                 <ListItemButton
                   title={text}
                   sx={{
-                    minHeight: 48,
-                    justifyContent: 'initial',
-                    px: 2.5,
+                    minHeight: 45,
+                    justifyContent: 'center',
+                    px: 1.5,
                   }}
                 >
                   <ListItemIcon
                     sx={{
                       minWidth: 0,
-                      mr: 3,
+                      mr: 'auto',
+                      
                       justifyContent: 'center',
                     }}
                   >
@@ -391,17 +392,18 @@ export default function AdminNavBar(props) {
               <ListItemButton
                 title={'Leaves'}
                 sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
+                  minHeight: 45,
+                  justifyContent: 'center',
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: 'auto',
+                    
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    
                   }}
                 >
                   <WorkOff />
@@ -418,9 +420,9 @@ export default function AdminNavBar(props) {
               <ListItemButton
                 title={'History Log for all Application'}
                 sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
+                  minHeight: 45,
+                  justifyContent: 'center',
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -428,7 +430,7 @@ export default function AdminNavBar(props) {
                     minWidth: 0,
                     mr: 'auto',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    
                   }}
                 >
                   <WorkHistory />
@@ -443,9 +445,9 @@ export default function AdminNavBar(props) {
               <ListItemButton
                 title={'View Reporting Structure'}
                 sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
+                  minHeight: 45,
+                  justifyContent: 'center',
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -453,7 +455,7 @@ export default function AdminNavBar(props) {
                     minWidth: 0,
                     mr: 'auto',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    
                   }}
                 >
                   <CgListTree fontSize={20} />
@@ -470,9 +472,9 @@ export default function AdminNavBar(props) {
               <ListItemButton
                 title='Company Management'
                 sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
+                  minHeight: 45,
+                  justifyContent: 'center',
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -480,7 +482,7 @@ export default function AdminNavBar(props) {
                     minWidth: 0,
                     mr: 'auto',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    
                   }}
 
                 >
@@ -497,9 +499,9 @@ export default function AdminNavBar(props) {
               <ListItemButton
                 title='Company Pages Management'
                 sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
+                  minHeight: 45,
+                  justifyContent: 'center',
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -507,7 +509,7 @@ export default function AdminNavBar(props) {
                     minWidth: 0,
                     mr: 'auto',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    
                   }}
 
                 >
@@ -524,9 +526,9 @@ export default function AdminNavBar(props) {
               <ListItemButton
                 title='User Management'
                 sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
+                  minHeight: 45,
+                  justifyContent: 'center',
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -534,7 +536,7 @@ export default function AdminNavBar(props) {
                     minWidth: 0,
                     mr: 'auto',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    
                   }}
 
                 >
@@ -551,9 +553,9 @@ export default function AdminNavBar(props) {
               <ListItemButton
                 title='Announcement'
                 sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
+                  minHeight: 45,
+                  justifyContent: 'center',
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -561,7 +563,7 @@ export default function AdminNavBar(props) {
                     minWidth: 0,
                     mr: 'auto',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    
                   }}
 
                 >
@@ -579,9 +581,9 @@ export default function AdminNavBar(props) {
               <ListItemButton
                 title='Leave Management'
                 sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
+                  minHeight: 45,
+                  justifyContent: 'center',
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -589,7 +591,7 @@ export default function AdminNavBar(props) {
                     minWidth: 0,
                     mr: 'auto',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    
                   }}
 
                 >
@@ -627,9 +629,9 @@ export default function AdminNavBar(props) {
               <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
                 <ListItemButton
                   sx={{
-                    minHeight: 48,
+                    minHeight: 45,
                     justifyContent: 'center',
-                    px: 2.5,
+                    px: 1.5,
                   }}
                 >
                   <ListItemIcon
@@ -641,7 +643,7 @@ export default function AdminNavBar(props) {
                   >
                     {iconList[index]}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText  primary={<Typography sx={{fontSize:15}}>{text}</Typography>} />
                 </ListItemButton>
               </ListItem>
             ))}
@@ -649,17 +651,17 @@ export default function AdminNavBar(props) {
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenLeavesMenu(!openLeavesMenu)} >
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 45,
                   justifyContent: 'center',
-                  px: 2.5,
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: 3,
-                    justifyContent: 'initial',
-                    alignItems: 'center'
+                    justifyContent: 'center',
+                    
                   }}
 
                 >
@@ -677,9 +679,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/applyleave')}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -688,7 +690,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -698,12 +700,12 @@ export default function AdminNavBar(props) {
                       </ListItemButton>
                     </ListItem>
 
-                    <ListItem disablePadding sx={{ display: 'flex' }} >
+                    <ListItem disablePadding sx={{ display: 'flex' }} onClick={() => navigate('/balanceleaves')}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -712,7 +714,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -731,9 +733,9 @@ export default function AdminNavBar(props) {
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog')} >
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 45,
                   justifyContent: 'center',
-                  px: 2.5,
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -752,9 +754,9 @@ export default function AdminNavBar(props) {
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/reportingstructure')} >
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 45,
                   justifyContent: 'center',
-                  px: 2.5,
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -773,17 +775,17 @@ export default function AdminNavBar(props) {
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenCompanyManagementMenu(!openCompanyManagementMenu)} >
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 45,
                   justifyContent: 'center',
-                  px: 2.5,
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: 3,
-                    justifyContent: 'initial',
-                    alignItems: 'center'
+                    justifyContent: 'center',
+                    
                   }}
 
                 >
@@ -800,9 +802,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/addcompany')}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -811,7 +813,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -824,9 +826,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/viewcompany')}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -835,7 +837,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -856,17 +858,17 @@ export default function AdminNavBar(props) {
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenCompanyPageManagementMenu(!openCompanyPageManagementMenu)} >
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 45,
                   justifyContent: 'center',
-                  px: 2.5,
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: 3,
-                    justifyContent: 'initial',
-                    alignItems: 'center'
+                    justifyContent: 'center',
+                    
                   }}
 
                 >
@@ -884,9 +886,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/addcompanypages")}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -895,7 +897,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -908,9 +910,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewcompanypages")}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -919,7 +921,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -939,17 +941,17 @@ export default function AdminNavBar(props) {
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenUserManagementMenu(!openUserManagementMenu)} >
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 45,
                   justifyContent: 'center',
-                  px: 2.5,
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: 3,
-                    justifyContent: 'initial',
-                    alignItems: 'center'
+                    justifyContent: 'center',
+                    
                   }}
 
                 >
@@ -967,9 +969,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/adduser")}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -978,7 +980,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
                         >
                           <PersonAdd />
@@ -990,9 +992,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewusers")}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -1001,7 +1003,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -1011,12 +1013,12 @@ export default function AdminNavBar(props) {
                       </ListItemButton>
                     </ListItem>
 
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/experience")}>
+                    {/* <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/experience")}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -1025,7 +1027,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -1033,7 +1035,7 @@ export default function AdminNavBar(props) {
                         </ListItemIcon>
                         <ListItemText primary={'Experience'} />
                       </ListItemButton>
-                    </ListItem>
+                    </ListItem> */}
 
                     <Divider />
                   </List>
@@ -1046,17 +1048,17 @@ export default function AdminNavBar(props) {
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenAnnouncementMenu(!openAnnouncementMenu)} >
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 45,
                   justifyContent: 'center',
-                  px: 2.5,
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: 3,
-                    justifyContent: 'initial',
-                    alignItems: 'center'
+                    justifyContent: 'center',
+                    
                   }}
 
                 >
@@ -1074,9 +1076,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/addannouncement")}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -1085,7 +1087,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
                         >
                           <AddAlert />
@@ -1097,9 +1099,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewannouncements")}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -1108,7 +1110,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -1129,17 +1131,17 @@ export default function AdminNavBar(props) {
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenLeaveManagementMenu(!openLeaveManagementMenu)} >
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 45,
                   justifyContent: 'center',
-                  px: 2.5,
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: 3,
-                    justifyContent: 'initial',
-                    alignItems: 'center'
+                    justifyContent: 'center',
+                    
                   }}
 
                 >
@@ -1157,9 +1159,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/uploadattendance")}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -1168,7 +1170,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
                         >
                           <UploadFile />
@@ -1180,9 +1182,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewattendance")}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -1191,7 +1193,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -1204,9 +1206,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/createreportingstructure')}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -1215,7 +1217,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -1229,9 +1231,9 @@ export default function AdminNavBar(props) {
                     <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/viewreportingstructure')}>
                       <ListItemButton
                         sx={{
-                          minHeight: 48,
+                          minHeight: 45,
                           justifyContent: 'center',
-                          px: 2.5,
+                          px: 1.5,
                         }}
                       >
                         <ListItemIcon
@@ -1240,7 +1242,7 @@ export default function AdminNavBar(props) {
                             mr: 3,
                             ml: 3,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            
                           }}
 
                         >
@@ -1248,6 +1250,31 @@ export default function AdminNavBar(props) {
 
                         </ListItemIcon>
                         <ListItemText primary={'View Reporting Structure '} />
+                      </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog-admin')}>
+                      <ListItemButton
+                        sx={{
+                          minHeight: 45,
+                          justifyContent: 'center',
+                          px: 1.5,
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: 3,
+                            ml: 3,
+                            justifyContent: 'center',
+                            
+                          }}
+
+                        >
+                          <WorkHistory />
+
+                        </ListItemIcon>
+                        <ListItemText primary={'History Log for all applications'} />
                       </ListItemButton>
                     </ListItem>
 

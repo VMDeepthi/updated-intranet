@@ -21,6 +21,7 @@ import reportingStructureRoute from './routes/reportingstructure.js'
 import profileSectionRoute from './routes/profilesection.js'
 import direcorySearchRoute from './routes/directorysearch.js'
 import applyLeaveRoute from './routes/applyleave.js'
+import balanaceLeavesRoute from './routes/balanceleaves.js'
 
 db.connect((err)=>{
     if (err){
@@ -53,6 +54,7 @@ app.use('/api/',reportingStructureRoute)
 app.use('/api/',profileSectionRoute)
 app.use('/api/',direcorySearchRoute)
 app.use('/api/',applyLeaveRoute)
+app.use('/api/',balanaceLeavesRoute)
 
 
 

@@ -37,7 +37,7 @@ function AddUser() {
         gender: "",
         bloodGroup:"",
         dob:null,
-        country: "",
+        country: "India",
         companyName:"",
         aboutYourself: "",
         employeeId:"",
@@ -69,7 +69,7 @@ function AddUser() {
             gender: "",
             bloodGroup:"",
             dob:null,
-            country: "",
+            country: "India",
             companyName:"",
             aboutYourself: "",
             employeeId:res.data.employee_id,
@@ -175,7 +175,7 @@ function AddUser() {
     }
 
     const handleUserDataClear=()=>{
-        setAddUserData({
+        setAddUserData({...addUserData,
            
             profile:"",
             firstName: "",
@@ -183,10 +183,9 @@ function AddUser() {
             gender: "",
             bloodGroup:"",
             dob:null,
-            country: "",
+            country: "India",
             companyName:"",
             aboutYourself: "",
-            employeeId:"",
             access: "",
             email:"",
             password:"",
@@ -313,7 +312,7 @@ function AddUser() {
                                                     
                                                 <FormControl fullWidth   variant="outlined">
                                                     <InputLabel sx={{mt:1}} size="small" required >Country</InputLabel>
-                                                    <Select sx={{mt:1,}} onChange={handleUserDataChange} name="country" required value={addUserData.country}  size="small"  label="Country" placeholder="select country">
+                                                    <Select sx={{mt:1,}} onChange={handleUserDataChange} name="country" defaultValue="India" required value={addUserData.country}  size="small"  label="Country" placeholder="select country">
                                                         {
                                                             countries.map((name,index)=><MenuItem key={index} value={name}>{name}</MenuItem>)
                                                         }
@@ -369,7 +368,7 @@ function AddUser() {
                                     <Stack   direction={{xs:'column',md:'row'}} spacing={{xs:2,sm:1,md:2,lg:2}}  >
                                     <FormControl fullWidth sx={{ mb: 2 }} variant="outlined">
                                         <InputLabel size="small" required >Employee ID</InputLabel>
-                                        <OutlinedInput disabled startAdornment={<InputAdornment position="start">bcg/</InputAdornment>} name='employeeId' value={addUserData.employeeId} onChange={handleUserDataChange}  size="small" required={true} type={"text"}  label="Employee ID"  />      
+                                        <OutlinedInput  startAdornment={<InputAdornment position="start">bcg/</InputAdornment>} name='employeeId' value={addUserData.employeeId} onChange={handleUserDataChange}  size="small" required={true} type={"text"}  label="Employee ID"  />      
                                     </FormControl>
                                     <FormControl fullWidth sx={{ mb: 2 }} variant="outlined">
                                         <InputLabel size="small" required >Access</InputLabel>

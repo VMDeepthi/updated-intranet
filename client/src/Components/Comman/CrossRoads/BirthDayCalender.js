@@ -77,7 +77,7 @@ function BirthDayCalender() {
 
     return (
         <>
-            <Container >
+            <Container  >
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', maxWidth: "25ch" }}>
                     <FormControl fullWidth>
                         <InputLabel size='small'>Company Name</InputLabel>
@@ -91,6 +91,8 @@ function BirthDayCalender() {
                     </FormControl>
 
                 </Box>
+
+                
 
                 <Typography variant="p" component="div" sx={{ display: 'flex', justifyContent: 'center', fontSize: 20, alignItems: 'center', m: 1 }}>
                     Birthday Calender

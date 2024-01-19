@@ -90,10 +90,11 @@ export const forgotpassword =(req,res)=>{
                 };
                 transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
+                        console.log(error)
                         return res.status(500).json('Not able send validation try again after some time!');
                     }
-                    //console.log(info)
                     else{
+                        console.log(info)
                         return res.status(200).json({'otp':otp,'msg':'validation code sended successully'})
 
                     }

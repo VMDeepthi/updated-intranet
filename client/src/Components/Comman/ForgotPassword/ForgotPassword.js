@@ -5,6 +5,7 @@ import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import OtpInput from 'react-otp-input';
+import LoadingButton from '@mui/lab/LoadingButton'
 
 function ForgotPassword() {
 
@@ -14,40 +15,52 @@ function ForgotPassword() {
   const [clientOtp, setClientOtp] = useState('')
   const [showPassword, setShowPassword] = useState({ newPass: false, confirmPass: false });
   const [password, setPassword] = useState({ newPass: '', confirmPass: '' })
+  const [loadSubmit, setLoadSubmit] = useState(false)
 
   const navigate = useNavigate()
 
-  const ForgotPassView = useMemo(() => {
+  const ForgotPassView = ()=> {
 
-    const handleResetPassword = (e) => {
+    const handleResetPassword = async(e) => {
       e.preventDefault()
       console.log(email)
+      setLoadSubmit(true)
       try {
-        toast.promise(axios.post('/api/forgotpasword', { email: email }), {
-          pending: {
-            render() {
-              return ('sending otp')
-            }
-          },
-          success: {
-            render(res) {
-              console.log(res)
-              setActiveView(1)
-              setOtp(res.data.data.otp)
-              return (res.data.data.msg)
-            }
-          },
-          error: {
-            render(err) {
-              return (err.data.response.data)
-            }
-          }
 
-        })
+        // toast.promise(axios.post('/api/forgotpasword', { email: email }), {
+        //   pending: {
+        //     render() {
+        //       return ('sending otp')
+        //     }
+        //   },
+        //   success: {
+        //     render(res) {
+        //       console.log(res)
+        //       setActiveView(1)
+        //       setOtp(res.data.data.otp)
+        //       return (res.data.data.msg)
+        //     }
+        //   },
+        //   error: {
+        //     render(err) {
+        //       console.log(err)
+        //       return (err.data.response.data)
+        //     }
+        //   }
+
+        // })
+        const result = await axios.post('/api/forgotpasword', { email: email })
+        console.log(result)
+        setActiveView(1)
+        setOtp(result.data.otp)
+        setLoadSubmit(false)
+        toast.success(result.data.msg)
+
       }
       catch (err) {
         console.log(err)
-        toast.error('Unable send please check your internet connection!')
+        setLoadSubmit(false)
+        toast.error(err.response.data)
       }
     }
 
@@ -85,13 +98,24 @@ function ForgotPassword() {
                 onInput={e => setEmail(e.target.value)}
               />
             </FormControl>
-            <Button type='submit' color='info' sx={{ mt: 2, mb: 5 }} variant='contained'>Submit</Button>
+            {/* </Box></Box><Button type='submit' color='info' sx={{ mt: 2, mb: 5 }} variant='contained'>Submit</Button> */}
+            <LoadingButton
+            sx={{ mt: 2, mb: 5 }}
+                    color='info'
+                    type='submit'
+                    loading={loadSubmit}
+                   
+                    
+                    variant="contained"
+                  >
+                   Submit
+                  </LoadingButton>
           </Box>
         </Box>
       </Paper>
 
     )
-  }, [email, navigate])
+  }
 
 
   const OtpView = useMemo(() => {
@@ -274,7 +298,7 @@ function ForgotPassword() {
 
 
   //views
-  const views = [ForgotPassView, OtpView, ResetView]
+  const views = [ForgotPassView(), OtpView, ResetView]
 
   return (
     <>

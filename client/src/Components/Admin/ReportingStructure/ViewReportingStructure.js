@@ -157,7 +157,7 @@ function ViewReportingStructure() {
                 <div style={{ height: '90vh', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <Paper elevation={5} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '90%', height: '55ch' }}>
 
-                        <Typography variant='h5' component={'h5'} m={1} p={1} border={'1px solid black'} >Reporting Strucure</Typography>
+                        <Typography variant='h5' component={'h5'} m={1} p={1} border={'1px solid black'} >Reporting Structure</Typography>
 
                         <Container sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', width: '90%', height: '400px', }}>
                             <Container sx={{ display: 'flex', justifyContent: 'center', }}>
