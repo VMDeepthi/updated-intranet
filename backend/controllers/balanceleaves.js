@@ -66,3 +66,53 @@ export const monthbalance = (req, res) => {
     })
     //res.send('ok')
 }
+
+
+//-------------------------------------manage leaves-------------------------------------
+
+export const getemployeedata = (req,res) =>{
+    console.log(req.checkAuth)
+    if(req.checkAuth.isAuth && req.checkAuth.user_type==='admin' && req.checkAuth.department==='management'){
+        const userQuery =  `select concat(first_name,' ',last_name) as fullname,employee_id from usermanagement where status='active' ; `
+        db.query(userQuery,(err,result)=>{
+            if(err) return res.status(500).json('error occured!')
+            else{
+                console.log(result)
+                const data = result.map(res => ({ value: res, label: `${res.fullname} (bcg/${res.employee_id})` }))
+                return res.send(data)
+            }
+        })
+
+    }
+    else{
+        console.log('Unauthorized User!')
+        return res.status(401).json('Unauthorized User!')
+
+    }
+    
+
+}
+
+export const manageleaves = async(req,res) =>{
+    console.log(req.body)
+    if(req.checkAuth.isAuth && req.checkAuth.access==='admin'){
+        const {emp_id, manageType, balance, date, reference, totalLeaves} = req.body
+        const update_balace_leaves_quary = `insert into balanceleaves(emp_id,${manageType},date,total_leaves,reference) values(?)`
+        const update_balace_leaves_values = [[emp_id,balance,date,totalLeaves,reference]]
+        try{
+            await db.promise().query(update_balace_leaves_quary,update_balace_leaves_values)
+            return res.status(200).json('Record added succefully')
+        }
+        catch(err){
+            console.log(err)
+            return res.status(500).json('Error occured! Record not added! ')
+        }
+        
+    }
+    else{
+        console.log('Unauthorized User!')
+        return res.status(401).json('Unauthorized User!')
+
+    }
+    //res.send('ok')
+}

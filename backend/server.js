@@ -6,7 +6,11 @@ import path from 'path'
 
 
 import db from './config/connectiondb.js'
+
+//-----automation---------
 import './utils/autofestivewishes.js'
+import './utils/autoBirthdayWishes.js'
+import './utils/autoAnnouncemnetReminder.js'
 
 //importing routes
 import authRoute from './routes/auth.js'
@@ -22,6 +26,11 @@ import profileSectionRoute from './routes/profilesection.js'
 import direcorySearchRoute from './routes/directorysearch.js'
 import applyLeaveRoute from './routes/applyleave.js'
 import balanaceLeavesRoute from './routes/balanceleaves.js'
+import userIntroTourRoute from './routes/userintrotour.js'
+import manageOfficeGalleryRoute from './routes/manageofficegallery.js'
+
+//import authMiddleware from './middleware/authUsers.js'
+import { checkAuthentication } from './middleware/authUsers.js'
 
 db.connect((err)=>{
     if (err){
@@ -38,8 +47,9 @@ const app = express()
 app.use(cors())
 app.use(express.json({limit:'50mb'}))
 app.use(cookieParser())
-app.use(express.static('uploads'));
+app.use(express.static('public'));
 app.use(express.urlencoded({limit:'50mb',extended:true}))
+app.use(checkAuthentication)
 
 //routes
 app.use('/api/',authRoute)
@@ -55,6 +65,8 @@ app.use('/api/',profileSectionRoute)
 app.use('/api/',direcorySearchRoute)
 app.use('/api/',applyLeaveRoute)
 app.use('/api/',balanaceLeavesRoute)
+app.use('/api/',userIntroTourRoute)
+app.use('/api/',manageOfficeGalleryRoute)
 
 
 

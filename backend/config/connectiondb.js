@@ -19,3 +19,10 @@ const db = mysql.createConnection({
 
 
 export default db
+
+
+// if (req.checkAuth.isAuth && req.checkAuth.user_type === 'admin') {
+// }
+// else {
+//     res.status(406).json('Unauthorized! not allowed to perform action.')
+// }

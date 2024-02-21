@@ -162,11 +162,12 @@ function Login() {
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <AccountCircle sx={{ color: 'action.active', mr: 1, fontSize: { xs: 30, sm: 35, md: 40 } }} />   {/*{my: 0.5} */}
                       <FormControl sx={{ m: 1, width: { xs: '100%' } }} variant="outlined">
-                        <InputLabel required htmlFor="outlined-adornment-email">Email</InputLabel>
+                        <InputLabel required >Email</InputLabel>
                         <OutlinedInput
+                          autoComplete='username'
                           onInput={(e) => setLoginDetails({ ...loginDetails, email: e.target.value })}
                           required={true}
-                          id="outlined-adornment-email"
+                          
                           type={'email'}
                           label="Email"
                         />
@@ -177,16 +178,16 @@ function Login() {
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <LockPerson sx={{ color: 'action.active', mr: 1, my: 0.5, fontSize: { xs: 30, sm: 35, md: 40 } }} />
                       <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
-                        <InputLabel required htmlFor="outlined-adornment-password">Password</InputLabel>
+                        <InputLabel required>Password</InputLabel>
                         <OutlinedInput
                           onInput={(e) => setLoginDetails({ ...loginDetails, password: e.target.value })}
                           required={true}
-                          id="outlined-adornment-password"
-                          type={showPassword ? 'text' : 'password'}
+                          autoComplete='current-password'
+                          type={'password'}
                           endAdornment={
                             <InputAdornment position="end">
                               <IconButton
-                                aria-label="toggle password visibility"
+                                
                                 onClick={handleClickShowPassword}
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"

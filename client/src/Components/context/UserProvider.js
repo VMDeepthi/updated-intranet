@@ -26,6 +26,9 @@ function UserProvider(props) {
             toast.error('Unauthorized user!')
             setUnAuth(true)
           }
+          else if(err.response.status===504){
+            toast.error('not able get data contact admin!')
+          }
           //console.log(err)
         })
     }

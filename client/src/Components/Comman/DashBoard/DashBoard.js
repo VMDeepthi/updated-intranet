@@ -33,53 +33,60 @@ import Loader from '../Loader';
 
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
+import { toast } from 'react-toastify';
 
-const convertDateFormat = (date) => {
-    let day = date.getDate()
-    if (day < 10) {
-        day = '0' + day
-    }
-    let month = date.getMonth() + 1
-    if (month < 10) {
-        month = '0' + month
-    }
-    return date.getFullYear() + '-' + month + '-' + day
-}
-
-var d = new Date();
-var getTot = daysInMonth(d.getMonth(), d.getFullYear()); //Get total days in a month
-console.log('tot', getTot)
-var sat = [];   //Declaring array for inserting Saturdays
-var sun = [];   //Declaring array for inserting Sundays
-
-for (var i = 1; i <= getTot; i++) {    //looping through days in month
-    var newDate = new Date(d.getFullYear(), d.getMonth(), i)
-    //console.log(newDate)
-    if (newDate.getDay() === 0) {   //if Sunday
-        sun.push(convertDateFormat(newDate))
-    }
-    if (newDate.getDay() === 6) {   //if Saturday
-        sat.push(convertDateFormat(newDate));
-    }
-
-}
-console.log('sat:', sat);
-console.log('sun:', sun);
+import { Steps, Hints } from 'intro.js-react';
+import "intro.js/introjs.css";
 
 
-function daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
-}
 
-const lastTenDays = new Date((new Date()).getTime() - (11 * 86400000))
-console.log('10:', lastTenDays)
-const tenDays = []
 
-for (let i = 1; i <= 10; i++) {
-    tenDays.push(convertDateFormat(new Date(lastTenDays.getTime() + (i * 86400000))))
+// const convertDateFormat = (date) => {
+//     let day = date.getDate()
+//     if (day < 10) {
+//         day = '0' + day
+//     }
+//     let month = date.getMonth() + 1
+//     if (month < 10) {
+//         month = '0' + month
+//     }
+//     return date.getFullYear() + '-' + month + '-' + day
+// }
 
-}
-console.log('TenDays:', tenDays)
+// var d = new Date();
+// var getTot = daysInMonth(d.getMonth(), d.getFullYear()); //Get total days in a month
+// console.log('tot', getTot)
+// var sat = [];   //Declaring array for inserting Saturdays
+// var sun = [];   //Declaring array for inserting Sundays
+
+// for (var i = 1; i <= getTot; i++) {    //looping through days in month
+//     var newDate = new Date(d.getFullYear(), d.getMonth(), i)
+//     //console.log(newDate)
+//     if (newDate.getDay() === 0) {   //if Sunday
+//         sun.push(convertDateFormat(newDate))
+//     }
+//     if (newDate.getDay() === 6) {   //if Saturday
+//         sat.push(convertDateFormat(newDate));
+//     }
+
+// }
+// console.log('sat:', sat);
+// console.log('sun:', sun);
+
+
+// function daysInMonth(month, year) {
+//     return new Date(year, month, 0).getDate();
+// }
+
+// const lastTenDays = new Date((new Date()).getTime() - (11 * 86400000))
+// console.log('10:', lastTenDays)
+// const tenDays = []
+
+// for (let i = 1; i <= 10; i++) {
+//     tenDays.push(convertDateFormat(new Date(lastTenDays.getTime() + (i * 86400000))))
+
+// }
+// console.log('TenDays:', tenDays)
 
 
 const Dashboard = () => {
@@ -88,15 +95,116 @@ const Dashboard = () => {
     const [graphData, setGraphData] = useState({ date: [], totalhrs: [], bal_hr: 0 })
     const [birthdayData, setBirthdayData] = useState([])
     const [calenderData, setCalenderData] = useState([])
+    const [notice, setNotice] = useState([])
     const [loader, setLoader] = useState(true)
+
+    const [stepsEnabled, setStepsEnabled] = useState(false);
+    const [startTour, setStartTour]= useState(false);
+
+    const steps=[
+        {
+            element: '.notice',
+            intro: 'All announcements will be displayed here'
+        },
+        {
+            element: ".profile-section",
+            intro: "In this section your profile image with your name, emp id and designation will display",
+            position: 'right',
+
+        },
+        {
+            element: ".teams",
+            intro: "In teams section as per company names their corresponding company pages will display "
+        },
+        {
+            element: '.directory-search',
+            intro: 'In directory search section you can search employees based on various filters'
+        },
+        {
+            element: '.cross-road',
+            intro: 'In this section you can see Birthday calender and Timezone'
+        },
+        {
+            element: '.personal-section',
+            intro: 'In this section you can view my attendance,my pays and my accounts',
+            position:'right'
+        },
+        {
+            element: '.my-attendance',
+            intro: 'In this section your 10 days attendance will be displayed in graph also you can check your balance hours as well'
+        },
+        // {
+        //     element: '.hourbalance',
+        //     intro: 'Here extra balance hours will display in + symbol with green color and compensation hour will display in - symbol with red color'
+        // },
+        {
+            element: '.my-pays',
+            intro: 'In this section your last 3 months transaction will display '
+        },
+        {
+            element: '.my-accounts',
+            intro: 'In this section your account numbers like UAN, Insurance Police, Salary Account number will display'
+        },
+        // {
+        //     element: '.links',
+        //     intro: 'In this section UAN, Insurance Police, ICICI Bank links will display'
+        // },
+        {
+            element: '.birthday-list',
+            intro: 'Here current month employees birthday will display',
+            position:'left'
+        },
+        {
+            element: '.view-link-birthdays',
+            intro: 'Here all/filtered employees birthday list will display ',
+           
+        },
+        {
+            element: '.office-calender',
+            intro: 'Here you will find a calender having holidays'
+        },
+        // {
+        //     element: '.office-holidaylist-title-select',
+        //     intro: 'Here you need to select holiday list title '
+        // },
+        {
+            element: '.view-link-calender',
+            intro: 'from here ypu can explore the various company pages like holidays list'
+        },
+        // {
+        //     element: '.holidays',
+        //     intro: 'Holidays of current month will display here'
+        // },
+        {
+            element: '.account-menu',
+            intro: 'In this section you can view profile, change password and logout'
+        },
+        {
+            element: '.navigation-menu',
+            intro: 'This is the navigation menu'
+        },
+        {   
+            
+            title: '<img style="max-width:200px;height:50px" src="https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png" alt="img" />',
+            intro: '<h2 >Welcome To Brightcom Group</h2>'
+            
+        }
+       
+
+
+    ]
     
 
     const navigate = useNavigate()
     const { width, height } = useWindowSize()
 
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const ann = await axios.post('/api/notice',{company_name:userDetails.company_name,department:userDetails.department,date:new Date().toLocaleDateString('en-CA').slice(0,10)})
+                setNotice(ann.data)
                 const res = await axios.post('/api/attendancegraphdata', { emp_id: userDetails.employee_id })
                 let options = [{ day: 'numeric' }, { month: 'short' }];
                 function join(date, options, separator) {
@@ -113,16 +221,31 @@ const Dashboard = () => {
                 const bal_hr = res.data.balance
                 setGraphData({ date: dateData, totalhrs: totalhrsData, bal_hr: bal_hr })
 
-                const holidays = await axios.get('/api/holidaylist')
+                const holidays = await axios.post('/api/holidaylist',{department:userDetails.department})
                 setCalenderData(holidays.data)
                 const birthdays = await axios.get('/api/birthdaylist')
                 setBirthdayData(birthdays.data)
+                const intro = await axios.post('/api/checkuserintrodetails', { employee_id: userDetails.employee_id })
+                setStepsEnabled(intro.data)
+                //console.log('intro', intro)
+
+                
+
                 setLoader(false)
 
 
             }
-            catch {
+            catch(err) {
+                //console.log(err.response.status)
                 setLoader(false)
+                
+                if(err.message==="Network Error"){
+                    toast.error('please check your internet and try again!')
+                }
+                else if(err.response.status===504){
+                    toast.error('not able get data contact admin!')
+                }
+               
 
             }
 
@@ -130,6 +253,9 @@ const Dashboard = () => {
         if(userDetails.employee_id!==undefined){
             fetchData()
 
+        }
+        else{
+            setLoader(false)
         }
         
     }, [userDetails])
@@ -171,13 +297,27 @@ const Dashboard = () => {
 
     // }
 
+    const userIntroTour=()=>{
+        setStepsEnabled(true)
+        setStartTour(true);
+       }; 
+
+        const onExit = async(stepIndex) => {
+            console.log('onexit',stepIndex)
+            setStepsEnabled(false);
+            if(!startTour){
+                await axios.post('/api/adduserintro',{employee_id:userDetails.employee_id })
+            }
+           
+        }
+
 
 
 
 
 
     const personalSetion = (
-        <Card sx={{ height: 390, p: 1 }}>
+        <Card className='personal-section' sx={{ height: 390, p: 1 }}>
             <Typography variant="p" component="div" sx={{ display: 'flex', justifyContent: 'center', fontSize: 20, alignItems: 'center' }}>
                 Personal Section <PersonIcon sx={{ m: 0.5, color: 'gray' }} fontSize='8' />
             </Typography>
@@ -185,9 +325,9 @@ const Dashboard = () => {
 
             <Box sx={{ display: 'flex', flexDirection: 'column', maxHeight: 295 }}>
                 <Tabs value={value} onChange={handleChange} variant='fullWidth' centered  >
-                    <Tab label="My Attendace" />
-                    <Tab label="My Pays" />
-                    <Tab label="My Accounts" />
+                    <Tab className='my-attendance' label="My Attendace" />
+                    <Tab className='my-pays' label="My Pays" />
+                    <Tab className='my-accounts' label="My Accounts" />
                 </Tabs>
                 <Box sx={{ height: 290, width: '100%', display: 'flex', flexDirection: 'column' }}>
                     {
@@ -219,15 +359,15 @@ const Dashboard = () => {
         <>
             <Box sx={{ display: 'flex', }}>
 
-                {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
+                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar userIntroTour={userIntroTour} /> : <UserNavBar userIntroTour={userIntroTour} />}
                 <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 6, }}>
 
                     <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex',}}>
                         <Grid item xs={12} sm={12} md={12} lg={12} >
-                            <Notice />
+                            <Notice notice={notice} />
                         </Grid>
                         <Grid item xs={12} sm={6} md={8} >
-                            <Card sx={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center', height: 80, p: 2 }} >
+                            <Card className='profile-section' sx={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center', height: 80, p: 2 }} >
 
                                 <CardMedia
                                     component="img"
@@ -249,7 +389,7 @@ const Dashboard = () => {
                         <Grid item xs={12} sm={6} md={4} lg={4}>
                             <Card sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', flexDirection: { xs: 'row', md: 'row' }, height: 80, p: 1, fontWeight: 'bold' }} >
                                 <Stack direction="row" spacing={3} >
-                                    <Box>
+                                    <Box className='teams'>
                                         <IconButton sx={{
                                             '&:hover, &:focus': {
                                                 bgcolor: 'unset',
@@ -268,7 +408,7 @@ const Dashboard = () => {
 
                                     <Divider orientation="vertical" variant="middle" flexItem />
 
-                                    <Box>
+                                    <Box className='directory-search'>
                                         <IconButton sx={{
                                             '&:hover, &:focus': {
                                                 bgcolor: 'unset',
@@ -285,7 +425,7 @@ const Dashboard = () => {
                                     </Box>
 
                                     <Divider orientation="vertical" variant="middle" flexItem />
-                                    <Box>
+                                    <Box className='cross-road'>
                                         <IconButton sx={{
                                             '&:hover, &:focus': {
                                                 bgcolor: 'unset',
@@ -321,6 +461,13 @@ const Dashboard = () => {
                 height={height}
                 run={new Date(userDetails.date_of_birth).getMonth()===new Date().getMonth()&& new Date(userDetails.date_of_birth).getDate()===new Date().getDate()}
             />
+             <Steps
+            enabled={stepsEnabled}
+            steps={steps}
+            initialStep={notice.length===0?1:0}
+            onExit={onExit}          
+            options={{ doneLabel: 'Done', exitOnOverlayClick: false,exitOnEsc:false }}
+        />      
 
         </>
 

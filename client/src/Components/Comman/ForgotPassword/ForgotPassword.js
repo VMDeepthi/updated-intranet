@@ -171,7 +171,7 @@ function ForgotPassword() {
   }, [clientOtp, otp])
 
 
-  const ResetView = useMemo(() => {
+  const ResetView =() => {
 
     const handleResetPassword = (e) => {
       e.preventDefault()
@@ -294,11 +294,11 @@ function ForgotPassword() {
       </Paper>
       </Fade>
     )
-  }, [showPassword, password,activeView,email,navigate])
+  }
 
 
   //views
-  const views = [ForgotPassView(), OtpView, ResetView]
+  const views = [ForgotPassView(), OtpView, ResetView()]
 
   return (
     <>

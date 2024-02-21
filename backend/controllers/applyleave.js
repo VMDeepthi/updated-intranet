@@ -1,6 +1,6 @@
 import db from "../config/connectiondb.js"
 import { v4 as uuidv4 } from 'uuid';
-import transporter from "../config/emailconfig.js";
+import {transporter} from "../config/emailconfig.js";
 import 'dotenv/config'
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt"
@@ -66,8 +66,8 @@ export const applyforleave = (req, res) => {
 
         else {
             if (checkres.length === 0) {
-                const q = `insert into applyleaves values(?)`
-                const v = [[applicationId, mail_approved_by, balance_leaves, cc_mails, leave_type, leave_options, from_date, to_date, leave_dates, half_day, total_leaves, reason, 'pending', applicant_emp_id, applicant_name, applicant_email]]
+                const q = `insert into applyleaves(id,mail_approved_by, cc_mail, leave_type, leave_option, from_date, to_date, selected_dates, half_day, total_leaves, reason, status, emp_id, applicant_name, applicant_email) values(?)`
+                const v = [[applicationId, mail_approved_by, cc_mails, leave_type, leave_options, from_date, to_date, leave_dates, half_day, total_leaves, reason, 'pending', applicant_emp_id, applicant_name, applicant_email]]
                 try {
                     await db.promise().query(q, v)
                     const mailOptions = {
@@ -87,8 +87,8 @@ export const applyforleave = (req, res) => {
                             leave_option: leave_options,
                             selected_dates: selected_dates !== '' ? selected_dates : 'NA',
                             half_day: half_day !== '' ? half_day : 'NA',
-                            approve_request: `http://192.168.30.93:3000/reportingheadlogin/application/approve?id=${applicationId}`,
-                            deny_request: `http://192.168.30.93:3000/reportingheadlogin/application/deny?id=${applicationId}`
+                            approve_request: `http://localhost:3000/reportingheadlogin/application/approve?id=${applicationId}`,
+                            deny_request: `http://localhost:3000/reportingheadlogin/application/deny?id=${applicationId}`
                         }
                     }
 
@@ -101,7 +101,8 @@ export const applyforleave = (req, res) => {
                     })
 
                 }
-                catch {
+                catch(err) {
+                    console.log(err)
                     return res.status(500).json('error occured!')
                 }
             }
@@ -690,7 +691,7 @@ export const cancelapplication = async (req, res) => {
                             leave_option: leave_options,
                             selected_dates: selected_dates !== '' ? selected_dates : 'NA',
                             half_day: half_day !== '' ? half_day : 'NA',
-                            cancel_request: `http://192.168.30.93:3000/reportingheadlogin/application/cancel?id=${id}`
+                            cancel_request: `http://localhost:3000/reportingheadlogin/application/cancel?id=${id}`
                         }
                     }
 
@@ -718,17 +719,17 @@ export const cancelapplication = async (req, res) => {
 
 export const getbalanceleaves = (req, res) => {
     const { emp_id } = req.body
-    const q = `select total_leaves from balanceleaves where emp_id=? order by id desc limit 1 `
+    const q = `select * from balanceleaves where emp_id=? order by id desc; `
     const v = [emp_id]
     db.query(q, v, (err, result) => {
         if (err) return res.status(500).json('error occured!')
         else {
             console.log('balence', result)
             if (result.length == 0) {
-                return res.status(200).json(0)
+                return res.status(200).json({balanceSheet:[],totalLeaves:0})
             }
             else {
-                return res.status(200).json(result[0].total_leaves)
+                return res.status(200).json({balanceSheet:result,totalLeaves:result[0].total_leaves})
             }
         }
     })
@@ -758,6 +759,21 @@ export const historylogapplication = (req, res) => {
         }
     })
     //res.send('ok')
+}
+
+export const searchapplication = (req, res) =>{
+    const {applicationId} = req.body
+    const searchLogQuery = `select * from applyleaves where id=?`
+    const searchLogValues = [applicationId]
+    db.query(searchLogQuery, searchLogValues, (err, result) => {
+        if (err) return res.status(500).json('error occured!')
+        else {
+            console.log(result)
+            return res.status(200).json(result)
+
+        }
+    })
+
 }
 
 

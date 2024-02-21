@@ -40,7 +40,7 @@ function TeamsSection() {
   }, [])
 
   const handleExpand = (company) => {
-    //console.log(company, expandedCompany)
+    console.log('expand',company, expandedCompany)
     setCompanyPageData(Array.from(new Set(companyPages.filter(data => data.company_name === company).map(d => d.company_pagename))))
     setExpandedCompany(expandedCompany === company ? '' : company);
 
@@ -71,7 +71,7 @@ function TeamsSection() {
   return (
     <>
       <Box sx={{ height: '100vh', width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-        {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
+        {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}>
           <div
             style={{

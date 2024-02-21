@@ -3,6 +3,8 @@ import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom'
 import Login from './Components/Comman/Login/Login'
 import Dashboard from './Components/Comman/DashBoard/DashBoard'
 
+
+
 import AddCompany from './Components/Admin/CompanyManagment/AddCompany'
 import ViewCompany from './Components/Admin/CompanyManagment/ViewCompany'
 import AddCompanyPages from './Components/Admin/CompanyPagesManagement/AddCompanyPages'
@@ -38,6 +40,10 @@ import HistoryLog from './Components/Comman/HistoryLog/HistoryLog'
 import ReportingStructure from './Components/Comman/ReportingStrucure/ReportingStructure'
 import BalanceLeaves from './Components/Comman/BalanceLeaves/BalanceLeaves'
 import HistoryLogAdmin from './Components/Admin/LeaveManagement/HistoryLogAdmin'
+
+import ManageBalanceLeaves from './Components/Admin/LeaveManagement/ManageBalanceLeaves'
+import UploadGallary from './Components/Admin/ManageOfficeGallary/UploadGallary'
+import ViewGallery from './Components/Admin/ManageOfficeGallary/ViewGallery'
 
 export default function App() {
   //console.log(useContext(UserContext))
@@ -80,6 +86,9 @@ export default function App() {
             <Route path='/createreportingstructure' element={<AdminProtectedRoute component={<CreateReportingStructure />} />} />
             <Route path='/viewreportingstructure' element={<AdminProtectedRoute component={<ViewReportingStructure />} />} />
             <Route path='/historylog-admin' element={<AdminProtectedRoute component={<HistoryLogAdmin />} />} />
+            <Route path='/manage-balance-leaves' element={<AdminProtectedRoute component={<ManageBalanceLeaves />} />} />
+            <Route path='/upload-gallery' element={<AdminProtectedRoute component={<UploadGallary />} />} />
+            <Route path='/view-gallery' element={<AdminProtectedRoute component={<ViewGallery />} />} />
 
             {/*----------------------------USER------------------------------------------------------------------------------------ */}
 

@@ -5,7 +5,7 @@ import axios from 'axios'
 import {toast } from 'react-toastify';
 import {phone} from 'phone';
 
-function AddComapny() {
+function AddCompany() {
   const [noError, setNoError] = useState(false)
   const [addCompData, setAddCompData] = useState({
     companyName:'',
@@ -216,4 +216,4 @@ function AddComapny() {
   )
 }
 
-export default AddComapny
+export default AddCompany

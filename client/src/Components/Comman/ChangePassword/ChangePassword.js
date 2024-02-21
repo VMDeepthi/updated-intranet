@@ -122,7 +122,7 @@ function ChangePassword() {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
 
-            {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
+            {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
 
             <Paper elevation={10} sx={{ p: 4, mt: 4, maxWidth: 400, margin: '0 auto' }}>
                 <Typography textAlign={'center'} variant="h5" component="div" sx={{ mb: 2 }}>

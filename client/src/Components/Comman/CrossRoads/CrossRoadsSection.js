@@ -5,6 +5,7 @@ import AdminNavBar from '../NavBar/AdminNavBar'
 import UserNavBar from '../NavBar/UserNavBar'
 import TimeZone from './TimeZone'
 import BirthDayCalender from './BirthDayCalender'
+import OfficeGallery from '../OfficeGallery'
 
 
 function CrossRoadsSection() {
@@ -14,7 +15,7 @@ function CrossRoadsSection() {
     return (
         <>
             <Box sx={{ height: 'auto', width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
+                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{
@@ -28,13 +29,12 @@ function CrossRoadsSection() {
                             spacing={2}
 
                         >
-                            <Grid item xs={0} sm={9} lg={7}>
-
-                            </Grid>
-                            <Grid item xs={12} sm={3} lg={5}>
+                            
+                            <Grid item xs={12} sm={3} lg={12} sx={{position:'sticky',top:0}}>
                                 <Paper >
-                                    <Tabs value={section} onChange={(e, new_value) => setSection(new_value)} variant='fullWidth' centered  >
+                                    <Tabs  sx={{position:'sticky',top:0,}} value={section} onChange={(e, new_value) => setSection(new_value)} variant='fullWidth' centered  >
                                         <Tab label="Birthday Calender 🎂" />
+                                        <Tab label="Office Gallery 🖼️" />
                                         <Tab label="Time Zones 🕒" />
 
                                     </Tabs>
@@ -43,7 +43,7 @@ function CrossRoadsSection() {
                             </Grid>
                             <Grid item xs={12} lg={12}>
                                 <Box >
-                                    {section === 0 ? <BirthDayCalender /> : section === 1 ? <TimeZone /> : null}
+                                    {section === 0 ? <BirthDayCalender /> : section === 1 ?<OfficeGallery />:section===2? <TimeZone /> : null}
 
                                 </Box>
                                

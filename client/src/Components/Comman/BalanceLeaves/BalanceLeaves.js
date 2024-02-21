@@ -1,5 +1,5 @@
 import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material'
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import AdminNavBar from '../NavBar/AdminNavBar'
 import UserNavBar from '../NavBar/UserNavBar'
 import UserContext from '../../context/UserContext'
@@ -222,8 +222,12 @@ function BalanceLeaves() {
 
         const { month, year } = searchSelection
         const today = new Date()
-        if (today.getMonth() === Number(month) && today.getFullYear() === year) {
+        //today<new Date(year,month,26)
+        console.log(month,year)
+        if (today<new Date(year,month,26)) {
+            
             setDisplayData(true)
+            setAttendanceData([])
         }
         else {
             const sat = [];   //Saturdays
@@ -233,15 +237,14 @@ function BalanceLeaves() {
             let startDate = from_date
             let totalDays = 0
             while (startDate <= to_date) {
-                const newDate = new Date(startDate)
-                startDate = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate() + 1).toLocaleString('en-CA').slice(0, 10)
-                if (newDate.getDay() === 0) {   //if Sunday
-                    sun.push(newDate.toLocaleString('en-CA').slice(0, 10))
-                }
-                if (newDate.getDay() === 6) {   //if Saturday
-                    sat.push(newDate.toLocaleString('en-CA').slice(0, 10));
-                }
-                ////console.log('st_date', startDate)
+                if (startDate.getDay() === 0) { // if Sunday
+                    sun.push(startDate.toLocaleString('en-CA').slice(0, 10));
+                  }
+                  if (startDate.getDay() === 6) { // if Saturday
+                    sat.push(startDate.toLocaleString('en-CA').slice(0, 10));
+                  }
+            
+                  startDate.setDate(startDate.getDate() + 1);
                 totalDays = totalDays + 1
 
             }
@@ -258,7 +261,7 @@ function BalanceLeaves() {
                         setAttendanceData(res.data)
                         const present = res.data.filter(data => data.totalhrs !== 0)
                         const leaves = res.data.filter(data => (data.updated_status === 'SL' || data.updated_status === 'CL'))
-                        const abbsent = res.data.filter(data => (!sat.includes(data.pdate) && !sun.includes(data.pdate) && ((data.status === 'AA' && data.updated_status === 'AA') || (data.status === 'HH' && data.updated_status === 'HH'))))
+                        const abbsent = res.data.filter(data => (!sat.includes(data.pdate) && !sun.includes(data.pdate) && (( data.updated_status === 'AA') || (data.status === 'HH' && data.updated_status === 'HH'))))
                         //const abbsent = res.data.filter(data => data.totalhrs === 0)
                         //console.log(res.data.length, present.length, leaves, abbsent.length)
                         setLoader(false)
@@ -321,7 +324,7 @@ function BalanceLeaves() {
     return (
         <>
             <Box sx={{ height: { xs: 'auto', lg: '100%' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}  >
-                {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
+                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}  >
                     <div
 
@@ -463,8 +466,8 @@ function BalanceLeaves() {
                                                                                 <Column field="pdate" header="Date"></Column>
                                                                                 <Column field="firstin" header="First In"></Column>
                                                                                 <Column field="lastout" header="Last Out"></Column>
-                                                                                <Column field="status" header="status"></Column>
-                                                                                <Column field="totalhrs" header="Total hrs"></Column>
+                                                                                <Column field="status" header="Status"></Column>
+                                                                                <Column field="totalhrs" header="Total Hrs"></Column>
                                                                                 <Column field="updated_status" header="Updated Status"></Column>
 
                                                                             </DataTable>

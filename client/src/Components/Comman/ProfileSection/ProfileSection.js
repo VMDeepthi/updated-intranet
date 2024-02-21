@@ -123,7 +123,7 @@ function ProfileSection() {
         <>
             <Box sx={{ display: 'flex' }}>
 
-                {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
+                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
                 <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8, }}>
 
                     <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex' }}>

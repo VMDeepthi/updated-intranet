@@ -1,9 +1,10 @@
 import React, {  useEffect, useState } from 'react'
-import { Avatar, Button, Container, FormControl,  InputLabel, MenuItem, OutlinedInput, Select, Stack,Typography } from '@mui/material'
+import { Avatar, Button, Container, FormControl,  IconButton,  InputLabel, MenuItem, OutlinedInput, Select, Stack,Typography } from '@mui/material'
 import styled from 'styled-components'
 
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { Delete } from '@mui/icons-material';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -32,10 +33,25 @@ function PersonalInfo(props) {
         country:userDetails.country?userDetails.country:'',
         about_yourself:userDetails.about_yourself?userDetails.about_yourself:''
     })
+    const[prevData, setPrevData] = useState(userData)
     
     
     useEffect(()=>{
         setUserData(
+            {
+                profile_pic:userDetails.profile_pic?userDetails.profile_pic:'',
+                first_name:userDetails.first_name?userDetails.first_name:'',
+                last_name:userDetails.last_name?userDetails.last_name:'',
+                email:userDetails.email?userDetails.email:'',
+                company_name:userDetails.company_name?userDetails.company_name:'',
+                designation:userDetails.designation?userDetails.designation:'',
+                gender:userDetails.gender?userDetails.gender:'',
+                date_of_birth:userDetails.date_of_birth?new Date(userDetails.date_of_birth).toLocaleString('en-CA').slice(0,10):'',
+                country:userDetails.country?userDetails.country:'',
+                about_yourself:userDetails.about_yourself?userDetails.about_yourself:''
+            }
+        )
+        setPrevData(
             {
                 profile_pic:userDetails.profile_pic?userDetails.profile_pic:'',
                 first_name:userDetails.first_name?userDetails.first_name:'',
@@ -148,28 +164,33 @@ function PersonalInfo(props) {
     const handleUpdateProfile =(e)=>{
         e.preventDefault()
         console.log({...userDetails,...userData})
-        toast.promise(
-            axios.post(`/api/updatepersonalinfo`, {...userData,emp_id:userDetails.employee_id}),
-            {
-                pending: {
-                    render() {
-                        return('updating personal info');
+        if(JSON.stringify(userData)!==JSON.stringify(prevData)){
+            toast.promise(
+                axios.post(`/api/updatepersonalinfo`, {...userData,emp_id:userDetails.employee_id}),
+                {
+                    pending: {
+                        render() {
+                            return('updating personal info');
+                        },
                     },
-                },
-                success: {
-                    render(res) {
-                        //setToggleCleared(!toggleCleared);
-                        handleUserDetails({...userDetails,...userData})
-                        return(res.data.data)
+                    success: {
+                        render(res) {
+                            //setToggleCleared(!toggleCleared);
+                            handleUserDetails({...userDetails,...userData})
+                            setPrevData(userData)
+                            return(res.data.data)
+                        },
                     },
-                },
-                error: {
-                    render(err) {
-                        return(err.data.response.data)
+                    error: {
+                        render(err) {
+                            return(err.data.response.data)
+                        },
                     },
-                },
-            }
-        );
+                }
+            );
+
+        }
+        
     }
     return (
         <>
@@ -178,7 +199,19 @@ function PersonalInfo(props) {
                     {
                         userData.profile_pic?<Avatar src={userData.profile_pic} sx={{ width: 46, height: 46, }} />:<Avatar sx={{ width: 46, height: 46, }} />
                     }
+                    <Stack direction={'row'} spacing={0.5}>
                     <Button type="file" size="small" component="label"  > Upload Profile <VisuallyHiddenInput type="file" onInput={handleCapture} accept="image/png, image/jpeg" /> </Button>
+                        {
+                             userData.profile_pic?
+                             <IconButton size='small' color='error' onClick={()=>setUserData({...userData,profile_pic:''})}>
+                            <Delete fontSize='10px' />
+                        </IconButton>
+                        :null
+
+                        }
+                        
+                    </Stack>
+                   
 
                 </Container>
 

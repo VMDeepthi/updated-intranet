@@ -178,7 +178,7 @@ const BirthDayList = (props) => {
     }, [open,userDetails,selectedUser,birthdayMsg,subject])
     return (
         <>
-            <Card sx={{ display: 'flex', flexDirection: 'column', height: 390, p: 0.1 }} >
+            <Card className='birthday-list' sx={{ display: 'flex', flexDirection: 'column', height: 390, p: 0.1 }} >
            
                 <Stack  direction={'row'} justifyContent={'flex-end'} alignItems={'flex-start'} spacing={5}>
                     <Box sx={{display:'flex',flexDirection:'row',p:0.5 }}>
@@ -187,8 +187,8 @@ const BirthDayList = (props) => {
                 </Typography>
 
                     </Box>
-                    <Box sx={{display:'flex',flexDirection:'row', justifyContent:'flex-end', alignItems:'flex-start',mb:1}}>
-                    <Link style={{fontSize:'13px',padding:'2px',color:'#1B4688'}} to={'/crossroads'}>
+                    <Box className='view-link-birthdays'  sx={{display:'flex',flexDirection:'row', justifyContent:'flex-end', alignItems:'flex-start',mb:1}}>
+                    <Link  style={{fontSize:'13px',padding:'2px',color:'#1B4688'}} to={'/crossroads'}>
                         view more
                     </Link>
                     </Box>

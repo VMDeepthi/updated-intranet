@@ -155,6 +155,8 @@ const PaySlips = () => {
 
   const exportPDF = async () => {
     const doc = new jsPDF({ orientation: "vertical" });
+    //doc.addImage()
+    doc.addImage("https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png", "JPEG", 150, 0, 50, 10, );
     doc.autoTable({
       html: "#payslip-table",
       theme: "grid",
@@ -164,7 +166,7 @@ const PaySlips = () => {
       //   // fillColor: [255, 0, 0],
       // },
       // columnStyles: {"Total Salary": {halign: 'center'}, "Deductions": {halign: 'center'}},
-      margin: {left: 30, right: 30}
+      margin: {left: 30, right: 30,top:30}
     });
     doc.save("payslip.pdf");
   };

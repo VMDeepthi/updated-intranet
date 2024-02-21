@@ -7,7 +7,7 @@ import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import DataTable from 'react-data-table-component'
 import dayjs from 'dayjs'
-import { Cancel } from '@mui/icons-material'
+
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
@@ -36,11 +36,19 @@ function HistoryLogAdmin() {
     const [dateError, setDateError] = useState(false)
     const [historyLogData, setHistoryLogData] = useState([])
     const [showRecord, setShowRecord] = useState(false)
+    const [applicationId, setApplicationId] = useState('')
 
 
 
 
     const columns = [
+        {
+            name: 'Employee Id',
+            selector: (row) => row.emp_id,
+            center: true,
+            
+
+        },
         {
             name: 'From Date',
             selector: (row, index) => {
@@ -99,79 +107,7 @@ function HistoryLogAdmin() {
             center: true,
             
         },
-        // {
-        //     name: 'Action',
-        //     cell: (row) => {
-        //         let isDisable = false;
-        //         if (row.status === 'denied' || row.status === 'cancelled') {
-        //             isDisable = true
-        //         }
-        //         if (row.total_leaves === 0.5 && row.status !== 'denied' && row.status !== 'cancelled') {
-        //             const day = new Date(row.half_day)
-        //             const today = new Date()
-        //             if (day.getDate() > 26) {
-        //                 const expiry = new Date(day.getFullYear(), day.getMonth() + 1, 25)
-        //                 if (today < expiry) {
-        //                     isDisable = false
-        //                 }
-        //                 else {
-        //                     isDisable = true
-        //                 }
-
-        //             }
-        //             else {
-        //                 const expiry = new Date(day.getFullYear(), day.getMonth(), 25)
-        //                 if (today < expiry) {
-        //                     isDisable = false
-        //                 }
-        //                 else {
-        //                     isDisable = true
-        //                 }
-
-        //             }
-        //         }
-        //         else if (row.total_leaves > 0.5 && row.status !== 'denied' && row.status !== 'cancelled') {
-        //             console.log(row.total_leaves, row.from_date)
-        //             const day = new Date(row.from_date)
-        //             const today = new Date()
-        //             if (day.getDate() > 26) {
-        //                 const expiry = new Date(day.getFullYear(), day.getMonth() + 1, 25)
-        //                 console.log('check cl', today < expiry)
-        //                 if (today < expiry) {
-        //                     isDisable = false
-        //                 }
-        //                 else {
-        //                     isDisable = true
-        //                 }
-
-        //             }
-        //             else {
-        //                 const expiry = new Date(day.getFullYear(), day.getMonth(), 25)
-        //                 console.log('check1 cl', today < expiry)
-        //                 if (today < expiry) {
-        //                     isDisable = false
-        //                 }
-        //                 else {
-        //                     isDisable = true
-        //                 }
-
-        //             }
-
-        //             console.log(day.getDate(), day.getMonth(), today.getDate(), today.getMonth())
-        //         }
-        //         return (
-        //             <Stack display={'flex'} spacing={1} direction={'row'} height={25} width={'80%'} >
-        //                 <Button color='error' endIcon={<Cancel />} sx={{ fontSize: 10 }} variant='outlined' size='small' disabled={isDisable} onClick={() => handleCancelletion(isDisable, row)} >Cancel</Button>
-
-        //             </Stack >
-        //         )
-        //     },
-        //     ignoreRowClick: true,
-        //     maxWidth: '150px',
-        //     center: true,
-
-
-        // },
+        
     ];
 
     const updateSearch = () =>{
@@ -198,38 +134,24 @@ function HistoryLogAdmin() {
 
         
     }
-    // const handleCancelletion = (disabled, row) => {
-    //     console.log(disabled, row)
-    //     if (!disabled) {
-    //         toast.promise(axios.post('/api/cancelapplication', row ),
-    //         {
-    //             pending: {
-    //                 render() {
-    //                     return ('Cancelling Application request')
-    //                 }
-    //             },
-    //             success: {
-    //                 render(res) {
-    //                     updateSearch()
-    //                     return (`${res.data.data} `)
-    //                 }
-    //             },
-    //             error: {
-    //                 render(err) {
-    //                     //console.log(err)
-    //                     return (`${err.data.response.data}`)
-    //                 }
-    //             }
-    //         })
-
-    //     }
-    // }
+    const serachApplication = (e)=>{
+        e.preventDefault()
+        axios.post('/api/searchapplication',{applicationId:applicationId})
+                .then((result) => {
+                    console.log(result.data)
+                    setShowRecord(true)
+                    setHistoryLogData(result.data)
+                })
+                .catch(() => toast.error('unable to fetch logs'))
+        }
+    
+    
 
 
     return (
         <>
             <Box sx={{ height: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
+                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, height: 'auto', backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{
@@ -243,28 +165,40 @@ function HistoryLogAdmin() {
                             <Grid item xs={12} sm={12} lg={10}>
                                 <Paper elevation={10}>
                                     <Container sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                                        <Container sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                                            <Typography variant='p' component={'h5'} color={'red'}  >*Policies.</Typography>
-                                            <Paper elevation={1} sx={{ p: 1, "&:hover": { boxShadow: 8 } }}>
-                                                <Stack spacing={0.3}>
-                                                    <Typography variant='p' component={'h5'} textAlign={'justify'} >* Cancel link would be provided for each leave / permission until month end..</Typography>
-                                                    <Typography variant='p' component={'h5'} textAlign={'justify'} >* Once leaves are updated, cancel link would not be available. They need to approach admin for that.</Typography>
-                                                    <Typography variant='p' component={'h5'} textAlign={'justify'} >* Cancellation requires reporting head approval, if the leave / permission is already approved.</Typography>
+                                        <Container sx={{ display: 'flex', justifyContent: 'center', alignItems:'center', flexDirection: 'column', mt:2 }}>
+                                        <Stack onSubmit={serachApplication} component={'form'} direction={{ xs: 'column', lg: 'row' }} spacing={2} display={'flex'} justifyContent={'center'} width={'100%'} >
+                                            <FormControl fullWidth  variant="outlined">
+                                            <TextField
+                                            type='text'
+                                            label='Appllication Id'
+                                            size='small'
+                                            required
+                                            value={applicationId}
+                                            onChange={e => setApplicationId(e.target.value)}
+                                            />
+
+                                                </FormControl>
+                                                <Box sx={{ display: "flex", justifyContent: 'center', alignItems: "center", height: '100%' }} >
+                                                        <Button type='submit' size='small' color='success' variant='contained'>submit</Button>
+                                                    </Box>
                                                 </Stack>
-                                            </Paper>
+                                            
 
 
                                         </Container>
+                                        <Typography component={'h4'} variant='p' sx={{textAlign:'center',textDecoration:'underline', m:1}}>OR</Typography>
 
 
-                                        <Container component={'form'} onSubmit={handleHistoryLogSearch} sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, justifyContent: 'center', mt: 4, height: '100%', width: '100%', }}>
-                                            <Stack spacing={2}  >
+                                        <Container component={'form'} onSubmit={handleHistoryLogSearch} sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, justifyContent: 'center', height: '100%', width: '100%', }}>
+                                            <Stack spacing={2} width={'100%'}  >
                                             <Stack direction={{ xs: 'column', lg: 'row' }} spacing={2} display={'flex'} justifyContent={'center'} >
-                                            <FormControl  variant="outlined">
+                                            <FormControl fullWidth  variant="outlined">
                                             <TextField
                                             type='number'
                                             label='Employee Id'
                                             size='small'
+                                            required
+                                            inputProps={{min:1}}
                                             value={historyLogSearch.emp_id}
                                             onChange={e => setHistoryLogSearch({ ...historyLogSearch, emp_id: e.target.value })}
                                             />

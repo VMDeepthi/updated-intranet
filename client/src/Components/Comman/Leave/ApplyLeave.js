@@ -43,7 +43,7 @@ function ApplyLeave() {
                     setApplicationForm({
                         reporting_head_name:head.data[0].name,
                         mail_approved_by: head.data[0].email,
-                        balance_leaves: balance.data,
+                        balance_leaves: balance.data.totalLeaves,
                         to_be_approved_leaves: pending.data[0].pending_leaves,
                         cc_mail: '',
                         leave_type: '',
@@ -266,7 +266,7 @@ function ApplyLeave() {
     return (
         <>
             <Box sx={{ height:{xs:'auto',lg:'100vh'} , width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                {userDetails.access === 'admin' ? <AdminNavBar /> : <UserNavBar />}
+                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 },height:'auto', backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{

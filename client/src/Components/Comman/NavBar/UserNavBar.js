@@ -7,14 +7,14 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 // import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
+//import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 // import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+// import MailIcon from '@mui/icons-material/Mail';
+// import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Drawer from '@mui/material/Drawer';
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
@@ -31,14 +31,14 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 //import CssBaseline from '@mui/material/CssBaseline';
 import { useContext, useState } from 'react';
-import { Avatar, Fade } from '@mui/material';
+import { Avatar, Collapse } from '@mui/material';
 //import CompanyManagementPages from '../CompanyPagesManagement/AddCompanyManagementPages';
 
 import UserContext from '../../context/UserContext';
 //import Cookies from 'js-cookie';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { AccountBalanceWallet, AccountBox, ExpandLess, ExpandMore, ForwardToInbox, LockOpen, Logout, WorkHistory, WorkOff } from '@mui/icons-material';
+import { AccountBalanceWallet, AccountBox, AdsClick, ExpandLess, ExpandMore, ForwardToInbox, LockOpen, Logout, WorkHistory, WorkOff } from '@mui/icons-material';
 import { CgListTree } from 'react-icons/cg';
 
 const AppBar = styled(MuiAppBar, {
@@ -49,7 +49,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 // drawer width
-const drawerWidth = 280;
+const drawerWidth = 270;
 
 
 
@@ -61,56 +61,31 @@ export default function UserNavBar(props) {
 
   const navigate = useNavigate()
 
-  const { window } = props;
+  const { window,userIntroTour } = props;
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   const { userDetails } = useContext(UserContext)
+  const [expandedPage, setExpandedPage] = useState('')
 
-  const [openLeavesMenu, setOpenLeavesMenu] = useState(false)
 
-
-  const handleSubMenuOpen = (item) => {
-
-    setDrawerOpen(true)
-    switch (item) {
-      case "leaves":
-        setOpenLeavesMenu(true)
-        break
-
-      default:
-        setDrawerOpen(false)
-
+  const handleExpand = (page) => {
+    //console.log(page,expandedPage)
+    if (!drawerOpen) {
+      setDrawerOpen(true)
     }
+    setExpandedPage(expandedPage === page ? '' : page)
+
   }
+
+
+
 
   const handleDrawerToggle = () => {
     //
-    console.log(drawerOpen)
+    //console.log(drawerOpen)
+    setExpandedPage('')
     setDrawerOpen(!drawerOpen);
   };
 
-
-
-
-
-
-
-
-  // const handleSubMenuClose = (item) => {
-  //   setDrawerOpen(false)
-  //   switch(item){
-  //     case 'company management':
-  //       setOpenCompanyManagementMenu(false)
-  //       break
-  //     case 'company pages management':
-  //       setOpenCompanyPageManagementMenu(false)
-  //       break
-  //     default:
-  //       setDrawerOpen(false)
-
-  //     }
-
-  // }
 
 
   const handleNavigation = (index) => {
@@ -207,6 +182,14 @@ export default function UserNavBar(props) {
         </ListItemIcon>
         Change Password
       </MenuItem>
+      {userIntroTour !== undefined ?
+        <MenuItem onClick={() => userIntroTour()}>
+          <ListItemIcon>
+            <AdsClick fontSize="small" />
+          </ListItemIcon>
+          Intro Tour
+        </MenuItem> : null
+      }
       <MenuItem onClick={handleLogout}>
         <ListItemIcon>
           <Logout fontSize="small" />
@@ -319,6 +302,7 @@ export default function UserNavBar(props) {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="black"
+              className='account-menu'
             >
               {userDetails.profile_pic === '' ? <AccountCircle /> : <Avatar sx={{ width: 24, height: 24 }} src={userDetails.profile_pic} />}
             </IconButton>
@@ -355,21 +339,21 @@ export default function UserNavBar(props) {
         anchor="left"
 
       >
-        <List sx={{ mt: 8 }}>
+        <List sx={{ mt: 8 }}  className='navigation-menu'>
           {['Dashboard', 'Attendance'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
               <ListItemButton
                 sx={{
-                  minHeight: 48,
-                  justifyContent: 'initial',
-                  px: 2.5,
+                  minHeight: 45,
+                  justifyContent: 'center',
+                  px: 1.5,
                 }}
                 title={text}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: 3,
+                    mr: 'auto',
                     justifyContent: 'center',
                   }}
                 >
@@ -380,13 +364,13 @@ export default function UserNavBar(props) {
             </ListItem>
           ))}
           {/*----------------------------------Leaves---------------------------*/}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleSubMenuOpen('leaves')}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Leaves')}>
             <ListItemButton
               title={'Leaves'}
               sx={{
-                minHeight: 48,
-                justifyContent: 'initial',
-                px: 2.5,
+                minHeight: 45,
+                justifyContent: 'center',
+                px: 1.5,
               }}
             >
               <ListItemIcon
@@ -400,7 +384,7 @@ export default function UserNavBar(props) {
                 <WorkOff />
 
               </ListItemIcon>
-              {openLeavesMenu ? <ExpandLess /> : <ExpandMore />}
+              {expandedPage==='Leaves' ? <ExpandLess /> : <ExpandMore />}
 
             </ListItemButton>
           </ListItem>
@@ -408,9 +392,9 @@ export default function UserNavBar(props) {
             <ListItemButton
               title={'History Log for all Application'}
               sx={{
-                minHeight: 48,
-                justifyContent: 'initial',
-                px: 2.5,
+                minHeight: 45,
+                justifyContent: 'center',
+                px: 1.5,
               }}
             >
               <ListItemIcon
@@ -418,7 +402,7 @@ export default function UserNavBar(props) {
                   minWidth: 0,
                   mr: 'auto',
                   justifyContent: 'center',
-                  alignItems: 'center'
+                 
                 }}
               >
                 <WorkHistory />
@@ -434,9 +418,9 @@ export default function UserNavBar(props) {
             <ListItemButton
               title={'View Reporting Structure'}
               sx={{
-                minHeight: 48,
-                justifyContent: 'initial',
-                px: 2.5,
+                minHeight: 45,
+                justifyContent: 'center',
+                px: 1.5,
               }}
             >
               <ListItemIcon
@@ -479,9 +463,9 @@ export default function UserNavBar(props) {
             <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
               <ListItemButton
                 sx={{
-                  minHeight: 48,
+                  minHeight: 45,
                   justifyContent: 'center',
-                  px: 2.5,
+                  px: 1.5,
                 }}
               >
                 <ListItemIcon
@@ -493,45 +477,47 @@ export default function UserNavBar(props) {
                 >
                   {iconList[index]}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={<Typography sx={{ fontSize: 15 }}>{text}</Typography>} />
               </ListItemButton>
             </ListItem>
           ))}
           {/*--------------------------------------Leaves----------------------------------*/}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => setOpenLeavesMenu(!openLeavesMenu)} >
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Leaves')} >
             <ListItemButton
               sx={{
-                minHeight: 48,
+                minHeight: 45,
                 justifyContent: 'center',
-                px: 2.5,
+                px: 1.5,
               }}
             >
               <ListItemIcon
                 sx={{
                   minWidth: 0,
                   mr: 3,
-                  justifyContent: 'initial',
+                  justifyContent: 'center',
                   alignItems: 'center'
                 }}
 
               >
                 <WorkOff />
               </ListItemIcon>
-              <ListItemText primary={'Leaves'} />
-              {openLeavesMenu ? <ExpandLess /> : <ExpandMore />}
+              <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Leaves</Typography>} />
+              {expandedPage==='Leaves' ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
+            
 
-            {openLeavesMenu ? <>
-              <Divider />
-              <Fade in={openLeavesMenu} >
+            
+            <Collapse in={expandedPage==='Leaves'} timeout={'auto'} unmountOnExit>
+            
+            <Divider />
                 <List>
 
                   <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/applyleave')}>
                     <ListItemButton
                       sx={{
-                        minHeight: 48,
+                        minHeight: 45,
                         justifyContent: 'center',
-                        px: 2.5,
+                        px: 1.5,
                       }}
                     >
                       <ListItemIcon
@@ -546,16 +532,16 @@ export default function UserNavBar(props) {
                       >
                         <ForwardToInbox />
                       </ListItemIcon>
-                      <ListItemText primary={'Apply Leave'} />
+                      <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Apply Leave</Typography>} />
                     </ListItemButton>
                   </ListItem>
 
                   <ListItem disablePadding sx={{ display: 'flex' }} onClick={() => navigate('/balanceleaves')} >
                     <ListItemButton
                       sx={{
-                        minHeight: 48,
+                        minHeight: 45,
                         justifyContent: 'center',
-                        px: 2.5,
+                        px: 1.5,
                       }}
                     >
                       <ListItemIcon
@@ -570,13 +556,13 @@ export default function UserNavBar(props) {
                       >
                         <AccountBalanceWallet />
                       </ListItemIcon>
-                      <ListItemText primary={'Balance Leaves'} />
+                      <ListItemText  primary={<Typography sx={{ fontSize: 15 }}>Balance Leaves</Typography>} />
                     </ListItemButton>
                   </ListItem>
 
                 </List>
-              </Fade>
-            </> : null}
+
+            </Collapse>
 
           </ListItem>
 
@@ -587,9 +573,9 @@ export default function UserNavBar(props) {
           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog')} >
             <ListItemButton
               sx={{
-                minHeight: 48,
+                minHeight: 45,
                 justifyContent: 'center',
-                px: 2.5,
+                px: 1.5,
               }}
             >
               <ListItemIcon
@@ -601,7 +587,7 @@ export default function UserNavBar(props) {
               >
                 <WorkHistory />
               </ListItemIcon>
-              <ListItemText primary={'History Log for all Application'} />
+              <ListItemText primary={<Typography sx={{ fontSize: 15 }}>History Log for all Application</Typography>} />
             </ListItemButton>
           </ListItem>
 
@@ -609,9 +595,9 @@ export default function UserNavBar(props) {
           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/reportingstructure')} >
             <ListItemButton
               sx={{
-                minHeight: 48,
+                minHeight: 45,
                 justifyContent: 'center',
-                px: 2.5,
+                px: 1.5,
               }}
             >
               <ListItemIcon
@@ -623,7 +609,7 @@ export default function UserNavBar(props) {
               >
                 < CgListTree fontSize={20} />
               </ListItemIcon>
-              <ListItemText primary={'View Reporting Structure'} />
+              <ListItemText primary={ <Typography sx={{ fontSize: 15 }}>View Reporting Structure</Typography>}  />
             </ListItemButton>
           </ListItem>
 

@@ -111,7 +111,7 @@ function UploadAttendance() {
           }
           },
         success:  { render(){
-			setFiles([])
+			//setFiles([])
           return(`${msg} `)
         }
         },

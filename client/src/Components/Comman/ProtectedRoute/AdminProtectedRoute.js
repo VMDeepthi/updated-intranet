@@ -7,32 +7,15 @@ import { useContext,  } from 'react'
 function AdminProtectedRoute(props) {
     const {component} = props
     const{userDetails} = useContext(UserContext)
-    //const {authorized, setAuthorized} = useState(false)
-    console.log('component',userDetails.access)
+    
 
-  //   useEffect(()=>{
-  //   const IsAuth=async()=>{
-  //     try{
-  //       const res=await axios.get('/api/checkuser')
-        
-  //       if(res.request.statusText==='OK'){
-  //         setAuthorized(true)
-  //       }
-  //       else{
-  //         setAuthorized(false)
-  //       }
-  //     }
-  //     catch{
-       
-  //     }
-  //   }
-  //   IsAuth()
-  // })
+    const pageAccessed = ['dashbord', 'addcompany',]
 
     if(Cookies.get('USERAUTHID') === undefined){
         return <Navigate to='/login' />
       }
-    else if(userDetails.access==='admin'){
+    else if(userDetails.user_type==='admin'&& userDetails.department==='management'){
+      console.log('com',component)
       return component
     }
     else{

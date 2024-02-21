@@ -52,8 +52,15 @@ function ReportingHeadLogin() {
         }
         catch (err) {
           console.log(err)
-          setApplicationStatus(err.response.data)
           setLoader(false)
+          if(err.response.data==='Unauthorized Application'){
+            toast.error(err.response.data)
+            setStep(0)
+          }
+          else{
+            setApplicationStatus(err.response.data)
+          }
+          
 
         }
 
