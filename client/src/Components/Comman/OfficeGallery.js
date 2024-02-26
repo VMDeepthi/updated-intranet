@@ -156,8 +156,8 @@ function OfficeGallery() {
                             <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '15px',}}><ArrowBack />Back</Typography>
                         </Button>
                     </Box>
-                    <Box>
-                        <Typography sx={{ fontSize: '20px', fontWeight: 'bold', color: 'orange',border:'1px solid black', p:0.5  }}>Event: {eventTitle}</Typography>
+                    <Box sx={{}}>
+                        <Typography sx={{ fontSize: '18px',  fontWeight: 'bold',backgroundImage: 'linear-gradient(135deg, #E8DBFC 10%, #F8F9D2 100%);', border:'1px solid black', p:0.5  }}>Event: {eventTitle}</Typography>
                     </Box>
 
                 </Container>

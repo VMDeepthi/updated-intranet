@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import {
   Box,
   Button,
@@ -15,7 +16,14 @@ import {
 } from "@mui/material";
 import UserContext from "../../context/UserContext";
 import NavBar from "../../Comman/NavBar/UserNavBar";
-import { AccountBox, UploadFile, Download, Dock } from "@mui/icons-material";
+import {
+  AccountBox,
+  UploadFile,
+  Download,
+  Dock,
+  WidthNormal,
+  LightRounded,
+} from "@mui/icons-material";
 import { styled } from "@mui/system";
 import {
   TablePagination,
@@ -24,7 +32,9 @@ import {
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import AdminNavBar from "../NavBar/AdminNavBar";
+import { toast } from "react-toastify";
 import UserNavBar from "../../Comman/NavBar/UserNavBar";
+import { light } from "@mui/material/styles/createPalette";
 
 const columns = [
   { id: "salary_category", label: "", minWidth: 140 },
@@ -85,39 +95,10 @@ function createData(
   };
 }
 
-const rows = [
-  createData("Basic", 15000.0, 15000.0, "EPF", 1800, 1800),
-  createData("HRA", 6000.0, 6000.0, "ESI", 0.0, 0.0),
-  createData("Conveyance", 1600.0, 1600.0, "SAL PT", 200.0, 200.0),
-  createData("Education Allowance", 0.0, 0.0, "Income Tax", "NA", 0.0),
-  createData("Shift Allowance", 0.0, 0.0, "Others", "NA", 0.0),
-  createData("Medical Allowance", 15000.0, 15000.0, "Meal Vouchers", "NA", 0.0),
-  createData(
-    "Travel Allowance",
-    15000.0,
-    15000.0,
-    "Total Deductions",
-    1800,
-    1800
-  ),
-  createData("LTA", 15000.0, 15000.0, "", "", ""),
-  createData("Others", 15000.0, 15000.0, "", "", ""),
-  createData("Adjustments", "", "", " ", "", ""),
-  createData("Laptop", "NA", 0.0, "", "", ""),
-  createData("Internet", "NA", 0.0, "", "", ""),
-  createData("Client Incentive", "NA", 0.0, "", "", ""),
-  createData("Spl. Incentive", "NA", 0.0, "", "", ""),
-  createData("Bonus", "NA", 0.0, "", "", ""),
-  createData("Awards", "NA", 0.0, "", "", ""),
-  createData("Others", "NA", 0.0, "", "", ""),
-  createData("Gross Salary of The Employee", 22917.0, 22917.0, "", "", ""),
-  createData("", "", "", "", "", ""),
-  createData("Net Salary", "", "", "", "", 20917.0),
-];
-
 const PaySlips = () => {
   const [data, setData] = useState([]);
-  const [date, setDate] = useState({ fromDate: null, toDate: null });
+  const [rows, setRows] = useState([]);
+
   const [loader, setLoader] = useState(false);
 
   const { userDetails } = useContext(UserContext);
@@ -129,17 +110,58 @@ const PaySlips = () => {
   const [showTable, setShowTable] = useState(false);
 
   const handleAddFormDataMonth = (e) => {
-    // console.log(e.target.name);
     setMonth(e.target.value);
-    // setAddCompData({ ...addCompData, [e.target.name]: e.target.value });
   };
 
   const handleAddFormDataYear = (e) => {
-    // console.log(e.target.name);
     setYear(e.target.value);
-    // setAddCompData({ ...addCompData, [e.target.name]: e.target.value });
   };
 
+  const handleUploadFile = async () => {
+    try {
+      if (!month || !year) {
+        toast.warning("Select month and year to upload!");
+        return;
+      }
+      const body = {
+        month: month,
+        year: year,
+        empid: userDetails.employee_id,
+      };
+      axios
+        .post("/api/viewemppayslip", body)
+        .then((res) => {
+          // setData(res.data);
+          populateTable(res.data[0])
+        })
+        .catch(() => {
+          toast.error("unable to fetch data");
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // const getPayslipData = async () => {
+  // };
+
+  const currentYear = new Date().getFullYear();
+  // const years = Array.from(
+  //   { length: currentYear - 2014 + 1 },
+  //   (_, index) => 2014 + index
+    
+  // );
+  // const years = Array.from(
+  //   { length: currentYear - 2014 + 1 },
+  //   (_, index) => 2014 + index
+    
+  // );
+  const years = Array.from(
+    { length: currentYear - 2014 + 1 },
+    (_, index) => 2014 + index
+  );
+  
+  const reversedYears = years.filter(year => year <= 2024).reverse();
   const handleResetForm = () => {
     console.log(month);
     console.log(year);
@@ -153,54 +175,78 @@ const PaySlips = () => {
     setShowTable(true);
   };
 
+  const populateTable = (data) => {
+    const tempRows = []
+
+    tempRows.push(createData("Basic", data.empsalorgbasic, data.empsalbasic, "EPF", data.empsalorgepf, data.empsalepf))
+    tempRows.push(createData("HRA", data.empsalorghra, data.empsalhra, "ESI", data.empsalorgesi, data.empsalesi))
+    tempRows.push(createData("Conveyance", data.empsalorgconv, data.empsalconv, "SAL PT", data.empsalorgpt,data.empsalpt))
+    tempRows.push(createData("Education Allowance",data.empsalorgedu,data.empsaldeductions , "Income Tax", "NA",data.empsalitax))
+    tempRows.push(createData("Shift Allowance", data.empsalorgshift,data.empsalshift, "Others", "NA",data.empsaldebitother))
+    tempRows.push(createData("Medical Allowance",data.empsalmedical,data.empsalmed, "Meal Vouchers", "NA",data.empsalsodexo))
+    tempRows.push(createData("Travel Allowance",data.empsaltravel,data.empsallta,"Total Deductions","",data.empsaldeductions))
+    tempRows.push(createData("LTA", "NA", data["T/H"], "", "", ""))
+    tempRows.push(createData("Others",data.empsalorgsundrycreditothers,data.empsalsundrycreditothers, "", "", ""))
+    tempRows.push(createData("Adjustments", "", "", " ", "", ""))
+    tempRows.push(createData("Laptop", "NA",data.empsallaptop, "", "", ""))
+    tempRows.push(createData("Internet", "NA",data.empsalinternet, "", "", ""))
+    tempRows.push(createData("Client Incentive", "NA",data.empsalclientincentive, "", "", ""))
+    tempRows.push(createData("Spl. Incentive", "NA",data.empsalincentive, "", "", ""))
+    tempRows.push(createData("Bonus", "NA",data.empsalbonus, "", "", ""))
+    tempRows.push(createData("Awards", "NA",data.empsalawards, "", "", ""))
+    tempRows.push(createData("Others", "NA",data.empsalothers, "", "", ""))
+    tempRows.push(createData("Gross Salary of The Employee",data.emporggross,data.empsalgross, "", "", ""))
+    tempRows.push(createData("", "", "", "", "", ""))
+    tempRows.push(createData("Net Salary", "", "", "", "", data.empsalnet))
+    setRows(tempRows)
+  }
+
   const exportPDF = async () => {
     const doc = new jsPDF({ orientation: "vertical" });
-    //doc.addImage()
-    doc.addImage("https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png", "JPEG", 150, 0, 50, 10, );
     doc.autoTable({
       html: "#payslip-table",
       theme: "grid",
-      // styles: {
-      //   tableWidth: "100",
-      //   overflow: "linebreak",
-      //   // fillColor: [255, 0, 0],
-      // },
-      // columnStyles: {"Total Salary": {halign: 'center'}, "Deductions": {halign: 'center'}},
-      margin: {left: 30, right: 30,top:30}
+      margin: { left: 30, right: 30, top: 80 },
+      // padding: {top: 40}
     });
+    let imageHeader = new Image();
+    imageHeader.src = "bcglogo.png";
+    doc.addImage(
+      imageHeader,
+      // param.logo.type,
+      30, // 10 + param.logo.margin.left,
+      18, // currentHeight - 5 + param.logo.margin.top,
+      60, // param.logo.width,
+      12.66 // param.logo.height
+    );
+    doc.setFontSize(10);
+    doc.text(
+      `          Brightcom Group Ltd.
+      Floor: 5, Holiday Inn Express & Suites,
+   Road No: 2, Nanakramguda, Gachibowli,
+      Hyderabad,Telangana - 500032.`,
+      120,
+      20
+    );
+    const empName = userDetails.first_name + " " + userDetails.last_name;
+    const empCode = userDetails.employee_id ;
+    const monthYear = month + " " + year;
+    doc.text(
+      `\nName of the Employee: ${empName} \nEmployee Code: ${empCode} \nDesignation: null \nPF Number: null \nPAN Number: null \n\nPay slip for the month of ${monthYear}`,
+      30,
+      40
+    );
+
     doc.save("payslip.pdf");
   };
 
-  const years = [
-    "2004",
-    "2005",
-    "2006",
-    "2007",
-    "2008",
-    "2009",
-    "2010",
-    "2011",
-    "2012",
-    "2013",
-    "2014",
-    "2015",
-    "2016",
-    "2017",
-    "2018",
-    "2019",
-    "2020",
-    "2021",
-    "2022",
-    "2023",
-  ];
-
   return (
     <>
-      {userDetails.access==='admin'?<AdminNavBar />:<UserNavBar />}
+      {userDetails.access === "admin" ? <AdminNavBar /> : <UserNavBar />}
 
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, ml: { xs: 8 }, mt: { xs: 4, md: 6, lg: 8 }  }}
+        sx={{ flexGrow: 1, p: 3, ml: { xs: 8 }, mt: { xs: 4, md: 6, lg: 8 } }}
       >
         <div
           style={{
@@ -227,13 +273,13 @@ const PaySlips = () => {
                 component={"h5"}
                 m={1}
                 p={1}
-                textAlign={"center"}>
+                textAlign={"center"}
+              >
                 Employee Monthly Salary Details
               </Typography>
               <Paper
                 elevation={5}
                 sx={{
-                  
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "flex-start",
@@ -246,7 +292,7 @@ const PaySlips = () => {
                 <Box
                   component={"form"}
                   onSubmit={handleSubmitCompForm}
-                  sx={{              
+                  sx={{
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "flex-start",
@@ -275,18 +321,18 @@ const PaySlips = () => {
                         required
                         onChange={handleAddFormDataMonth}
                       >
-                        <MenuItem value="january">January</MenuItem>
-                        <MenuItem value="february">February</MenuItem>
-                        <MenuItem value="march">March</MenuItem>
-                        <MenuItem value="april">April</MenuItem>
+                        <MenuItem value="jan">January</MenuItem>
+                        <MenuItem value="feb">February</MenuItem>
+                        <MenuItem value="mar">March</MenuItem>
+                        <MenuItem value="apr">April</MenuItem>
                         <MenuItem value="may">May</MenuItem>
-                        <MenuItem value="june">June</MenuItem>
-                        <MenuItem value="july">July</MenuItem>
-                        <MenuItem value="august">August</MenuItem>
-                        <MenuItem value="september">September</MenuItem>
-                        <MenuItem value="october">October</MenuItem>
-                        <MenuItem value="november">November</MenuItem>
-                        <MenuItem value="december">December</MenuItem>
+                        <MenuItem value="jun">June</MenuItem>
+                        <MenuItem value="jul">July</MenuItem>
+                        <MenuItem value="aug">August</MenuItem>
+                        <MenuItem value="sep">September</MenuItem>
+                        <MenuItem value="oct">October</MenuItem>
+                        <MenuItem value="nov">November</MenuItem>
+                        <MenuItem value="dec">December</MenuItem>
                       </Select>
                     </FormControl>
 
@@ -302,7 +348,7 @@ const PaySlips = () => {
                         required
                         onChange={handleAddFormDataYear}
                       >
-                        {years.map((name, index) => (
+                        {reversedYears.map((name, index) => (
                           <MenuItem key={index} value={name}>
                             {name}
                           </MenuItem>
@@ -310,7 +356,12 @@ const PaySlips = () => {
                       </Select>
                     </FormControl>
 
-                    <Button variant="outlined" color="success" type="submit">
+                    <Button
+                      variant="outlined"
+                      color="success"
+                      type="submit"
+                      onClick={handleUploadFile}
+                    >
                       Display
                     </Button>
                     {showTable ? (
@@ -324,28 +375,54 @@ const PaySlips = () => {
                 </Box>
 
                 {showTable ? (
-                  <Root sx={{ maxWidth: "90%", width: "90%", my: "24px" ,backgroundColor:"#a2deb2"}}>
+                  <Root
+                    sx={{
+                      maxWidth: "90%",
+                      width: "90%",
+                      my: "24px",
+                      backgroundColor: "#a2deb2",
+                    }}
+                  >
                     <table
                       aria-label="custom pagination table"
                       id="payslip-table"
-                      
                     >
                       <tbody>
-                        <tr height="18" >
-                          <th colSpan="3" align="center"  style={{ backgroundColor: "#679e76" }}>
+                        <tr height="18">
+                          <th
+                            colSpan="3"
+                            align="center"
+                            style={{ backgroundColor: "#679e76" }}
+                          >
                             Total Salary
                           </th>
-                          <th colSpan="3" align="center" style={{ backgroundColor: "#679e76" }}>
+                          <th
+                            colSpan="3"
+                            align="center"
+                            style={{ backgroundColor: "#679e76" }}
+                          >
                             Deductions
                           </th>
                         </tr>
                         <tr height="24">
-                          <th style={{ width: 160, backgroundColor: "#679e76" }}></th>
-                          <th style={{ width: 60, backgroundColor: "#679e76" }}>Present</th>
-                          <th style={{ width: 60 , backgroundColor: "#679e76"}}>Actuals</th>
-                          <th style={{ width: 160, backgroundColor: "#679e76" }}></th>
-                          <th style={{ width: 60 , backgroundColor: "#679e76"}}>Present</th>
-                          <th style={{ width: 60 , backgroundColor: "#679e76"}}>Actuals</th>
+                          <th
+                            style={{ width: 160, backgroundColor: "#679e76" }}
+                          ></th>
+                          <th style={{ width: 60, backgroundColor: "#679e76" }}>
+                            Present
+                          </th>
+                          <th style={{ width: 60, backgroundColor: "#679e76" }}>
+                            Actuals
+                          </th>
+                          <th
+                            style={{ width: 160, backgroundColor: "#679e76" }}
+                          ></th>
+                          <th style={{ width: 60, backgroundColor: "#679e76" }}>
+                            Present
+                          </th>
+                          <th style={{ width: 60, backgroundColor: "#679e76" }}>
+                            Actuals
+                          </th>
                         </tr>
                         {rows.map((row) => (
                           <tr height="2" key={row.salary_category}>

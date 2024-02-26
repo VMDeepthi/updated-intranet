@@ -30,9 +30,9 @@ function CrossRoadsSection() {
 
                         >
                             
-                            <Grid item xs={12} sm={3} lg={12} sx={{position:'sticky',top:0}}>
+                            <Grid item xs={12} sm={3} lg={12} sx={{ position: 'sticky', top: '50px', zIndex: 9 }}>
                                 <Paper >
-                                    <Tabs  sx={{position:'sticky',top:0,}} value={section} onChange={(e, new_value) => setSection(new_value)} variant='fullWidth' centered  >
+                                    <Tabs   value={section} onChange={(e, new_value) => setSection(new_value)} variant='fullWidth' centered  >
                                         <Tab label="Birthday Calender 🎂" />
                                         <Tab label="Office Gallery 🖼️" />
                                         <Tab label="Time Zones 🕒" />

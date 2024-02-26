@@ -10,6 +10,7 @@ import FunInfo from './FunInfo'
 import TimeZone from './TimezoneInfo'
 import axios from 'axios'
 import Loader from '../Loader'
+import ViewExperience from './ViewExperience'
 
 
 function ProfileSection() {
@@ -53,6 +54,7 @@ function ProfileSection() {
         gtalk: ''
 
     })
+    const [experienceData, setExperienceData] = useState([]);
     const [loader, setLoader] = useState(true)
     const { userDetails, handleUserDetails } = useContext(UserContext)
 
@@ -90,6 +92,11 @@ function ProfileSection() {
                     if (contactData.data.length !== 0) {
                         setContactInfo(contactData.data[0])
 
+                    }
+                    const experienceData = await axios.post('/api/viewexperience', { emp_id: userDetails.employee_id });
+                    if (experienceData.data.length !== 0) {
+                        setExperienceData(experienceData.data[0]);
+                        console.log('Experience Data:', experienceData);
                     }
 
                     setLoader(false)
@@ -136,13 +143,14 @@ function ProfileSection() {
                                         <Tab label="Family Info" />
                                         <Tab label="Fun Info" />
                                         <Tab label="Time Zone Info" />
+                                        <Tab label="Experience" />
                                     </Tabs>
 
                                 </Box>
                             </Card>
                             <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
                                 <Paper elevation={5} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: { xs: '100%', lg: '43ch' }, width: '80%', p: 1 }}>
-                                    {section === 0 ? <PersonalInfo userDetails={userDetails} handleUserDetails={handleUserDetails} /> : section === 1 ? <ContactInfo contactInfo={contactInfo} setContactInfo={setContactInfo} /> : section === 2 ? <FamilyInfo familyData={familyData} setFamilyData={setFamilyData} /> : section === 3 ? <FunInfo funInfo={funInfo} setFunInfo={setFunInfo} /> : section === 4 ? <TimeZone timezoneInfo={timezone} setTimeZoneInfo={setTimezone} /> : <></>}
+                                    {section === 0 ? <PersonalInfo userDetails={userDetails} handleUserDetails={handleUserDetails} /> : section === 1 ? <ContactInfo contactInfo={contactInfo} setContactInfo={setContactInfo} /> : section === 2 ? <FamilyInfo familyData={familyData} setFamilyData={setFamilyData} /> : section === 3 ? <FunInfo funInfo={funInfo} setFunInfo={setFunInfo} /> : section === 4 ? <TimeZone timezoneInfo={timezone} setTimeZoneInfo={setTimezone} /> :section === 5 ? <ViewExperience experience={experienceData} setExperience={setExperienceData}/>: <></>}
                                 </Paper>
                             </Box>
 

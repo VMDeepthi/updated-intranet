@@ -269,6 +269,8 @@ function ViewGallery() {
 
         const handleEditDialogClose = () => {
             setEditDialogOpen(false);
+            setEditGallery({event_title:'',event_date:''})
+            setFiles([])
             // setEditAnnouncement({
             //     id:'',
             //     company_name:'',
@@ -377,6 +379,7 @@ function ViewGallery() {
                                                     value={editGallery.event_title}
                                                     required={true}
                                                     type={'text'}
+                                                    InputLabelProps={{ shrink: true,}}
                                                     label="Event Title"
                                                     placeholder='Enter Event Title'
                                                     onChange={(event) => setEditGallery({ ...editGallery, event_title: event.target.value })}
@@ -429,7 +432,7 @@ function ViewGallery() {
                                                     {files.map((file, index) => (
                                                         <Grid item xs={6} sm={6} md={4} lg={2} key={index} >
 
-                                                            <Paper elevation={1} sx={{ width: '100%', height: '80px', margin: 'auto', padding: { xs: 2, md: 3, lg: 1 }, backgroundImage: `${file.name === undefined ? `url(${process.env.REACT_APP_BACKEND_SERVER + file.preview.replace(/\\/g, '/')})` : `url(${file.preview})`}`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: '100%', boxSizing: 'border-box', }}>
+                                                            <Paper elevation={1} sx={{ width: '100%', height: '80px', margin: 'auto', padding: { xs: 2, md: 3, lg: 1 }, backgroundImage: `${file.name === undefined ? `url(${process.env.REACT_APP_BACKEND_SERVER + file.preview.replace(/ /g,'%20').replace(/\\/g, '/')})` : `url(${file.preview})`}`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: '100%', boxSizing: 'border-box', }}>
 
 
                                                                 <IconButton
@@ -442,9 +445,9 @@ function ViewGallery() {
                                                                     size='small'
 
                                                                     //sx={{ color: 'red', transform: 'translate(-60%, -60%)', zIndex: 1, position: 'absolute' }}
-                                                                    sx={{ position: 'sticky', transform: 'translate(-70%, -70%)', color: 'red', zIndex: 1 }}
+                                                                    sx={{ position: 'sticky', transform: 'translate(-70%, -70%)', color: 'red',zIndex: 1 }}
                                                                 >
-                                                                    <Cancel fontSize='5px' />
+                                                                    <Cancel fontSize='5px'  />
                                                                 </IconButton>
                                                             </Paper>
                                                         </Grid>
@@ -661,48 +664,7 @@ function ViewGallery() {
                                         />
                                     </Card>
                                 </div>
-                                {/* {selectedImage ? (
-                                    <OfficegallaryImages />
-                                ) : (
-
-                                    <Box sx={{ display: 'flex', width: '100%', height: 'auto', justifyContent: 'center', }}>
-                                        <ImageList sx={{width:'100%',height:{lg:470,xs:'80vh'}}} >
-                                            <ImageListItem cols={matches?2:3} >
-
-                                            </ImageListItem>
-                                            {imageData.map((item) => (
-                                                // <Link to="/office-gallery" key={item.img}>
-                                                <ImageListItem key={item.img} style={{ width:'auto', height: '230px' }}  >
-                                                    <img
-                                                        style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                                                        srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                                                        src={`${item.img}?w=248&fit=crop&auto=format`}
-                                                        alt={item.title}
-                                                        loading="lazy"
-                                                    />
-                                                    <ImageListItemBar
-                                                        title={item.title}
-                                                        subtitle={item.author}
-                                                        actionIcon={
-                                                            <IconButton
-                                                                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                                                aria-label={`info about ${item.title}`}
-                                                            >
-                                                                <InfoIcon />
-                                                            </IconButton>
-                                                        }
-                                                    />
-                                                </ImageListItem>
-                                                // </Link>
-                                            ))}
-                                        </ImageList>
-
-
-
-                                    </Box>
-                                )} */}
-
-
+                                
                             </Grid>
                         </Grid>
                     </div>

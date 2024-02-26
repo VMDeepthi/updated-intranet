@@ -107,7 +107,7 @@ export const viewgallery = (req, res) => {
 export const getgalleryimages = (req, res) => {
     const { id } = req.body
     //console.log(req.body)
-    const get_gallery_images_query = `select * from officegalleryimages where gallery_id=? limit 1`
+    const get_gallery_images_query = `select * from officegalleryimages where gallery_id=?`
     db.query(get_gallery_images_query, [id], (err, result) => {
         if (err) return res.status(500).json('error occured!')
         else {
