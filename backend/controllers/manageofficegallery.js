@@ -1,10 +1,8 @@
 import db from "../config/connectiondb.js";
-import multer from "multer";
 import fs from "fs"
 import path from "path";
 import { v4 as uuidv4 } from 'uuid';
-
-
+import multer from "multer";
 
 const storege = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -42,7 +40,7 @@ export const uploadStorage = multer({ storage: storege, fileFilter: fileFilter }
 
 export const uploadgallaryimages = (req, res) => {
     //console.log('body',req.body.eventData)
-    //console.log('file', req.files)
+    console.log('file', req.files)
 
 
     const check_gallary_query = `select * from officegallery where event_title=? and event_date =date(?);`

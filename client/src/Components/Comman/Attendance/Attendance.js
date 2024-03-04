@@ -56,7 +56,7 @@ const columns = [
     },
     {
         name: 'Status',
-        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.status === 'XX' ? '#037700' : row.status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status === 'HH') ? '88888882' : '#FF6868', color: 'white' }} size='small' label={row.status} />,
+        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.status === 'XX' ? '#037700' : row.status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status === 'HH') ? '#9777A5' : '#FF6868', color: 'white' }} size='small' label={row.status} />,
         center: 'true',
     },
     {
@@ -66,7 +66,7 @@ const columns = [
     },
     {
         name: 'Updated Status',
-        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#037700' : row.updated_status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status === 'HH') ? '88888882' : (row.updated_status === 'CL' || row.updated_status === 'SL') ? '#3FA8FC' : '#FF6868', color: 'white' }} size='small' label={row.updated_status} />,
+        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#037700' : row.updated_status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status === 'HH') ? '#9777A5' : (row.updated_status === 'XL' || row.updated_status === 'EL') ? '#3FA8FC' : '#FF6868', color: 'white' }} size='small' label={row.updated_status} />,
         center: 'true',
 
     },
@@ -157,7 +157,7 @@ const Attendance = () => {
             doc.save("attendance.pdf");
         }
         return (
-            // <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#037700' : row.updated_status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status ==='HH') ? '88888882' :(row.updated_status === 'CL' || row.updated_status ==='SL')?'#3FA8FC' :'#FF6868', color: 'white' }} size='small' label={row.updated_status} />
+            // <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#037700' : row.updated_status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status ==='HH') ? '#9777A5' :(row.updated_status === 'CL' || row.updated_status ==='SL')?'#3FA8FC' :'#FF6868', color: 'white' }} size='small' label={row.updated_status} />
             <Container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 
 
@@ -177,7 +177,7 @@ const Attendance = () => {
 
                     </Tooltip>
                     <Tooltip title='Weekend/Holiday' arrow>
-                        <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: "88888882", color: 'white', borderRadius: '50%' }} size='small' />
+                        <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: "#9777A5", color: 'white', borderRadius: '50%' }} size='small' />
 
                     </Tooltip>
                     <Tooltip title='Leaves' arrow>

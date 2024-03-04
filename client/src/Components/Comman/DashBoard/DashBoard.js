@@ -436,7 +436,7 @@ const Dashboard = () => {
                                             <img className="static" alt='img' src="cross.png" style={{ width: 50, height: 50 }} /><img className="active" alt='imgs' style={{ width: 50, height: 50 }} src="cross.gif" />
                                         </IconButton>
                                         <Typography variant="p" component="div" sx={{ textAlign: 'center', fontSize: 12 }}>
-                                            Cross Roads
+                                           Office Zone
                                         </Typography>
                                     </Box>
                                 </Stack>

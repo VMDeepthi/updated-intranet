@@ -125,9 +125,9 @@ function UploadGallary() {
             toast.warning('Select file(s) to upload!');
         }
         else {
-            console.log(files[0].file)
+            console.log(files)
             const form = new FormData();
-      	    form.append('file', files);
+      	    //form.append('file', files);
             form.append("eventTitle",eventData.title)
             form.append("eventDate",eventData.date)
             //formData.append('file',files[0])

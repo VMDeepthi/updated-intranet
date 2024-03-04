@@ -2,7 +2,7 @@ import { ArrowBack,Collections, KeyboardDoubleArrowRight, Search } from '@mui/ic
 import { Box, Button, Container, Fade, FormControl, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, InputAdornment, InputLabel, OutlinedInput, Paper, Typography, createTheme, useMediaQuery } from '@mui/material'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import Loader from './Loader';
+import Loader from '../Loader';
 
 
 const theme = createTheme()
@@ -156,13 +156,13 @@ function OfficeGallery() {
                             <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '15px',}}><ArrowBack />Back</Typography>
                         </Button>
                     </Box>
-                    <Box sx={{}}>
+                    <Box >
                         <Typography sx={{ fontSize: '18px',  fontWeight: 'bold',backgroundImage: 'linear-gradient(135deg, #E8DBFC 10%, #F8F9D2 100%);', border:'1px solid black', p:0.5  }}>Event: {eventTitle}</Typography>
                     </Box>
 
                 </Container>
                 <Box sx={{ display: 'flex', width: '100%', height: 'auto', justifyContent: 'center', }}>
-                    <ImageList variant="masonry" cols={3} gap={8}>
+                    <ImageList variant="masonry"   cols={3} gap={8}>
                         {galleryImages.map((item) => (
                             <ImageListItem key={item.no}>
                                 <img
@@ -170,6 +170,8 @@ function OfficeGallery() {
                                     src={`${process.env.REACT_APP_BACKEND_SERVER + item.image}?w=248&fit=crop&auto=format`}
                                     alt={item.no}
                                     loading="lazy"
+                                    
+                                    
                                 />
                                 <ImageListItemBar position="below" title={item.author} />
                             </ImageListItem>
@@ -185,9 +187,9 @@ function OfficeGallery() {
     }
     const views = [GalleryView(), OpenedGallleryView()]
     return (
-        <Box sx={{ height: { xs: 'auto', lg: 'auto' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
+        <Box sx={{ height: { xs: 'auto', lg: 'auto' }, width: "auto", display: 'flex', }}>
 
-            <Box component="main" sx={{ flexGrow: 1, height: 'auto', backgroundColor: '#F5F5F5' }}>
+            <Box component="main" sx={{ flexGrow: 1, height: 'auto', }}>
                 <div
                     style={{
                         height: 'auto',

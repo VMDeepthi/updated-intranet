@@ -5,7 +5,7 @@ import AdminNavBar from '../NavBar/AdminNavBar'
 import UserNavBar from '../NavBar/UserNavBar'
 import TimeZone from './TimeZone'
 import BirthDayCalender from './BirthDayCalender'
-import OfficeGallery from '../OfficeGallery'
+import OfficeGallery from './OfficeGallery'
 
 
 function CrossRoadsSection() {
@@ -14,7 +14,7 @@ function CrossRoadsSection() {
 
     return (
         <>
-            <Box sx={{ height: 'auto', width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
+            <Box sx={{ height: '100vh', width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
                 {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}>
                     <div

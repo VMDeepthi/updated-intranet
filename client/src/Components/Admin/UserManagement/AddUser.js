@@ -6,7 +6,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { Cached, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Cached, Delete, Visibility, VisibilityOff } from "@mui/icons-material";
 import dayjs from "dayjs";
 import { generate } from '@wcj/generate-password';
 import { MobileDatePicker } from "@mui/x-date-pickers";
@@ -297,7 +297,23 @@ function AddUser() {
                                                         <Avatar src={addUserData.profile} sx={{ width: 46, height: 46, }} /> :
                                                         <Avatar sx={{ width: 46, height: 46, }} />
                                                     }
-                                                    <Button type="file" size="small" component="label"  > Upload Profile <VisuallyHiddenInput onInput={handleCapture} type="file" accept="image/png, image/jpeg" /> </Button>
+                                                    {
+                                                        <Stack direction={'row'} spacing={0.1}>
+                                                        <Button type="file" size="small" component="label"  > Upload Profile <VisuallyHiddenInput type="file" onInput={handleCapture} accept="image/png, image/jpeg" /> </Button>
+                                                            {
+                                                                 addUserData.profile?
+                                                                 <IconButton size='small' color='error' onClick={()=>{
+                                                                  setAddUserData({...addUserData, profile:''})
+                                                                  }}>
+                                                                <Delete fontSize='10px' />
+                                                            </IconButton>
+                                                            :null
+                                    
+                                                            }
+                                                            
+                                                        </Stack>
+                                                    }
+                                                    
 
                                                 </Container>
                                                 <Stack spacing={2}>

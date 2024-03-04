@@ -9,7 +9,7 @@ import UserContext from '../../context/UserContext';
 import { Box, Button, FormControl, Grid, IconButton, InputAdornment, Container, InputLabel, OutlinedInput, Paper, Typography, } from '@mui/material';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { AccountCircle, LockPerson } from '@mui/icons-material';
+import { AccountCircle, LockPerson, Visibility, VisibilityOff } from '@mui/icons-material';
 import LoginIcon from '@mui/icons-material/Login';
 
 const Footer = () => {
@@ -72,10 +72,6 @@ function Login() {
   return (
     <>
 
-
-
-
-     
       <Grid container spacing={2} mt={1} paddingLeft={5} sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -183,7 +179,7 @@ function Login() {
                           onInput={(e) => setLoginDetails({ ...loginDetails, password: e.target.value })}
                           required={true}
                           autoComplete='current-password'
-                          type={'password'}
+                          type={showPassword?'text':'password'}
                           endAdornment={
                             <InputAdornment position="end">
                               <IconButton
@@ -192,7 +188,7 @@ function Login() {
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"
                               >
-                                {/* {showPassword ? <Visibility /> : <VisibilityOff />} */}
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
                               </IconButton>
                             </InputAdornment>
                           }

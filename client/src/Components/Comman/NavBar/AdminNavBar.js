@@ -35,11 +35,11 @@ import { AccountBalance, AccountBalanceWallet, AccountBox, AddAPhoto, AddAlert, 
 
 
 import { CgListTree } from 'react-icons/cg'
-import { Collapse } from '@mui/material';
+import { Collapse, Container, Stack } from '@mui/material';
 
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import StoreIcon from '@mui/icons-material/Store';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Avatar } from '@mui/material';
 import UserContext from '../../context/UserContext';
 //import Cookies from 'js-cookie';
@@ -79,7 +79,7 @@ export default function AdminNavBar(props) {
 
   const [expandedPage, setExpandedPage] = useState('')
 
-  const [pageAccessed, setPageAccessed] = useState(['dashbord', 'addcompany',])
+  const [pageAccessed, setPageAccessed] = useState(['dashbord', 'addcompany', 'viewcompany'])
 
 
   const handleExpand = (page) => {
@@ -132,6 +132,57 @@ export default function AdminNavBar(props) {
     }
 
   }
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+
+  function dateFormat(date) {
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    const formate = date.toLocaleDateString(undefined, options).replace(/ /g, ',').split(',').filter(x => x !== "")
+    const day = formate[1]
+    let formated_day;
+    switch (day) {
+      case '1':
+        formated_day = '1st'
+        break
+      case '2':
+        formated_day = '2nd'
+        break
+      case '3':
+        formated_day = '3rd'
+        break
+      default:
+        formated_day = `${day}th`
+        break
+
+    }
+    formate[1] = formated_day
+
+
+    return `${formate.slice(0, 3).join(' ')}, ${formate[3]}`
+
+  }
+
+  const time = currentTime.toLocaleTimeString(undefined, { hour12: true });
+  // const day = currentTime.toLocaleString('default', { weekday: 'long' });
+  // var dd = String(currentTime.getDate()).padStart(2, '0');
+  // var mm = String(currentTime.getMonth() + 1).padStart(2, '0'); //January is 0!
+  // var yyyy = currentTime.getFullYear();
+  const day= dateFormat(currentTime)
+
+  //console.log("running")
 
 
 
@@ -260,7 +311,7 @@ export default function AdminNavBar(props) {
             sx={{ display: { xs: 'block', sm: 'block' } }}
           >
             <Link href="/" underline="none">
-              <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '50%' }} />
+              <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '80%',height:'45px' }} />
             </Link>
           </Typography>
 
@@ -280,6 +331,13 @@ export default function AdminNavBar(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
+            <Stack spacing={-0.5}>
+            <Typography variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center' ,color:'gray', fontSize:'20px'}}>
+                {time}
+              </Typography>
+              <Typography variant='subtitle2' color={'ButtonText'} sx={{color:'gray'}}>{day} </Typography>
+              
+            </Stack>
             <IconButton
               size="large"
               edge="end"
@@ -364,7 +422,7 @@ export default function AdminNavBar(props) {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: 'auto', ml:'auto',
+                    mr: 'auto', ml: 'auto',
 
                     justifyContent: 'center',
 
@@ -417,10 +475,10 @@ export default function AdminNavBar(props) {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    
-                    mr:3,
+
+                    mr: 3,
                     justifyContent: 'center',
-                    alignItems:'center'
+                    alignItems: 'center'
 
                   }}
                 >
@@ -446,7 +504,7 @@ export default function AdminNavBar(props) {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: 'auto',ml:'auto',
+                    mr: 'auto', ml: 'auto',
                     justifyContent: 'center',
 
                   }}
@@ -473,7 +531,7 @@ export default function AdminNavBar(props) {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: 'auto',ml:'auto',
+                    mr: 'auto', ml: 'auto',
                     justifyContent: 'center',
 
                   }}
@@ -500,7 +558,7 @@ export default function AdminNavBar(props) {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: 'auto',ml:'auto',
+                    mr: 'auto', ml: 'auto',
                     justifyContent: 'center',
 
                   }}
@@ -527,7 +585,7 @@ export default function AdminNavBar(props) {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: 'auto',ml:'auto',
+                    mr: 'auto', ml: 'auto',
                     justifyContent: 'center',
 
                   }}
@@ -555,8 +613,8 @@ export default function AdminNavBar(props) {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: 'auto',ml:'auto',
-                    
+                    mr: 'auto', ml: 'auto',
+
                     justifyContent: 'center',
 
                   }}
@@ -599,7 +657,7 @@ export default function AdminNavBar(props) {
             </ListItem>
             <Divider /> */}
 
-           
+
 
             {/*------------------------leave Management---------------------- */}
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Leave Management')}>
@@ -614,7 +672,7 @@ export default function AdminNavBar(props) {
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: 'auto',ml:'auto',
+                    mr: 'auto', ml: 'auto',
                     justifyContent: 'center',
 
                   }}
@@ -1051,7 +1109,7 @@ export default function AdminNavBar(props) {
                     </ListItemButton>
                   </ListItem>
 
-                  
+
 
                   <Divider />
                 </List>
@@ -1141,7 +1199,7 @@ export default function AdminNavBar(props) {
             </ListItem>
 
             {/*---------------Manage Office Gallery------------------------*/}
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={() =>handleExpand('Manage Office Gallery')} >
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Manage Office Gallery')} >
               <ListItemButton
                 sx={{ minHeight: 45, justifyContent: 'center', px: 1.5, }}>
                 <ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: 'center', }} >
@@ -1152,29 +1210,29 @@ export default function AdminNavBar(props) {
               </ListItemButton>
               <Divider />
               <Collapse in={expandedPage === 'Manage Office Gallery'} timeout={'auto'} unmountOnExit>
-                  <List>
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/upload-gallery")}>
-                      <ListItemButton
-                        sx={{ minHeight: 45, justifyContent: 'center', px: 1.5, }} >
-                        <ListItemIcon sx={{ minWidth: 0, mr: 3, ml: 3, justifyContent: 'center', }}>
-                          <AddAPhoto />
-                        </ListItemIcon>
-                        <ListItemText primary={'Upload Gallery '} />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/view-gallery")}>
-                      <ListItemButton sx={{ minHeight: 45, justifyContent: 'center', px: 1.5, }} >
-                        <ListItemIcon sx={{ minWidth: 0, mr: 3, ml: 3, justifyContent: 'center', }} >
-                          <BrowseGallery />
-                        </ListItemIcon>
-                        <ListItemText primary={'View Gallery '} />
-                      </ListItemButton>
-                    </ListItem>
-                    <Divider />
-                  </List>
+                <List>
+                  <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/upload-gallery")}>
+                    <ListItemButton
+                      sx={{ minHeight: 45, justifyContent: 'center', px: 1.5, }} >
+                      <ListItemIcon sx={{ minWidth: 0, mr: 3, ml: 3, justifyContent: 'center', }}>
+                        <AddAPhoto />
+                      </ListItemIcon>
+                      <ListItemText primary={'Upload Gallery '} />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/view-gallery")}>
+                    <ListItemButton sx={{ minHeight: 45, justifyContent: 'center', px: 1.5, }} >
+                      <ListItemIcon sx={{ minWidth: 0, mr: 3, ml: 3, justifyContent: 'center', }} >
+                        <BrowseGallery />
+                      </ListItemIcon>
+                      <ListItemText primary={'View Gallery '} />
+                    </ListItemButton>
+                  </ListItem>
+                  <Divider />
+                </List>
 
-                </Collapse>
-              
+              </Collapse>
+
 
             </ListItem>
             {/*-----------Experience-------------------*/}
@@ -1197,78 +1255,78 @@ export default function AdminNavBar(props) {
                   }}
 
                 >
-                 <TrendingUp />
+                  <TrendingUp />
                 </ListItemIcon>
                 <ListItemText primary={'Experience'} />
-                {expandedPage==='Experience' ? <ExpandLess /> : <ExpandMore />}
+                {expandedPage === 'Experience' ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
               <Divider />
-              
-                <Collapse in={expandedPage==='Experience'} timeout={'auto'} unmountOnExit >
 
-                  <List>
+              <Collapse in={expandedPage === 'Experience'} timeout={'auto'} unmountOnExit >
 
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/AddExperience")}>
-                      <ListItemButton
+                <List>
+
+                  <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/AddExperience")}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 45,
+                        justifyContent: 'center',
+                        px: 1.5,
+                      }}
+                    >
+                      <ListItemIcon
                         sx={{
-                          minHeight: 45,
+                          minWidth: 0,
+                          mr: 3,
+                          ml: 3,
                           justifyContent: 'center',
-                          px: 1.5,
+
                         }}
+
                       >
-                        <ListItemIcon
-                          sx={{
-                            minWidth: 0,
-                            mr: 3,
-                            ml: 3,
-                            justifyContent: 'center',
-
-                          }}
-
-                        >
-                          <MoreTime />
-                        </ListItemIcon>
-                        <ListItemText primary={'AddExperience'} />
-                      </ListItemButton>
-                    </ListItem>
+                        <MoreTime />
+                      </ListItemIcon>
+                      <ListItemText primary={'AddExperience'} />
+                    </ListItemButton>
+                  </ListItem>
 
 
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/ViewExperience")}>
-                      <ListItemButton
+                  <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/ViewExperience")}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 45,
+                        justifyContent: 'center',
+                        px: 1.5,
+                      }}
+                    >
+                      <ListItemIcon
                         sx={{
-                          minHeight: 45,
+                          minWidth: 0,
+                          mr: 3,
+                          ml: 3,
                           justifyContent: 'center',
-                          px: 1.5,
+
                         }}
+
                       >
-                        <ListItemIcon
-                          sx={{
-                            minWidth: 0,
-                            mr: 3,
-                            ml: 3,
-                            justifyContent: 'center',
+                        <Wysiwyg />
+                      </ListItemIcon>
+                      <ListItemText primary={'ViewExperience'} />
+                    </ListItemButton>
+                  </ListItem>
 
-                          }}
-
-                        >
-                          <Wysiwyg />
-                        </ListItemIcon>
-                        <ListItemText primary={'ViewExperience'} />
-                      </ListItemButton>
-                    </ListItem>
-
-                    <Divider />
+                  <Divider />
 
 
 
-                  </List>
+                </List>
 
-                </Collapse>
+              </Collapse>
 
             </ListItem>
 
-             {/*---------------Salary Management-----------------------*/}
-             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Salary Management')} >
+            {/*---------------Salary Management-----------------------*/}
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Salary Management')} >
               <ListItemButton
                 sx={{
                   minHeight: 45,
@@ -1281,71 +1339,71 @@ export default function AdminNavBar(props) {
                     minWidth: 0,
                     mr: 3,
                     justifyContent: 'center',
-                    
+
                   }}
 
                 >
                   <Campaign />
                 </ListItemIcon>
                 <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Salary Management</Typography>} />
-                {expandedPage==='Salary Management'? <ExpandLess /> : <ExpandMore />}
+                {expandedPage === 'Salary Management' ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
               <Divider />
-             
+
               <Collapse in={expandedPage === 'Salary Management'} timeout="auto" unmountOnExit>
-                  <List>
+                <List>
 
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/uploadsalarydetails")}>
-                      <ListItemButton
+                  <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/uploadsalarydetails")}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 45,
+                        justifyContent: 'center',
+                        px: 1.5,
+                      }}
+                    >
+                      <ListItemIcon
                         sx={{
-                          minHeight: 45,
+                          minWidth: 0,
+                          mr: 3,
+                          ml: 3,
                           justifyContent: 'center',
-                          px: 1.5,
+
                         }}
                       >
-                        <ListItemIcon
-                          sx={{
-                            minWidth: 0,
-                            mr: 3,
-                            ml: 3,
-                            justifyContent: 'center',
-                            
-                          }}
-                        >
-                         <CardTravel/>
-                        </ListItemIcon>
-                        <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Upload Salary Details</Typography>} />
-                      </ListItemButton>
-                    </ListItem>
+                        <CardTravel />
+                      </ListItemIcon>
+                      <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Upload Salary Details</Typography>} />
+                    </ListItemButton>
+                  </ListItem>
 
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewsalarydetails")}>
-                      <ListItemButton
+                  <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewsalarydetails")}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 45,
+                        justifyContent: 'center',
+                        px: 1.5,
+                      }}
+                    >
+                      <ListItemIcon
                         sx={{
-                          minHeight: 45,
+                          minWidth: 0,
+                          mr: 3,
+                          ml: 3,
                           justifyContent: 'center',
-                          px: 1.5,
+
                         }}
+
                       >
-                        <ListItemIcon
-                          sx={{
-                            minWidth: 0,
-                            mr: 3,
-                            ml: 3,
-                            justifyContent: 'center',
-                            
-                          }}
+                        <CreditScore />
+                      </ListItemIcon>
+                      <ListItemText primary={<Typography sx={{ fontSize: 15 }}>View Salary Details</Typography>} />
+                    </ListItemButton>
+                  </ListItem>
+                  <Divider />
+                </List>
+              </Collapse>
 
-                        >
-                          <CreditScore />
-                        </ListItemIcon>
-                        <ListItemText primary={<Typography sx={{ fontSize: 15 }}>View Salary Details</Typography>} />
-                      </ListItemButton>
-                    </ListItem>
-                    <Divider />
-                  </List>
-                  </Collapse>
 
-                
 
             </ListItem>
 

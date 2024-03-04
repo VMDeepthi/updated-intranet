@@ -30,8 +30,8 @@ import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 //import CssBaseline from '@mui/material/CssBaseline';
-import { useContext, useState } from 'react';
-import { Avatar, Collapse } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
+import { Avatar, Collapse, Stack } from '@mui/material';
 //import CompanyManagementPages from '../CompanyPagesManagement/AddCompanyManagementPages';
 
 import UserContext from '../../context/UserContext';
@@ -127,6 +127,56 @@ export default function UserNavBar(props) {
     }
 
   }
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+
+  function dateFormat(date) {
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    const formate = date.toLocaleDateString(undefined, options).replace(/ /g, ',').split(',').filter(x => x !== "")
+    const day = formate[1]
+    let formated_day;
+    switch (day) {
+      case '1':
+        formated_day = '1st'
+        break
+      case '2':
+        formated_day = '2nd'
+        break
+      case '3':
+        formated_day = '3rd'
+        break
+      default:
+        formated_day = `${day}th`
+        break
+
+    }
+    formate[1] = formated_day
+
+
+    return `${formate.slice(0, 3).join(' ')}, ${formate[3]}`
+
+  }
+
+  const time = currentTime.toLocaleTimeString(undefined, { hour12: true });
+  // const day = currentTime.toLocaleString('default', { weekday: 'long' });
+  // var dd = String(currentTime.getDate()).padStart(2, '0');
+  // var mm = String(currentTime.getMonth() + 1).padStart(2, '0'); //January is 0!
+  // var yyyy = currentTime.getFullYear();
+  const day= dateFormat(currentTime)
 
 
 
@@ -294,6 +344,13 @@ export default function UserNavBar(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
+            <Stack spacing={-0.5}>
+            <Typography variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center' ,color:'gray', fontSize:'20px'}}>
+                {time}
+              </Typography>
+              <Typography variant='subtitle2' color={'ButtonText'} sx={{color:'gray'}}>{day} </Typography>
+              
+            </Stack>
             <IconButton
               size="large"
               edge="end"

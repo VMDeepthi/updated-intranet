@@ -13,6 +13,9 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Modal } from 'react-bootstrap';
 
+import { useNavigate } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 
 const ViewExperience = () => {
@@ -26,6 +29,16 @@ const ViewExperience = () => {
   const [experienceToDelete, setExperienceToDelete] = useState(null);
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+  const navigate = useNavigate();
+  const [showIcons, setShowIcons] = useState(false);
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  
+  const toggleIcons = () => {
+    setShowIcons(!showIcons);
+    setIsEditClicked(!isEditClicked);
+  };
+
+  
 
   const [formData, setFormData] = useState({
     id: '',
@@ -54,7 +67,7 @@ const ViewExperience = () => {
       });
   };
 
-  const handleEmployeeIdClick = (selectedEmployeeId) => {
+ const handleEmployeeIdClick = (selectedEmployeeId) => {
     setLoader(true);
     axios
       .get(`/api/viewexperience/${selectedEmployeeId}`)
@@ -73,12 +86,13 @@ const ViewExperience = () => {
       });
   };
 
-
-  
-
-  const viewexperience = () => {
+const viewexperience = () => {
     return axios.get('/api/viewexperience');
   };
+  const handleClosePaper = () => {
+    setUpdatePaperVisibility(false);
+  };
+
 
   const handleAddIconClick = (event) => {
     setFormData({
@@ -90,8 +104,9 @@ const ViewExperience = () => {
       promotiontitle: '',
       from_date: '',
       rolesandresponsibilities: '',
-     
+
     });
+    navigate('/addexperience');
   };
 
   const DeleteIconClick = (experience) => {
@@ -151,22 +166,26 @@ const ViewExperience = () => {
                 dateofjoining: dayjs(experience.date_of_joining).format('YYYY-MM-DD'),
                 promotiontitle: experience.promotion_title,
                 from_date: dayjs(experience.from_date).format('YYYY-MM-DD'),
-                rolesandresponsibilities: experience.rolesandresponsibilities,
+                rolesandresponsibilities: experience.rolesandresponsibilities, 
               });
               setUpdatePaperVisibility(true);
+              setIsEditMode(true);
+              toggleIcons();
             },
           },
           {
             label: 'No',
-            onClick: () => {},
+            onClick: () => { }
           },
         ],
+        //setIsEditClicked(!isEditClicked);
       };
 
       confirmAlert({
         ...confirmOptions,
         overlayClassName: 'custom-overlay-class',
         customUI: ({ onClose }) => (
+        
           <div
             className="custom-modal-class"
             style={{
@@ -181,7 +200,7 @@ const ViewExperience = () => {
             <div className="custom-button-container">
               <button
                 onClick={() => {
-                  confirmOptions.buttons[0].onClick();
+                  confirmOptions.buttons[0].onClick(experience);
                   onClose();
                 }}
                 style={{
@@ -260,7 +279,7 @@ const ViewExperience = () => {
     e.preventDefault();
     const { id, promotiontitle, from_date, rolesandresponsibilities } = formData;
     console.log(formData);
-    setUpdatePaperVisibility(false);
+    // setUpdatePaperVisibility(false);
     setIsEditMode(false);
 
     axios
@@ -294,28 +313,38 @@ const ViewExperience = () => {
     setSearchInput(e.target.value);
   };
 
-  const filteredExperiences = experienceData.filter((experience) =>
-  String(experience.employee_id).toLowerCase().includes(searchInput.toLowerCase())
-);
+  const filteredExperiences = searchInput.trim() !== '' ?
+  experienceData.filter((experience) => {
+    const lowerCaseSearchInput = searchInput.toLowerCase();
+    const employeeIdMatch = String(experience.employee_id).toLowerCase().includes(lowerCaseSearchInput);
+    const currentDesignationMatch = experience.current_designation.toLowerCase().includes(lowerCaseSearchInput);
+
+    // Return true if either employee_id or current_designation matches the search input
+    return employeeIdMatch || currentDesignationMatch;
+  }) :
+  [];
+
+  useEffect(() => {
+    axios
+      .post(`/api/viewallexperiences`, { employee_id: userDetails.employee_id })
+      .then((res) => {
+        const processedData = res.data.map((d) => ({
+          ...d,
+          pdate: dayjs(d.startDate).format('DD-MMM-YYYY'),
+        }));
+        setLoader(false);
+        setExperienceData(processedData);
+
+      })
+      .catch((err) => {
+        setLoader(false);
+        console.error('Error fetching experience data:', err);
+        toast.error('Error fetching experience data');
+      });
+  }, [userDetails.employee_id, searchInput, filteredExperiences]);
 
 
-useEffect(() => {
-  axios
-    .post(`/api/viewallexperiences`, { employee_id: userDetails.employee_id })
-    .then((res) => {
-      const processedData = res.data.map((d) => ({
-        ...d,
-        pdate: dayjs(d.startDate).format('DD-MMM-YYYY'),
-      }));
-      setLoader(false);
-      setExperienceData(processedData);
-    })
-    .catch((err) => {
-      setLoader(false);
-      console.error('Error fetching experience data:', err);
-      toast.error('Error fetching experience data');
-    });
-}, [userDetails.employee_id, searchInput]);
+
 
 
   return (
@@ -366,17 +395,18 @@ useEffect(() => {
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 8 } }}>
           <NavBar />
           <Paper elevation={10} sx={{ height: 'auto', padding: 10, mt: 2, position: 'relative' }}>
-          <TextField
-        label="Search by Employee ID"
-        variant="outlined"
-        size="small"
-        fullWidth
-        value={searchInput}
-        onChange={handleSearchInputChange}
-        style={{ marginBottom: '10px' }}
-      />
-       <div style={{ marginTop: '40px' }}>
-        {filteredExperiences.length === 0 ? (
+            <TextField
+              label="Search by Employee ID"
+              placeholder="Search by Employee ID | Current Designation"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={searchInput}
+              onChange={handleSearchInputChange}
+              style={{ marginBottom: '10px', width: "87%" }}
+            />
+             <div style={{ marginTop: '40px' }}>
+        {filteredExperiences.length === 0 && searchInput.trim() !== '' ? (
           <Typography variant="body1" style={{ fontSize: '17px', textAlign: 'center', color: 'grey' }}>
             No data found for the given search criteria.
           </Typography>
@@ -393,8 +423,8 @@ useEffect(() => {
               View Experience
             </Typography>
 
-            {/* Step 2: Include search input field */}
-          
+         
+
 
             <div style={{ marginTop: '40px' }}>
               {/* Overlay */}
@@ -414,6 +444,12 @@ useEffect(() => {
 
               {isUpdatePaperVisible && (
                 <Paper elevation={10} sx={{ height: 'auto', padding: 15, mt: 2, position: 'relative', zIndex: 4 }}>
+                  <IconButton
+                    sx={{ position: 'absolute', top: 5, right: 5, zIndex: 5 }}
+                    onClick={handleClosePaper}
+                  >
+                    <CloseIcon />
+                  </IconButton>
                   <form onSubmit={handleupdateexperience}>
                     <Stack spacing={2} sx={{ mt: 3 }}>
                       <TextField
@@ -421,18 +457,21 @@ useEffect(() => {
                         fullWidth
                         value={formData.employeeid}
                         onChange={(e) => setFormData({ ...formData, employeeid: e.target.value })}
+                        {...(isEditMode ? { readOnly: true } : { disabled: true })}
                       />
                       <TextField
                         label="Designation Type"
                         fullWidth
                         value={formData.designationtype}
                         onChange={(e) => setFormData({ ...formData, designationtype: e.target.value })}
+                        {...(isEditMode ? { readOnly: true } : { disabled: true })}
                       />
                       <TextField
                         label="Current Designation"
                         fullWidth
                         value={formData.currentdesignation}
                         onChange={(e) => setFormData({ ...formData, currentdesignation: e.target.value })}
+                        {...(isEditMode ? { readOnly: true } : { disabled: true })}
                       />
                       <TextField
                         label="Date of Joining"
@@ -440,6 +479,7 @@ useEffect(() => {
                         fullWidth
                         value={formData.dateofjoining}
                         onChange={(e) => setFormData({ ...formData, dateofjoining: e.target.value })}
+                        {...(isEditMode ? { readOnly: true } : { disabled: true })}
                       />
                       <TextField
                         label="Promotion Title"
@@ -463,24 +503,32 @@ useEffect(() => {
                         value={formData.rolesandresponsibilities}
                         onChange={(e) => setFormData({ ...formData, rolesandresponsibilities: e.target.value })}
                       />
-                      <Button type="submit" variant="contained" color="primary">
+                      <Button type="submit" variant="contained" color="inherit" style={{ backgroundColor: 'black', color: 'white' }}>
                         {isEditMode ? 'Update Experience' : 'Add Experience'}
                       </Button>
+
                     </Stack>
                   </form>
                 </Paper>
               )}
 
-              {filteredExperiences.map((experience) => (
+              {filteredExperiences.map((experience, index) => (
                 <React.Fragment key={experience.id}>
                   <li
                     key={experience.id}
                     style={{ display: 'flex', alignItems: 'center', marginBottom: '-18px', marginTop: '-1px', marginLeft: '0px' }}
                   >
                     <div style={{ flexGrow: 1 }}>
+                    {/* {index === 0 && ( */}
+                      <Typography variant="body1" style={{ fontSize: '17px' }}>
+                        Employee id: <span style={{ fontWeight: 'bold' }}>{experience.employee_id}</span>
+                      </Typography>
+                    {/* )}   */}
+                      
                       <Typography variant="body1" style={{ fontSize: '17px' }}>
                         Current Designation: <span style={{ fontWeight: 'bold' }}>{experience.current_designation}</span>
                       </Typography>
+                      
                       <Typography variant="body1" style={{ fontSize: '15px', color: 'grey' }}>
                         Date of Joining: {dayjs(experience.date_of_joining).format('DD-MMM-YYYY')}
                       </Typography>
@@ -501,33 +549,45 @@ useEffect(() => {
                           width: '100%',
                         }}
                       >
-                        Roles and Responsibilities: <span style={{ textAlign: 'justify',fontWeight: '400',color:'#3D3D3D',fontSize:'15px' }}>{experience.rolesandresponsibilities}</span>
+                        Roles and Responsibilities: <span style={{ textAlign: 'justify', fontWeight: '400', color: '#3D3D3D', fontSize: '15px' }}>{experience.rolesandresponsibilities}</span>
                       </Typography>
                     </div>
                     <div style={{ marginRight: '100px', display: 'flex', alignItems: 'center', marginBottom: '170px', marginLeft: 'auto', marginTop: '30px' }}>
-                    
+                    {isEditClicked && (
+                    <>
+
+                      {/* <IconButton onClick={() =>{ handleEditIconClick(experience); toggleIcons(); }}>
+                        <EditIcon />
+                      </IconButton> */}
                       <IconButton onClick={() => handleEditIconClick(experience)}>
                         <EditIcon />
                       </IconButton>
+
                       <IconButton onClick={() => DeleteIconClick(experience)}>
                         <DeleteIcon />
                       </IconButton>
+                      </>
+                    )}
                     </div>
                   </li>
                   <hr style={{ marginTop: '5px', marginBottom: '5px' }} />
                 </React.Fragment>
               ))}
             </div>
+           
 
             <form onSubmit={handleViewExperience}>
               <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
                 <Box sx={{ display: 'flex', alignItems: 'center' }}></Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', position: 'absolute', top: 3, right: 0 }}>
-                <IconButton onClick={handleAddIconClick}>
-                    <AddIcon  />
+
+                  <IconButton onClick={handleAddIconClick}>
+                    <AddIcon />
                   </IconButton>
-                  <IconButton onClick={handleEditIconClick}>
+
+
+                  <IconButton onClick={() => { handleEditIconClick(experienceData[0]); toggleIcons(); }}>
                     <EditIcon />
                   </IconButton>
                 </Box>

@@ -34,6 +34,7 @@ function TimeZone() {
         }
         setInterval(() => tick(), 1000);
     }, [])
+    
 
     const clock = useCallback((zone) => {
         //console.log(date)

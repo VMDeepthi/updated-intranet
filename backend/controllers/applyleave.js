@@ -1,9 +1,10 @@
 import db from "../config/connectiondb.js"
 import { v4 as uuidv4 } from 'uuid';
-import {transporter} from "../config/emailconfig.js";
+import { transporter } from "../config/emailconfig.js";
 import 'dotenv/config'
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt"
+import compensation from "../middleware/compensation.js";
 
 
 const leaveTypes = {
@@ -38,10 +39,10 @@ export const pendingleaves = (req, res) => {
 }
 
 export const applyforleave = (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     let { reporting_head_name, mail_approved_by, balance_leaves, cc_mail, leave_type, leave_options, from_date, to_date, selected_dates, half_day, total_leaves, reason, applicant_emp_id, applicant_name, applicant_email } = req.body
     const applicationId = uuidv4()
-    console.log(cc_mail)
+    // console.log(cc_mail)
     const cc_mails = cc_mail.replace(/\n/g, '')
     const leave_dates = selected_dates.join(',')
 
@@ -58,9 +59,9 @@ export const applyforleave = (req, res) => {
     }
 
     db.query(check_application_query, check_application_values, async (checkerr, checkres) => {
-        console.log('check result', checkres)
+        // console.log('check result', checkres)
         if (checkerr) {
-            console.log(checkerr)
+            // console.log(checkerr)
             return res.status(500).json('error occured!')
         }
 
@@ -94,22 +95,22 @@ export const applyforleave = (req, res) => {
 
                     transporter.sendMail(mailOptions, (err, info) => {
                         if (err) {
-                            console.log(err)
+                            // console.log(err)
                             return res.status(500).json('Not able send mail!')
                         }
                         else return res.status(201).json('Mail sended to your corresponding reporting head for approvel')
                     })
 
                 }
-                catch(err) {
-                    console.log(err)
+                catch (err) {
+                    // console.log(err)
                     return res.status(500).json('error occured!')
                 }
             }
             else {
                 const selectedDates = [...selected_dates, half_day]
                 const alreadyExistsDates = [...checkres[0].selected_dates.replace(/ /g, '').split(','), checkres[0].half_day]
-                console.log(selectedDates, alreadyExistsDates, checkres[0].selected_dates.replace('', ''))
+                // console.log(selectedDates, alreadyExistsDates, checkres[0].selected_dates.replace('', ''))
                 let existDates = selectedDates.filter(date => alreadyExistsDates.includes(date) && date !== '')
 
                 return res.status(406).json(`Already applied for leave on ${existDates.join(', ')}`)
@@ -129,18 +130,18 @@ export const applyforleave = (req, res) => {
 }
 
 export const reportingheadlogin = (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
 
     const { email, password, status, applicationId } = req.body
 
-    // console.log(req.body)
+    //// console.log(req.body)
     //if(bcrypt.compareSync(req.body.password))
     const check_application_query = `select * from applyleaves where mail_approved_by=? and id=?`
     const check_application_values = [email, applicationId]
     db.query(check_application_query, check_application_values, (checkerr, checkres) => {
         if (checkerr) return res.status(500).json('error occured!')
         else {
-            console.log(checkres)
+            // console.log(checkres)
             if (checkres.length === 0) {
                 return res.status(500).json('Invalid Application')
             }
@@ -167,15 +168,15 @@ export const reportingheadlogin = (req, res) => {
 
                             }
                             const mail_templte = application_status === 'approved' ? 'LeaveRequestApproved' : application_status === 'denied' ? 'LeaveRequestDenied' : 'LeaveRequestCancelled'
-                            console.log(mail_templte)
+                            // console.log(mail_templte)
                             result = result[0]
                             const token = jwt.sign({ employee_id: result.employee_id, email: result.email }, process.env.HEAD_JWT_SECRET)
-                            console.log(token)
+                            // console.log(token)
                             //delete result.password
                             const { id, applicant_name, applicant_email, emp_id, from_date, to_date, leave_type, leave_option, selected_dates, half_day, total_leaves } = checkres[0]
 
 
-                            console.log('cancel application', 'coming', application_status,)
+                            // console.log('cancel application', 'coming', application_status,)
                             if ((checkres[0].status === 'pending' && (application_status === 'approved' || application_status === 'denied')) || (checkres[0].status === 'approved' && application_status === 'cancelled')) {
 
 
@@ -207,7 +208,7 @@ export const reportingheadlogin = (req, res) => {
                                 db.query(q, v, async (err, result) => {
                                     if (err) return res.status(500).json('error occured!')
                                     else {
-                                        console.log('balence', result)
+                                        // console.log('balence', result)
 
                                         let total = 0
                                         if (result.length !== 0) {
@@ -220,132 +221,108 @@ export const reportingheadlogin = (req, res) => {
                                         try {
 
                                             await db.promise().query(update_application_query, update_application_values)
+                                            const dates = [...selected_dates.split(','), half_day].filter(date => date !== '')
 
-                                            console.log('cancel application', 'coming', application_status)
+                                            // console.log('cancel application', 'coming', application_status)
                                             if (application_status === 'approved') {
+                                                // console.log('approval')
+                                                let total = 0
+                                                if (result.length !== 0) {
+                                                    total = result[0].total_leaves
+                                                }
                                                 let update_balance_query_params = []
-                                                const dates = (selected_dates + ',' + half_day).split(',')
+
                                                 const update_balance_values = []
                                                 //let total = result[0].total_leaves
+
                                                 dates.forEach(date => {
-                                                    console.log(date)
+                                                    // console.log(date)
                                                     if (date !== '') {
                                                         update_balance_query_params.push('(?)')
                                                         if (dates[dates.length - 1] === date) {
                                                             total = total - 0.5
-                                                            update_balance_values.push([emp_id, 0.5, date, total, id])
+                                                            update_balance_values.push([emp_id, 0, 0.5, date, total, id])
                                                         }
                                                         else {
                                                             total = total - 1
-                                                            update_balance_values.push([emp_id, 1, date, total, id])
+                                                            update_balance_values.push([emp_id, 0, 1, date, total, id])
                                                         }
                                                     }
 
                                                 })
-                                                const update_balance_query = `insert into balanceleaves(emp_id,debit,date,total_leaves,reference) values` + update_balance_query_params.join(',')
-                                                console.log('query:', update_balance_query)
-                                                console.log('values:', update_balance_values)
-                                                const update_attendance_query = `update attendance set updated_status=? where pdate in (?) and emp_id=?`
-                                                const update_attendance_values = [leaveTypes[leave_type], [...selected_dates.split(','), half_day], emp_id]
-                                                await db.promise().query(update_attendance_query, update_attendance_values)
+                                                // const delete_balance_query =`delete from balanceleaves where debit!=0 and emp_id=? and date in(?)`
+                                                // const delete_balance_value = [emp_id,dates.filter(date=>date!=='')]
+                                                const update_balance_query = `insert into balanceleaves(emp_id,credit,debit,date,total_leaves,reference) values` + update_balance_query_params.join(',')
+                                                // console.log('query:', update_balance_query)
+                                                // console.log('values:', update_balance_values)
+
+                                                const update_attendance_full_days_query = `update attendance set updated_status=? where pdate in (?) and emp_id=?`
+                                                const update_attendance_full_days_values = ['EL', selected_dates.split(','), emp_id]
+                                                const update_attendance_half_days_query = `update attendance set updated_status=? where pdate =? and emp_id=?`
+                                                const update_attendance_half_days_values = ['XL', [half_day], emp_id]
+                                                await db.promise().query(update_attendance_full_days_query, update_attendance_full_days_values)
+                                                await db.promise().query(update_attendance_half_days_query, update_attendance_half_days_values)
                                                 await db.promise().query(update_balance_query, update_balance_values)
+
                                             }
                                             else if (application_status === 'cancelled' && checkres[0].status === 'approved') {
-                                                console.log('cancel application', 'coming', application_status)
+                                                // console.log('cancel', 'com')
+                                                let total = 0
+                                                if (result.length !== 0) {
+                                                    total = result[0].total_leaves
+                                                }
                                                 let update_balance_query_params = []
-                                                const dates = (selected_dates + ',' + half_day).split(',')
+                                                //const dates = (selected_dates + ',' + half_day).split(',')
                                                 const update_balance_values = []
                                                 //let total = result[0].total_leaves
+
                                                 dates.forEach(date => {
-                                                    console.log(date)
+                                                    // console.log(date)
                                                     if (date !== '') {
                                                         update_balance_query_params.push('(?)')
                                                         if (dates[dates.length - 1] === date) {
                                                             total = total + 0.5
-                                                            update_balance_values.push([emp_id, 0.5, date, total, id])
+                                                            update_balance_values.push([emp_id, 0.5, 0, date, total, id])
                                                         }
                                                         else {
                                                             total = total + 1
-                                                            update_balance_values.push([emp_id, 1, date, total, id])
+                                                            update_balance_values.push([emp_id, 1, 0, date, total, id])
                                                         }
                                                     }
 
                                                 })
-                                                const update_balance_query = `insert into balanceleaves(emp_id,credit,date,total_leaves,reference) values` + update_balance_query_params.join(',')
-                                                console.log('query:', update_balance_query)
-                                                console.log('values:', update_balance_values)
-                                                
+                                                // const delete_balance_query =`delete from balanceleaves where debit!=0 and emp_id=? and date in(?)`
+                                                // const delete_balance_value = [emp_id,dates.filter(date=>date!=='')]
+                                                const update_balance_query = `insert into balanceleaves(emp_id,credit,debit,date,total_leaves,reference) values` + update_balance_query_params.join(',')
+                                                // console.log('query:', update_balance_query)
+                                                // console.log('values:', update_balance_values)
+
+                                                const update_attendance_query = `update attendance set updated_status='XA' where pdate in (?) and emp_id=?`
+                                                //const dateRanges = [...selected_dates.split(','), half_day].filter(date => date !== '')
+                                                const update_attendance_values = [dates, emp_id]
                                                 await db.promise().query(update_balance_query, update_balance_values)
-                                                const update_attendance_query = `update attendance set updated_status='AA' where pdate in (?) and emp_id=?`
-                                                const dateRanges = [...selected_dates.split(','), half_day].filter(date => date !== '')
-                                                console.log('dateRanges', dateRanges)
-                                                const update_attendance_values = [dateRanges, emp_id]
-                                                const updated = await db.promise().query(update_attendance_query, update_attendance_values)
-                                                console.log('upadated', updated)
-
-                                                dateRanges.forEach(punchDate => {
-                                                    const current_date = new Date(punchDate)
-                                                    const current_year = current_date.getFullYear()
-                                                    const current_month = current_date.getMonth()
-                                                    let from_date, to_date;
-                                                    //new Date(Date.UTC(current_year,current_month,25)).toLocaleString()===new Date(Date.UTC(current_year,current_month,current_date.getDate())).toLocaleString()
-                                                    if (current_date.getDate() >= 26) {
-                                                        from_date = new Date(Date.UTC(current_year, current_month, 26))
-                                                        to_date = new Date(Date.UTC(current_year, current_month + 2,))
-                                                    }
-                                                    else {
-                                                        from_date = new Date(Date.UTC(current_year, current_month - 1, 26))
-                                                        to_date = new Date(Date.UTC(current_year, current_month + 1, 1))
-                                                    }
-                                                    //console.log('emp_id', Emp_code)
-                                                    const check_status_query = `select * from attendance where pdate>=date(?) and pdate<=date(?) and emp_id = ?`
-                                                    db.query(check_status_query, [from_date, to_date, emp_id], (err, result) => {
-                                                        if (err) {
-                                                            anyError = true
-                                                            return ('error occured!')
-                                                        }
-                                                        else {
-                                                            console.log('atte:', result)
-                                                            const hr_list = result.map(a => a.totalhrs <= 4 ? 0 : a.totalhrs)
-                                                            console.log(hr_list)
-                                                            const totalhr = hr_list.reduce((acc, curr_value) => acc + (Math.trunc(curr_value)), 0)
-                                                            const totalmin = hr_list.reduce((acc, curr_value) => acc + (curr_value % 1).toFixed(2) * 100, 0)
-                                                            const totalShift = hr_list.length * 9 * 60 //in min
-                                                            const totalNonWorked = (hr_list.filter(hr => hr <= 4).length) * 9 * 60
-                                                            const totalWorked = ((totalhr * 60) + totalmin) - (totalShift - totalNonWorked)
-                                                            const hr_bal = (Math.trunc(totalWorked / 60) + (totalWorked % 60) / 100).toFixed(2)
-                                                            console.log(hr_bal)
-                                                            let update_status_query;
-                                                            if (Number(hr_bal) < 0) {
-                                                                //update_status_query = `update attendance set updated_status = 'XA' where  updated_status !='XX' and updated_status ='AA' and status !='AA'  and pdate>=date(?) and pdate<=date(?) and emp_id = ? `
-                                                                update_status_query = `update attendance set updated_status = 'XA' where updated_status not in ('XX','CL','SL') and updated_status ='AA' and status !='AA' and pdate>=date(?) and pdate<=date(?) and emp_id = ? `
-                                                            }
-                                                            else {
-
-                                                                update_status_query = `update attendance set updated_status = 'XX' where updated_status !='XX' and updated_status in ('AA','XA') and status !='AA' and pdate>=date(?) and pdate<=date(?) and emp_id = ? `
-                                                            }
-                                                            try {
-                                                                db.promise().query(update_status_query, [from_date, to_date, emp_id])
-
-
-                                                            }
-                                                            catch (err) {
-                                                                console.log(err)
-                                                                anyError = true
-                                                                return res.status(500).json('error occured!')
-                                                            }
-
-                                                        }
-                                                    })
-
-                                                });
-
+                                                await db.promise().query(update_attendance_query, update_attendance_values)
 
 
                                             }
+                                            console.log('dates', dates, dates.length)
+                                            for (let i = 0; i < dates.length; i++) {
+                                                console.log(i, new Date(dates[i]))
+                                                try {
+
+                                                   await compensation(new Date(dates[i]), emp_id)
+                                                   
+
+                                                }
+                                                catch (err) {
+                                                    console.log(err)
+                                                    anyError = true
+                                                    break
+                                                }
+                                            }
                                             transporter.sendMail(mailOptions, (err, info) => {
                                                 if (err) {
-                                                    console.log(err)
+                                                    // console.log(err)
                                                     return res.status(500).json('Not able send mail!')
                                                 }
                                                 else if (anyError) {
@@ -354,7 +331,7 @@ export const reportingheadlogin = (req, res) => {
                                                 }
                                                 else return res.cookie('HEADAUTHID', token, { maxAge: 172800000 }).status(200).json(application_status)
                                             })
-                                            console.log(result)
+                                            // console.log(result)
                                             //return res.cookie('HEADAUTHID', token, { maxAge: 172800000 }).status(200).json(application_status)
 
 
@@ -400,15 +377,19 @@ export const checkapplicationerequest = (req, res) => {
     const data = jwt.verify(token, process.env.HEAD_JWT_SECRET)
     const { email } = data
 
-    console.log(data)
-    const check_application_query = `select id, balance_leaves, applicant_name, applicant_email, emp_id, from_date, to_date, leave_type, leave_option, selected_dates, half_day, total_leaves,first_name,last_name,employee_id,applyleaves.status from applyleaves inner join usermanagement on email=mail_approved_by where mail_approved_by=? and id=?`
+    // console.log(data)
+    const check_application_query = `select id, applicant_name, applicant_email, emp_id, from_date, to_date, leave_type, leave_option, selected_dates, half_day, total_leaves,first_name,last_name,employee_id,applyleaves.status from applyleaves inner join usermanagement on email=mail_approved_by where mail_approved_by=? and id=?`
     const check_application_values = [email, applicationId]
     db.query(check_application_query, check_application_values, async (checkerr, checkres) => {
-        if (checkerr) return res.status(500).json('error occured!')
+        if (checkerr) {
+            console.log(checkerr)
+            return res.status(500).json('error occured!')
+
+        }
 
         //res.send('ok')
         else {
-            console.log(checkres)
+            // console.log(checkres)
             if (checkres.length === 0) {
                 return res.clearCookie('HEADAUTHID').status(401).json('Unauthorized Application')
             }
@@ -430,7 +411,7 @@ export const checkapplicationerequest = (req, res) => {
 
                 }
                 const mail_templte = application_status === 'approved' ? 'LeaveRequestApproved' : application_status === 'denied' ? 'LeaveRequestDenied' : 'LeaveRequestCancelled'
-                const { id,  applicant_name, applicant_email, emp_id, from_date, to_date, leave_type, leave_option, selected_dates, half_day, total_leaves, first_name, last_name, employee_id } = checkres[0]
+                const { id, applicant_name, applicant_email, emp_id, from_date, to_date, leave_type, leave_option, selected_dates, half_day, total_leaves, first_name, last_name, employee_id } = checkres[0]
                 const mailOptions = {
                     from: `"${first_name} ${last_name}" <${applicant_email}`,
                     to: [applicant_email],
@@ -451,158 +432,124 @@ export const checkapplicationerequest = (req, res) => {
                 }
                 if ((checkres[0].status === 'pending' && (application_status === 'approved' || application_status === 'denied')) || (checkres[0].status === 'approved' && application_status === 'cancelled')) {
 
-                    console.log(checkres)
+                    // console.log(checkres)
 
                     const q = `select total_leaves from balanceleaves where emp_id=? order by id desc limit 1 `
                     const v = [emp_id]
                     db.query(q, v, async (err, result) => {
-                        if (err) return res.status(500).json('error occured!')
+                        if (err) {
+                            console.log('total leaves', err)
+                            return res.status(500).json('error occured!')
+                        }
                         else {
-                            console.log('balence', result)
+                            // console.log('balence', result)
                             let anyError = false
                             try {
-                                
+
                                 const update_application_query = `update applyleaves set status=? where id=?`
                                 const update_application_values = [application_status, applicationId]
                                 await db.promise().query(update_application_query, update_application_values)
+                                const dates = [...selected_dates.split(','), half_day].filter(date => date !== '')
                                 if (application_status === 'approved') {
-                                    console.log('approval')
+                                    // console.log('approval')
                                     let total = 0
                                     if (result.length !== 0) {
                                         total = result[0].total_leaves
                                     }
                                     let update_balance_query_params = []
-                                    const dates = (selected_dates + ',' + half_day).split(',')
+
                                     const update_balance_values = []
                                     //let total = result[0].total_leaves
 
                                     dates.forEach(date => {
-                                        console.log(date)
+                                        // console.log(date)
                                         if (date !== '') {
                                             update_balance_query_params.push('(?)')
                                             if (dates[dates.length - 1] === date) {
                                                 total = total - 0.5
-                                                update_balance_values.push([emp_id, 0.5, date, total, id])
+                                                update_balance_values.push([emp_id, 0, 0.5, date, total, id])
                                             }
                                             else {
                                                 total = total - 1
-                                                update_balance_values.push([emp_id, 1, date, total, id])
+                                                update_balance_values.push([emp_id, 0, 1, date, total, id])
                                             }
                                         }
 
                                     })
                                     // const delete_balance_query =`delete from balanceleaves where debit!=0 and emp_id=? and date in(?)`
                                     // const delete_balance_value = [emp_id,dates.filter(date=>date!=='')]
-                                    const update_balance_query = `insert into balanceleaves(emp_id,debit,date,total_leaves,reference) values` + update_balance_query_params.join(',')
-                                    console.log('query:', update_balance_query)
-                                    console.log('values:', update_balance_values)
+                                    const update_balance_query = `insert into balanceleaves(emp_id,credit,debit,date,total_leaves,reference) values` + update_balance_query_params.join(',')
+                                    // console.log('query:', update_balance_query)
+                                    // console.log('values:', update_balance_values)
 
-                                    const update_attendance_query = `update attendance set updated_status=? where pdate in (?) and emp_id=?`
-                                    const update_attendance_values = [leaveTypes[leave_type], [...selected_dates.split(','), half_day], emp_id]
-                                    //await db.promise().query(delete_balance_query,delete_balance_value)
-                                    await db.promise().query(update_attendance_query, update_attendance_values)
+                                    const update_attendance_full_days_query = `update attendance set updated_status=? where pdate in (?) and emp_id=?`
+                                    const update_attendance_full_days_values = ['EL', selected_dates.split(','), emp_id]
+                                    const update_attendance_half_days_query = `update attendance set updated_status=? where pdate =? and emp_id=?`
+                                    const update_attendance_half_days_values = ['XL', [half_day], emp_id]
+                                    await db.promise().query(update_attendance_full_days_query, update_attendance_full_days_values)
+                                    await db.promise().query(update_attendance_half_days_query, update_attendance_half_days_values)
                                     await db.promise().query(update_balance_query, update_balance_values)
+
                                 }
                                 else if (application_status === 'cancelled' && checkres[0].status === 'approved') {
-                                    console.log('cancel', 'com')
+                                    // console.log('cancel', 'com')
                                     let total = 0
                                     if (result.length !== 0) {
                                         total = result[0].total_leaves
                                     }
                                     let update_balance_query_params = []
-                                    const dates = (selected_dates + ',' + half_day).split(',')
+                                    //const dates = (selected_dates + ',' + half_day).split(',')
                                     const update_balance_values = []
                                     //let total = result[0].total_leaves
 
                                     dates.forEach(date => {
-                                        console.log(date)
+                                        // console.log(date)
                                         if (date !== '') {
                                             update_balance_query_params.push('(?)')
                                             if (dates[dates.length - 1] === date) {
                                                 total = total + 0.5
-                                                update_balance_values.push([emp_id, 0.5, date, total, id])
+                                                update_balance_values.push([emp_id, 0.5, 0, date, total, id])
                                             }
                                             else {
                                                 total = total + 1
-                                                update_balance_values.push([emp_id, 1, date, total, id])
+                                                update_balance_values.push([emp_id, 1, 0, date, total, id])
                                             }
                                         }
 
                                     })
                                     // const delete_balance_query =`delete from balanceleaves where debit!=0 and emp_id=? and date in(?)`
                                     // const delete_balance_value = [emp_id,dates.filter(date=>date!=='')]
-                                    const update_balance_query = `insert into balanceleaves(emp_id,credit,date,total_leaves,reference) values` + update_balance_query_params.join(',')
-                                    console.log('query:', update_balance_query)
-                                    console.log('values:', update_balance_values)
+                                    const update_balance_query = `insert into balanceleaves(emp_id,credit,debit,date,total_leaves,reference) values` + update_balance_query_params.join(',')
+                                    // console.log('query:', update_balance_query)
+                                    // console.log('values:', update_balance_values)
 
-                                    const update_attendance_query = `update attendance set updated_status='AA' where pdate in (?) and emp_id=?`
-                                    const dateRanges = [...selected_dates.split(','), half_day].filter(date => date !== '')
-                                    const update_attendance_values = [dateRanges, emp_id]
+                                    const update_attendance_query = `update attendance set updated_status='XA' where pdate in (?) and emp_id=?`
+                                    //const dateRanges = [...selected_dates.split(','), half_day].filter(date => date !== '')
+                                    const update_attendance_values = [dates, emp_id]
                                     await db.promise().query(update_balance_query, update_balance_values)
-                                    const update = await db.promise().query(update_attendance_query, update_attendance_values)
-                                    console.log(update, dateRanges)
-
-                                    dateRanges.forEach(punchDate => {
-                                        const current_date = new Date(punchDate)
-                                        const current_year = current_date.getFullYear()
-                                        const current_month = current_date.getMonth()
-                                        let from_date, to_date;
-                                        //new Date(Date.UTC(current_year,current_month,25)).toLocaleString()===new Date(Date.UTC(current_year,current_month,current_date.getDate())).toLocaleString()
-                                        if (current_date.getDate() >= 26) {
-                                            from_date = new Date(Date.UTC(current_year, current_month, 26))
-                                            to_date = new Date(Date.UTC(current_year, current_month + 2,))
-                                        }
-                                        else {
-                                            from_date = new Date(Date.UTC(current_year, current_month - 1, 26))
-                                            to_date = new Date(Date.UTC(current_year, current_month + 1, 1))
-                                        }
-                                        //console.log('emp_id', Emp_code)
-                                        const check_status_query = `select * from attendance where pdate>=date(?) and pdate<=date(?) and emp_id = ?`
-                                        db.query(check_status_query, [from_date, to_date, emp_id], (err, result) => {
-                                            if (err) {
-                                                anyError = true
-                                                return ('error occured!')
-                                            }
-                                            else {
-                                                console.log('atte:', result)
-                                                const hr_list = result.map(a => a.totalhrs <= 4 ? 0 : a.totalhrs)
-                                                console.log(hr_list)
-                                                const totalhr = hr_list.reduce((acc, curr_value) => acc + (Math.trunc(curr_value)), 0)
-                                                const totalmin = hr_list.reduce((acc, curr_value) => acc + (curr_value % 1).toFixed(2) * 100, 0)
-                                                const totalShift = hr_list.length * 9 * 60 //in min
-                                                const totalNonWorked = (hr_list.filter(hr => hr <= 4).length) * 9 * 60
-                                                const totalWorked = ((totalhr * 60) + totalmin) - (totalShift - totalNonWorked)
-                                                const hr_bal = (Math.trunc(totalWorked / 60) + (totalWorked % 60) / 100).toFixed(2)
-                                                console.log(hr_bal)
-                                                let update_status_query;
-                                                if (Number(hr_bal) < 0) {
-                                                    //update_status_query = `update attendance set updated_status = 'XA' where  updated_status !='XX' and updated_status ='AA' and status !='AA'  and pdate>=date(?) and pdate<=date(?) and emp_id = ? `
-                                                    update_status_query = `update attendance set updated_status = 'XA' where updated_status not in ('XX','CL','SL') and updated_status ='AA' and status !='AA' and pdate>=date(?) and pdate<=date(?) and emp_id = ? `
-                                                }
-                                                else {
-
-                                                    update_status_query = `update attendance set updated_status = 'XX' where updated_status !='XX' and updated_status in ('AA','XA') and status !='AA' and pdate>=date(?) and pdate<=date(?) and emp_id = ? `
-                                                }
-                                                try {
-                                                    db.promise().query(update_status_query, [from_date, to_date, emp_id])
+                                    await db.promise().query(update_attendance_query, update_attendance_values)
 
 
-                                                }
-                                                catch (err) {
-                                                    console.log(err)
-                                                    anyError = true
-                                                    return res.status(500).json('error occured!')
-                                                }
+                                }
+                                console.log('dates', dates, dates.length)
+                                for (let i = 0; i < dates.length; i++) {
+                                    console.log(i, new Date(dates[i]))
+                                    try {
 
-                                            }
-                                        })
+                                        const companisate = await compensation(new Date(dates[i]), emp_id)
+                                        console.log(companisate)
 
-                                    });
+                                    }
+                                    catch (err) {
+                                        console.log(err)
+                                        anyError = true
+                                        break
+                                    }
                                 }
                                 transporter.sendMail(mailOptions, (err, info) => {
 
                                     if (err) {
-                                        console.log(err, anyError)
+                                        // console.log(err, anyError)
                                         return res.status(500).json('Not able send mail!')
                                     }
                                     else if (anyError) {
@@ -610,16 +557,16 @@ export const checkapplicationerequest = (req, res) => {
 
                                     }
                                     else {
-                                        console.log('mail')
+                                        // console.log('mail')
                                         return res.status(200).json(application_status)
                                     }
                                 })
-                                //return res.status(200).json(application_status)
+                                return res.status(200).json(application_status)
                             }
 
 
                             catch (err) {
-                                console.log(err)
+                                console.log('final loop end', err)
                                 return res.status(500).json('error occured!')
                             }
 
@@ -647,7 +594,7 @@ export const checkapplicationerequest = (req, res) => {
 
 
 export const cancelapplication = async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const { id, mail_approved_by, balence_leaves, cc_mail, leave_type, leave_options, selected_dates, half_day, total_leaves, status, reason, emp_id, applicant_name, applicant_email } = req.body
 
     if (status === 'pending') {
@@ -658,7 +605,7 @@ export const cancelapplication = async (req, res) => {
             return res.status(200).json('Your request canceled successfully')
         }
         catch (err) {
-            console.log(err)
+            // console.log(err)
             return res.status(500).json('error occured!')
         }
 
@@ -697,7 +644,7 @@ export const cancelapplication = async (req, res) => {
 
                     transporter.sendMail(mailOptions, (err, info) => {
                         if (err) {
-                            console.log(err)
+                            // console.log(err)
                             return res.status(500).json('Not able send mail!')
                         }
                         else return res.status(201).json('Mail sended to your corresponding reporting head for Cancellation')
@@ -724,12 +671,12 @@ export const getbalanceleaves = (req, res) => {
     db.query(q, v, (err, result) => {
         if (err) return res.status(500).json('error occured!')
         else {
-            console.log('balence', result)
+            // console.log('balence', result)
             if (result.length == 0) {
-                return res.status(200).json({balanceSheet:[],totalLeaves:0})
+                return res.status(200).json({ balanceSheet: [], totalLeaves: 0 })
             }
             else {
-                return res.status(200).json({balanceSheet:result,totalLeaves:result[0].total_leaves})
+                return res.status(200).json({ balanceSheet: result, totalLeaves: result[0].total_leaves })
             }
         }
     })
@@ -742,7 +689,7 @@ export const getbalanceleaves = (req, res) => {
 //--------------history log------------//
 
 export const historylogapplication = (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const { applicationType, fromDate, toDate, emp_id } = req.body
     let searchLogQuery, searchLogValues;
     switch (applicationType) {
@@ -753,7 +700,7 @@ export const historylogapplication = (req, res) => {
     db.query(searchLogQuery, searchLogValues, (err, result) => {
         if (err) return res.status(500).json('error occured!')
         else {
-            console.log(result)
+            // console.log(result)
             return res.status(200).json(result)
 
         }
@@ -761,14 +708,14 @@ export const historylogapplication = (req, res) => {
     //res.send('ok')
 }
 
-export const searchapplication = (req, res) =>{
-    const {applicationId} = req.body
+export const searchapplication = (req, res) => {
+    const { applicationId } = req.body
     const searchLogQuery = `select * from applyleaves where id=?`
     const searchLogValues = [applicationId]
     db.query(searchLogQuery, searchLogValues, (err, result) => {
         if (err) return res.status(500).json('error occured!')
         else {
-            console.log(result)
+            // console.log(result)
             return res.status(200).json(result)
 
         }

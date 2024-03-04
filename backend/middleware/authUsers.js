@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import db from '../config/connectiondb.js'
 
 export const checkAuthentication = function (req, res, next) {
-    console.log(req.body, req.cookies)
+    //console.log(req.body, req.cookies)
     const authKey = req.cookies.USERAUTHID
     if (authKey === undefined) {
         req.checkAuth = {
@@ -16,12 +16,12 @@ export const checkAuthentication = function (req, res, next) {
     }
     else {
         const verifyKey = jwt.verify(req.cookies.USERAUTHID, process.env.JWT_SECRET)
-        console.log('coming', verifyKey)
+        //console.log('coming', verifyKey)
         const { employee_id, email, user_type, department } = verifyKey
         const q = `select * from usermanagement where employee_id=? and email=? and user_type=? and department=? and status='active'`
         db.query(q, [employee_id, email, user_type, department], (err, result) => {
             if (err) {
-                //console.log(err)
+                ////console.log(err)
                 //req.isAuth = false
                 req.checkAuth = {
                     isAuth: false,

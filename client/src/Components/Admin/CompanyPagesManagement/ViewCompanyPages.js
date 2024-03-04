@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useMemo } from 'react';
-import { Add, CheckBox, CheckBoxOutlineBlank, Delete, Search } from '@mui/icons-material';
+import { Add, Business, CheckBox, CheckBoxOutlineBlank, Delete, Search } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import EditChartUpload from './EditChartUpload';
 import Loader from '../../Comman/Loader';
@@ -251,9 +251,11 @@ function ViewCompanyPages() {
 						<Typography variant='h5' component={'h5'} m={1} p={1} border={'1px solid black'} >Company Page Data</Typography>
 						<List sx={{ width: '100%', display: "flex", margin: 0, flexDirection: 'column' }}>
 
-							<ListItem alignItems="flex-start" >
+							<ListItem alignItems="flex-start" dense >
+							
 
 								<ListItemText
+								
 
 									secondary={
 										<>
@@ -269,6 +271,34 @@ function ViewCompanyPages() {
 											{viewCompanyPageData.companyPageData[0].company_name}
 										</>
 									}
+								>
+									<Container sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center' }}>
+										{viewCompanyPageData.companyPageData[0].company_logo ?
+											
+											<img src={process.env.REACT_APP_BACKEND_SERVER + viewCompanyPageData.companyPageData[0].company_logo} alt='logo' style={{ maxWidth: '200px', height: '60px', backgroundColor:'#E0E0E0'}} />
+											:
+											<Business sx={{ fontSize: 80, mt: 1, mb: 0 }} />
+										}
+
+									</Container>
+								</ListItemText>
+							</ListItem>
+							<ListItem alignItems="flex-start">
+								<ListItemText
+									secondary={
+										<>
+											<Typography
+												sx={{ display: 'inline' }}
+												component="span"
+												variant="body1"
+												color="text.primary"
+												mr={0.5}
+											>
+												Email:
+											</Typography>
+											{viewCompanyPageData.companyPageData[0].company_email}
+										</>
+									}
 								/>
 							</ListItem>
 
@@ -281,7 +311,7 @@ function ViewCompanyPages() {
 												component="span"
 												variant="body1"
 												color="text.primary"
-												mr={0.5}
+												
 											>
 												Address:
 											</Typography>
@@ -289,7 +319,27 @@ function ViewCompanyPages() {
 										</>
 									}
 								/>
+
 							</ListItem>
+							<ListItem alignItems="flex-start">
+								<ListItemText
+									secondary={
+										<>
+											<Typography
+												sx={{ display: 'inline' }}
+												component="span"
+												variant="body1"
+												color="text.primary"
+												mr={0.5}
+											>
+												Website:
+											</Typography>
+											{viewCompanyPageData.companyPageData[0].company_website}
+										</>
+									}
+								/>
+							</ListItem>
+							
 							<ListItem alignItems="flex-start">
 								<ListItemText
 									secondary={
