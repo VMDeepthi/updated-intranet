@@ -1,7 +1,7 @@
 1. Database creation
 --- create database intranet;
 2. company management table
---- create table companymanagement(id varchar(40) primary key,company_logo varchar(300) not null, company_name varchar(100) unique not null, company_email varchar(50) not null, company_address varchar(300) not null, company_website varchar(200) not null, company_contact_no varchar(50) not null, company_status varchar(20) not null);
+--- create table companymanagement(id varchar(40) primary key,company_logo varchar(300) not null, company_name varchar(100) unique not null, company_email varchar(50) not null, company_address varchar(300) not null, company_website varchar(200) not null, company_contact_no varchar(50) not null, company_status varchar(20) not null, serial_no int not null unique auto_increment);
 3. company pagesmanagement table
 --- create table companypagesmanagement(no int auto_increment unique not null, id varchar(40) primary key, company_name varchar(200) not null, company_pagename varchar(100) not null, company_pagetype varchar(500) not null, company_pagestatus varchar(20) not null,companyId varchar(40) not null, foreign key(companyId) references companymanagement(id) on delete cascade, foreign key(company_name) references companymanagement(company_name) on update cascade);
 4. office holiday table
