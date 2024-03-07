@@ -14,7 +14,7 @@ function CrossRoadsSection() {
 
     return (
         <>
-            <Box sx={{ height: '100vh', width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
+            <Box sx={{ minHeight: '100vh', width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
                 {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}>
                     <div

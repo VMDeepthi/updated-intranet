@@ -127,7 +127,8 @@ export const getuser = (req, res) => {
 
 export const edituser = (req, res) => {
     console.log(req.body)
-    const { profile_pic, first_name, last_name, date_of_birth, country, gender, blood_group, company_name, about_yourself, employee_id, date_of_joining, user_type, department, shift, status, email,  past_exp_domain, past_exp_years, designation, prevProfilePic } = req.body
+    if (req.checkAuth.isAuth && req.checkAuth.user_type === 'admin') {
+        const { profile_pic, first_name, last_name, date_of_birth, country, gender, blood_group, company_name, about_yourself, employee_id, date_of_joining, user_type, department, shift, status, email,  past_exp_domain, past_exp_years, designation, prevProfilePic } = req.body
     const check_query = 'select * from usermanagement where email = ? and employee_id != ?'
     db.query(check_query, [email, employee_id], async (err, check_res) => {
         if (err) {
@@ -178,5 +179,67 @@ export const edituser = (req, res) => {
             }
         }
     })
+    }
+    else{
+        return res.status(406).json(`Unauthorized! can't able to perform action`)
+    }
+    
     //res.send('from edit')
+}
+
+//user acceess management
+export const getaccessdata = (req,res) =>{
+    
+    if (req.checkAuth.isAuth) {
+        const {emp_id} = req.body
+        console.log(req.body)
+        const fetch_user_access_data_query = `select * from useraccessmanagement where emp_id = ? `
+        db.query(fetch_user_access_data_query, [emp_id],(err, result) => {
+            if (err) return res.status(500).json('error occured!')
+            else {
+                return res.send(result)
+            }
+        })
+    }
+    else {
+        return res.status(406).json(`Unauthorized! can't able to perform action`)
+    }
+
+}
+
+export const updateuseraccess = (req,res) =>{
+    console.log(req.body)
+    if (req.checkAuth.isAuth && req.checkAuth.user_type === 'admin') {
+        const {emp_id, pagesToBeAccessed} = req.body
+        const fetch_user_access_data_query = `select * from useraccessmanagement where emp_id = ? `
+        db.query(fetch_user_access_data_query, [emp_id],async(err, result) => {
+            if (err) return res.status(500).json('error occured!')
+            else {
+                const pages = pagesToBeAccessed.join(',')
+                try{
+                    if(result.length===0){
+                        const insert_access_query = `insert into useraccessmanagement values(?)`
+                        const insert_access_values = [[emp_id,pages]]
+                        await db.promise().query(insert_access_query, insert_access_values)
+                    }
+                    else{
+                        const update_access_query = `update useraccessmanagement set restricted_pages=? where emp_id=?`
+                        const update_access_values = [pages, emp_id]
+                        await db.promise().query(update_access_query, update_access_values)
+                    }
+                    return res.status(201).json('Access Updated Successfully')
+
+                }
+                catch{
+                    return res.status(500).json('error occured!')
+                }
+                
+            }
+        })
+    }
+    else {
+        return res.status(406).json(`Unauthorized! can't able to perform action`)
+    }
+    
+    // res.send('ok')
 }

@@ -48,6 +48,8 @@ import UploadSalaryDetails from './Components/Admin/SalaryManagement/UploadSalar
 import ViewSalaryDetails from './Components/Admin/SalaryManagement/ViewSalaryDetails'
 import AddExperience from './Components/Admin/Experience/AddExperience'
 import ViewExperience from './Components/Admin/Experience/ViewExperience'
+import UserAccessManagement from './Components/Admin/UserManagement/UserAccessManagement'
+import { UserAccessProvider } from './Components/context/UserAccessContext'
 
 export default function App() {
   //console.log(useContext(UserContext))
@@ -55,6 +57,7 @@ export default function App() {
     <>
       <BrowserRouter>
         <UserProvider>
+          <UserAccessProvider>
           <Routes>
             <Route path='/login' element={<Login />} />
             <Route path='/reportingheadlogin/application/:status?' Component={ReportingHeadLogin} />
@@ -82,6 +85,7 @@ export default function App() {
             <Route path='/viewcompanypages' element={<AdminProtectedRoute component={<ViewCompanyPages />} />} />
             <Route path='/adduser' element={<AdminProtectedRoute component={<AddUser />} />} />
             <Route path='/viewusers' element={<AdminProtectedRoute component={<ViewUser />} />} />
+            <Route path='/user-access-management' element={<AdminProtectedRoute component={<UserAccessManagement />} />} />
             <Route path='/experience' element={<AdminProtectedRoute component={<Experience />} />} />
             <Route path='/addannouncement' element={<AdminProtectedRoute component={<AddAnnouncement />} />} />
             <Route path='/viewannouncements' element={<AdminProtectedRoute component={<ViewAnnouncements />} />} />
@@ -93,16 +97,16 @@ export default function App() {
             <Route path='/manage-balance-leaves' element={<AdminProtectedRoute component={<ManageBalanceLeaves />} />} />
             <Route path='/upload-gallery' element={<AdminProtectedRoute component={<UploadGallary />} />} />
             <Route path='/view-gallery' element={<AdminProtectedRoute component={<ViewGallery />} />} />
+
+
             <Route path='/uploadsalarydetails' element={<AdminProtectedRoute component={<UploadSalaryDetails />} />} />
             <Route path='/viewsalarydetails' element={<AdminProtectedRoute component={<ViewSalaryDetails />} />} />
 
             <Route path='/Addexperience' element={<AdminProtectedRoute component={<AddExperience />} />} />
             <Route path='/Viewexperience' element={<AdminProtectedRoute component={<ViewExperience />} />} />
 
-            {/*----------------------------USER------------------------------------------------------------------------------------ */}
-
-            <Route path='*' element={<Navigate replace to='/' />} />
           </Routes>
+          </UserAccessProvider>
         </UserProvider>
 
 

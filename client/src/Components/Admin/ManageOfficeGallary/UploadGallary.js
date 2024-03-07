@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Container, Grid, Paper, Typography, FormControl, Stack, OutlinedInput, InputLabel,  IconButton, TextField } from '@mui/material';
+import { Box, Button, Container, Grid, Paper, Typography, FormControl, Stack, OutlinedInput, InputLabel, IconButton, TextField } from '@mui/material';
 import { Cancel, CloudUpload, FileUpload } from '@mui/icons-material';
 import { useDropzone } from 'react-dropzone';
 
@@ -50,8 +50,8 @@ function UploadGallary() {
 
     })
     const [loadingData, setLoadingData] = useState(false)
- 
-    const fix = ()=>{
+
+    const fix = () => {
         setLoadingData(false)
     }
 
@@ -84,8 +84,8 @@ function UploadGallary() {
             })
             console.log(acceptedFiles)
 
-            setFiles([...files,...acceptedFiles])
-            setTimeout(fix,1000)
+            setFiles([...files, ...acceptedFiles])
+            setTimeout(fix, 1000)
 
 
         }
@@ -120,64 +120,41 @@ function UploadGallary() {
 
     const handleUploadFile = async (e) => {
         e.preventDefault()
-        
+
         if (files.length === 0) {
             toast.warning('Select file(s) to upload!');
         }
         else {
             console.log(files)
             const form = new FormData();
-      	    //form.append('file', files);
-            form.append("eventTitle",eventData.title)
-            form.append("eventDate",eventData.date)
-            //formData.append('file',files[0])
+            form.append("eventTitle", eventData.title)
+            form.append("eventDate", eventData.date)
             files.forEach(file => form.append('file', file));
-            //folderNames.forEach((folderName, index) => formData.append(`folderNames[${index}]`, folderName));
-            console.log('formdata', form)
-
+            //console.log('formdata', form)
             toast.promise(axios.post('/api/uploadgallaryimages', form, {
                 headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            
-          }),{
-            pending:{
-                render(){
-                    return 'Adding Event Gallary'
-                }
-            },
-            success:{
-                render(res){
-                    handleCancel()
-                    return res.data.data
-                }
-            },
-            error:{
-                render(err){
-                    return err.data.response.data
-                }
-            }
-          })
+                    'Content-Type': 'multipart/form-data',
+                },
 
-        //     try {
-        //         const response = await axios.post('/api/uploadgallaryimages', form, {
-        //             headers: {
-        //           'Content-Type': 'multipart/form-data',
-        //         },
-                
-        //       });
-        //         console.log(response.data);
-        //         // toast.success('Files uploaded successfully!');
-        //         // setFiles([]);
-        //         // setFolderNames(['']);
-        //         //await axios.post('/api/uploadgallaryimages', formData)
-
-        //     }
-        //     catch (error) {
-        //         console.error('Error uploading files:', error);
-        //         toast.error('Failed to upload files!');
-        //     }
-         }
+            }), {
+                pending: {
+                    render() {
+                        return 'Adding Event Gallary'
+                    }
+                },
+                success: {
+                    render(res) {
+                        handleCancel()
+                        return res.data.data
+                    }
+                },
+                error: {
+                    render(err) {
+                        return err.data.response.data
+                    }
+                }
+            })
+        }
     };
 
     const handleCancel = () => {
@@ -199,10 +176,10 @@ function UploadGallary() {
                     <Grid container display={'flex'} justifyContent={'center'}>
                         <Grid item sm={8} xs={12} md={10} lg={10}>
                             <Paper elevation={5} sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', p: 1 }}>
-                                <Box  sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', p: 1 }}>
-                                    
-                                    <Stack  display={'flex'} direction={'column'} width={'100%'} spacing={{ xs: 1, sm: 1, md: 2, lg: 2 }} >
-                                        <Stack component={'form'} onSubmit={handleUploadFile}   direction={{ xs: 'column', lg: 'row' }} spacing={2}>
+                                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', p: 1 }}>
+
+                                    <Stack display={'flex'} direction={'column'} width={'100%'} spacing={{ xs: 1, sm: 1, md: 2, lg: 2 }} >
+                                        <Stack component={'form'} onSubmit={handleUploadFile} direction={{ xs: 'column', lg: 'row' }} spacing={2}>
                                             <FormControl fullWidth variant="outlined">
                                                 <InputLabel size='small' required>Event Title</InputLabel>
                                                 <OutlinedInput
@@ -230,31 +207,18 @@ function UploadGallary() {
 
                                             </FormControl>
 
-
-
-
-
-
                                             <Stack direction={'row'} spacing={2}>
                                                 <Box sx={{ display: 'flex', justifyContent: 'center', p: 0.2 }}>
-                                                    <Button  color='success' size='small' type='submit'  variant="contained" endIcon={<FileUpload />} >Upload </Button>
+                                                    <Button color='success' size='small' type='submit' variant="contained" endIcon={<FileUpload />} >Upload </Button>
                                                 </Box>
 
 
 
                                                 <Box sx={{ display: 'flex', justifyContent: 'center', p: 0.2 }}>
-                                                    <Button color='error' size='small'  variant="contained" endIcon={<Cancel />} onClick={handleCancel}>Cancel </Button>
+                                                    <Button color='error' size='small' variant="contained" endIcon={<Cancel />} onClick={handleCancel}>Cancel </Button>
                                                 </Box>
 
                                             </Stack>
-
-
-
-
-
-
-
-
 
                                         </Stack>
 
@@ -271,22 +235,20 @@ function UploadGallary() {
 
                                     </Stack>
 
-
-
                                     <Grid container spacing={2} mb={2}>
                                         {
                                             loadingData ?
-                                            <Container sx={{display:'flex', justifyContent:'center'}}>
-                                                <ClipLoader
-                                                    color={'#c0c0c0'}
-                                                    loading={loadingData }
-                                                    speedMultiplier={0.8}
-                                                    size={85}
-                                                    aria-label="Loading PropagateLoader"
-                                                    data-testid="loader"
-                                                />
+                                                <Container sx={{ display: 'flex', justifyContent: 'center' }}>
+                                                    <ClipLoader
+                                                        color={'#c0c0c0'}
+                                                        loading={loadingData}
+                                                        speedMultiplier={0.8}
+                                                        size={85}
+                                                        aria-label="Loading PropagateLoader"
+                                                        data-testid="loader"
+                                                    />
                                                 </Container>
-                                                 :
+                                                :
                                                 <>
 
                                                     {files.map((file, index) => (

@@ -6,9 +6,9 @@ import cloudinary from "../config/cloudinaryconfig.js";
 
 export const companynames = async (req, res) => {
     console.log(req.cookies)
-    try {
+    // try {
 
-        if (req.checkAuth.isAuth && req.checkAuth.user_type === 'admin') {
+        // if (req.checkAuth.isAuth && req.checkAuth.user_type === 'admin') {
             const q = `select id, company_name from companymanagement where company_status='active' order by id desc`
             db.query(q, (err, result) => {
                 if (err) {
@@ -18,14 +18,14 @@ export const companynames = async (req, res) => {
                     return res.status(200).json(result)
                 }
             })
-        }
-        else {
-            return res.status(401).json('Unauthorized User')
-        }
-    }
-    catch {
-        return res.status(500).json('not able to fetch company names!')
-    }
+    //     }
+    //     else {
+    //         return res.status(401).json('Unauthorized User')
+    //     }
+    // }
+    // catch {
+    //     return res.status(500).json('not able to fetch company names!')
+    // }
 
 }
 

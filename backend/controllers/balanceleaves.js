@@ -72,8 +72,8 @@ export const monthbalance = (req, res) => {
 
 export const getemployeedata = (req, res) => {
     console.log(req.checkAuth)
-    if (req.checkAuth.isAuth && req.checkAuth.user_type === 'admin' && req.checkAuth.department === 'management') {
-        const userQuery = `select concat(first_name,' ',last_name) as fullname,employee_id from usermanagement where status='active' ; `
+    if (req.checkAuth.isAuth && req.checkAuth.user_type === 'admin') {
+        const userQuery = `select concat(first_name,' ',last_name) as fullname,employee_id, status, user_type, department from usermanagement where status='active' ; `
         db.query(userQuery, (err, result) => {
             if (err) return res.status(500).json('error occured!')
             else {

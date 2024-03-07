@@ -37,6 +37,7 @@ import { toast } from 'react-toastify';
 
 import { Steps, Hints } from 'intro.js-react';
 import "intro.js/introjs.css";
+import { UserAccessContext } from '../../context/UserAccessContext';
 
 
 
@@ -99,9 +100,11 @@ const Dashboard = () => {
     const [loader, setLoader] = useState(true)
 
     const [stepsEnabled, setStepsEnabled] = useState(false);
-    const [startTour, setStartTour]= useState(false);
+    const [startTour, setStartTour] = useState(false);
 
-    const steps=[
+    const { pagesToBeNotAccessed } = useContext(UserAccessContext)
+
+    const steps = [
         {
             element: '.notice',
             intro: 'All announcements will be displayed here'
@@ -127,7 +130,7 @@ const Dashboard = () => {
         {
             element: '.personal-section',
             intro: 'In this section you can view my attendance,my pays and my accounts',
-            position:'right'
+            position: 'right'
         },
         {
             element: '.my-attendance',
@@ -152,12 +155,12 @@ const Dashboard = () => {
         {
             element: '.birthday-list',
             intro: 'Here current month employees birthday will display',
-            position:'left'
+            position: 'left'
         },
         {
             element: '.view-link-birthdays',
             intro: 'Here all/filtered employees birthday list will display ',
-           
+
         },
         {
             element: '.office-calender',
@@ -183,17 +186,17 @@ const Dashboard = () => {
             element: '.navigation-menu',
             intro: 'This is the navigation menu'
         },
-        {   
-            
+        {
+
             title: '<img style="max-width:200px;height:50px" src="https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png" alt="img" />',
             intro: '<h2 >Welcome To Brightcom Group</h2>'
-            
+
         }
-       
+
 
 
     ]
-    
+
 
     const navigate = useNavigate()
     const { width, height } = useWindowSize()
@@ -203,7 +206,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const ann = await axios.post('/api/notice',{company_name:userDetails.company_name,department:userDetails.department,date:new Date().toLocaleDateString('en-CA').slice(0,10)})
+                const ann = await axios.post('/api/notice', { company_name: userDetails.company_name, department: userDetails.department, date: new Date().toLocaleDateString('en-CA').slice(0, 10) })
                 setNotice(ann.data)
                 const res = await axios.post('/api/attendancegraphdata', { emp_id: userDetails.employee_id })
                 let options = [{ day: 'numeric' }, { month: 'short' }];
@@ -221,7 +224,7 @@ const Dashboard = () => {
                 const bal_hr = res.data.balance
                 setGraphData({ date: dateData, totalhrs: totalhrsData, bal_hr: bal_hr })
 
-                const holidays = await axios.post('/api/holidaylist',{department:userDetails.department})
+                const holidays = await axios.post('/api/holidaylist', { department: userDetails.department })
                 setCalenderData(holidays.data)
                 const birthdays = await axios.get('/api/birthdaylist')
                 setBirthdayData(birthdays.data)
@@ -229,35 +232,36 @@ const Dashboard = () => {
                 setStepsEnabled(intro.data)
                 //console.log('intro', intro)
 
-                
+
+
 
                 setLoader(false)
 
 
             }
-            catch(err) {
+            catch (err) {
                 //console.log(err.response.status)
                 setLoader(false)
-                
-                if(err.message==="Network Error"){
+
+                if (err.message === "Network Error") {
                     toast.error('please check your internet and try again!')
                 }
-                else if(err.response.status===504){
+                else if (err.response.status === 504) {
                     toast.error('not able get data contact admin!')
                 }
-               
+
 
             }
 
         }
-        if(userDetails.employee_id!==undefined){
+        if (userDetails.employee_id !== undefined) {
             fetchData()
 
         }
-        else{
+        else {
             setLoader(false)
         }
-        
+
     }, [userDetails])
 
     const handleChange = (event, newValue) => {
@@ -297,19 +301,19 @@ const Dashboard = () => {
 
     // }
 
-    const userIntroTour=()=>{
+    const userIntroTour = () => {
         setStepsEnabled(true)
         setStartTour(true);
-       }; 
+    };
 
-        const onExit = async(stepIndex) => {
-            console.log('onexit',stepIndex)
-            setStepsEnabled(false);
-            if(!startTour){
-                await axios.post('/api/adduserintro',{employee_id:userDetails.employee_id })
-            }
-           
+    const onExit = async (stepIndex) => {
+        //console.log('onexit', stepIndex)
+        setStepsEnabled(false);
+        if (!startTour) {
+            await axios.post('/api/adduserintro', { employee_id: userDetails.employee_id })
         }
+
+    }
 
 
 
@@ -355,18 +359,22 @@ const Dashboard = () => {
         </Card>)
 
 
+
+
     return (
         <>
             <Box sx={{ display: 'flex', }}>
 
-                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar userIntroTour={userIntroTour} /> : <UserNavBar userIntroTour={userIntroTour} />}
+                {userDetails.user_type === 'admin' && userDetails.department === 'management' ? <AdminNavBar userIntroTour={userIntroTour} /> : <UserNavBar userIntroTour={userIntroTour} />}
                 <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 6, }}>
 
-                    <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex',}}>
+                    <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex', }}>
                         <Grid item xs={12} sm={12} md={12} lg={12} >
                             <Notice notice={notice} />
+
                         </Grid>
                         <Grid item xs={12} sm={6} md={8} >
+
                             <Card className='profile-section' sx={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center', height: 80, p: 2 }} >
 
                                 <CardMedia
@@ -436,21 +444,36 @@ const Dashboard = () => {
                                             <img className="static" alt='img' src="cross.png" style={{ width: 50, height: 50 }} /><img className="active" alt='imgs' style={{ width: 50, height: 50 }} src="cross.gif" />
                                         </IconButton>
                                         <Typography variant="p" component="div" sx={{ textAlign: 'center', fontSize: 12 }}>
-                                           Office Zone
+                                            Office Zone
                                         </Typography>
                                     </Box>
                                 </Stack>
                             </Card>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            {personalSetion}
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <BirthDayList birthdayData={birthdayData} />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <OfficeCalender data={calenderData} />
-                        </Grid>
+
+                        {pagesToBeNotAccessed === null ? null : !pagesToBeNotAccessed.includes('PersonalSection')  ?
+                            <Grid item xs={12} sm={6} md={4}>
+                                {personalSetion}
+                            </Grid>
+
+                            : null}
+
+                        {pagesToBeNotAccessed === null ? null : !pagesToBeNotAccessed.includes('BirthdayList') ?
+                            <Grid item xs={12} sm={6} md={4}>
+                                <BirthDayList birthdayData={birthdayData} />
+                            </Grid>
+
+                            : null}
+
+                        {pagesToBeNotAccessed === null ? null : !pagesToBeNotAccessed.includes('OfficeCalender')  ?
+                            <Grid item xs={12} sm={6} md={4}>
+                                <OfficeCalender data={calenderData} />
+                            </Grid>
+
+                            : null}
+
+
+
                     </Grid>
 
                 </Box>
@@ -459,15 +482,15 @@ const Dashboard = () => {
             <Confetti
                 width={width}
                 height={height}
-                run={new Date(userDetails.date_of_birth).getMonth()===new Date().getMonth()&& new Date(userDetails.date_of_birth).getDate()===new Date().getDate()}
+                run={new Date(userDetails.date_of_birth).getMonth() === new Date().getMonth() && new Date(userDetails.date_of_birth).getDate() === new Date().getDate()}
             />
-             <Steps
-            enabled={stepsEnabled}
-            steps={steps}
-            initialStep={notice.length===0?1:0}
-            onExit={onExit}          
-            options={{ doneLabel: 'Done', exitOnOverlayClick: false,exitOnEsc:false }}
-        />      
+            <Steps
+                enabled={stepsEnabled}
+                steps={steps}
+                initialStep={notice.length === 0 ? 1 : 0}
+                onExit={onExit}
+                options={{ doneLabel: 'Done', exitOnOverlayClick: false, exitOnEsc: false }}
+            />
 
         </>
 

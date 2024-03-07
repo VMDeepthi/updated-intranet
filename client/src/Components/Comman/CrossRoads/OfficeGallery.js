@@ -1,4 +1,4 @@
-import { ArrowBack,Collections, KeyboardDoubleArrowRight, Search } from '@mui/icons-material'
+import { ArrowBack, Collections, KeyboardDoubleArrowRight, Search } from '@mui/icons-material'
 import { Box, Button, Container, Fade, FormControl, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, InputAdornment, InputLabel, OutlinedInput, Paper, Typography, createTheme, useMediaQuery } from '@mui/material'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -78,7 +78,7 @@ function OfficeGallery() {
                     filterGalleryData.length === 0 ?
                         <Container sx={{ display: "flex", justifyContent: 'center', width: '90%', height: 250 }}>
                             <Paper sx={{ width: '100%', backgroundColor: '#fafbfd' }}>
-                                <img style={{ objectFit: 'contain', height: '100%', width: '100%' }} src='https://static.tripoly.in/assets/whitelable1/img/norecordfound.gif' alt='no records' />
+                                <img style={{ objectFit: 'contain', height: '100%', width: '100%' }} src='norecordfound.gif' alt='no records' />
 
 
                             </Paper>
@@ -153,16 +153,16 @@ function OfficeGallery() {
                             sx={{ transition: 'transform .2s;', "&:hover": { transform: 'translateX(-3px)', backgroundColor: "transparent" } }}
                             onClick={handleBack}
                         >
-                            <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '15px',}}><ArrowBack />Back</Typography>
+                            <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '15px', }}><ArrowBack />Back</Typography>
                         </Button>
                     </Box>
                     <Box >
-                        <Typography sx={{ fontSize: '18px',  fontWeight: 'bold',backgroundImage: 'linear-gradient(135deg, #E8DBFC 10%, #F8F9D2 100%);', border:'1px solid black', p:0.5  }}>Event: {eventTitle}</Typography>
+                        <Typography sx={{ fontSize: '18px', fontWeight: 'bold', backgroundImage: 'linear-gradient(135deg, #E8DBFC 10%, #F8F9D2 100%);', border: '1px solid black', p: 0.5 }}>Event: {eventTitle}</Typography>
                     </Box>
 
                 </Container>
                 <Box sx={{ display: 'flex', width: '100%', height: 'auto', justifyContent: 'center', }}>
-                    <ImageList variant="masonry"   cols={3} gap={8}>
+                    <ImageList variant="masonry" cols={3} gap={8}>
                         {galleryImages.map((item) => (
                             <ImageListItem key={item.no}>
                                 <img
@@ -170,8 +170,8 @@ function OfficeGallery() {
                                     src={`${process.env.REACT_APP_BACKEND_SERVER + item.image}?w=248&fit=crop&auto=format`}
                                     alt={item.no}
                                     loading="lazy"
-                                    
-                                    
+
+
                                 />
                                 <ImageListItemBar position="below" title={item.author} />
                             </ImageListItem>
@@ -187,30 +187,18 @@ function OfficeGallery() {
     }
     const views = [GalleryView(), OpenedGallleryView()]
     return (
-        <Box sx={{ height: { xs: 'auto', lg: 'auto' }, width: "auto", display: 'flex', }}>
+        <Box >
 
-            <Box component="main" sx={{ flexGrow: 1, height: 'auto', }}>
-                <div
-                    style={{
-                        height: 'auto',
-                        width: '100%',
+            <Typography variant='h5' component={'h5'} textAlign={'center'} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Office Gallery <Collections /> </Typography>
+
+            {step === 0 ? views[step] :
+                <Fade in={step === 1} timeout={2000} unmountOnExit >
+                    {views[step]}
+                </Fade>
+            }
+            <Loader loader={loader} />
 
 
-                    }}
-                >
-                    <Typography variant='h5' component={'h5'} textAlign={'center'} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Office Gallery <Collections /> </Typography>
-                    <Grid container display={'flex'} justifyContent={'center'}>
-
-                        {step === 0 ? views[step] :
-                            <Fade in={step === 1} timeout={2000} unmountOnExit >
-                                {views[step]}
-                            </Fade>
-                        }
-
-                    </Grid>
-                </div>
-                <Loader loader={loader} />
-            </Box>
         </Box>
 
 

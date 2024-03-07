@@ -50,3 +50,5 @@
     INDEX (employee_id),
     FOREIGN KEY (employee_id) REFERENCES usermanagement(employee_id)     
 );
+21. useraccessmanagement table
+--- create table useraccessmanagement(emp_id int not null, access_pages varchar(500) not null, foreign key(emp_id) references usermanagement(employee_id));

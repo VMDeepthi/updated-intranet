@@ -32,7 +32,7 @@ export const checkuser = async (req, res) => {
     console.log(req.cookies)
     const {isAuth,employee_id, email, user_type, department} = req.checkAuth
     try {
-        if (isAuth && user_type === 'admin') {
+        if (isAuth) {
             const q = `select * from usermanagement where employee_id=? and email=? and user_type=? and department=? and status='active'`
             db.query(q, [employee_id, email, user_type, department], (err, result) => {
                 if (err) {

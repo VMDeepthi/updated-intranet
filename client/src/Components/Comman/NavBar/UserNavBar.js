@@ -40,6 +40,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AccountBalanceWallet, AccountBox, AdsClick, ExpandLess, ExpandMore, ForwardToInbox, LockOpen, Logout, WorkHistory, WorkOff } from '@mui/icons-material';
 import { CgListTree } from 'react-icons/cg';
+import { UserAccessContext } from '../../context/UserAccessContext';
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -65,6 +66,7 @@ export default function UserNavBar(props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { userDetails } = useContext(UserContext)
   const [expandedPage, setExpandedPage] = useState('')
+  const { pagesToBeNotAccessed } = useContext(UserAccessContext)
 
 
   const handleExpand = (page) => {
@@ -397,104 +399,136 @@ export default function UserNavBar(props) {
 
       >
         <List sx={{ mt: 8 }}  className='navigation-menu'>
-          {['Dashboard', 'Attendance'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
+        {['Dashboard', 'Attendance'].map((text, index) => (
+              
+                
+              pagesToBeNotAccessed!==null && !pagesToBeNotAccessed.includes(text)?
+              <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
               <ListItemButton
+              title={text}
+              sx={{
+                minHeight: 45,
+                justifyContent: 'center',
+                px: 1.5,
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  minHeight: 45,
-                  justifyContent: 'center',
-                  px: 1.5,
-                }}
-                title={text}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {iconList[index]}
-                </ListItemIcon>
+                  minWidth: 0,
+                  mr: 3,
 
-              </ListItemButton>
-            </ListItem>
-          ))}
-          {/*----------------------------------Leaves---------------------------*/}
+                  justifyContent: 'center',
+                }}
+              >
+                {iconList[index]}
+              </ListItemIcon>
+
+            </ListItemButton>
+          </ListItem>
+          :null
+              
+            
+            
+        ))}
+        {/*----------------------------------Leaves---------------------------*/}
+        {
+          pagesToBeNotAccessed!==null && (!pagesToBeNotAccessed.includes('ApplyLeave') || !pagesToBeNotAccessed.includes('BalanceLeaves'))?
+
           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Leaves')}>
-            <ListItemButton
-              title={'Leaves'}
+          <ListItemButton
+            title={'Leaves'}
+            sx={{
+              minHeight: 45,
+              justifyContent: 'center',
+              px: 1.5,
+            }}
+          >
+            <ListItemIcon
               sx={{
-                minHeight: 45,
+                minWidth: 0,
+                mr: 'auto', ml: 'auto',
+
                 justifyContent: 'center',
-                px: 1.5,
+
               }}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: 'auto',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <WorkOff />
+              <WorkOff />
 
-              </ListItemIcon>
-              {expandedPage==='Leaves' ? <ExpandLess /> : <ExpandMore />}
+            </ListItemIcon>
+            {expandedPage === 'Leaves' ? <ExpandLess /> : <ExpandMore />}
 
-            </ListItemButton>
-          </ListItem>
+          </ListItemButton>
+        </ListItem>
+
+          :null
+
+        }
+        
+
+
+        {/*----------------------------------History Log Of All applications---------------------------*/}
+        {
+          pagesToBeNotAccessed!==null && !pagesToBeNotAccessed.includes('HistoryLog')?
           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog')}>
-            <ListItemButton
-              title={'History Log for all Application'}
+          <ListItemButton
+            title={'History Log for all Application'}
+            sx={{
+              minHeight: 45,
+              justifyContent: 'center',
+              px: 1.5,
+            }}
+          >
+            <ListItemIcon
               sx={{
-                minHeight: 45,
+                minWidth: 0,
+                mr: 3,
                 justifyContent: 'center',
-                px: 1.5,
+
               }}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: 'auto',
-                  justifyContent: 'center',
-                 
-                }}
-              >
-                <WorkHistory />
+              <WorkHistory />
 
-              </ListItemIcon>
+            </ListItemIcon>
 
 
-            </ListItemButton>
-          </ListItem>
-
-          {/* ------------------------------------------reporting structure-------------------------------- */}
+          </ListItemButton>
+        </ListItem>
+          :
+          null
+        }
+        
+        {/* ------------------------------------------reporting structure-------------------------------- */}
+        {
+          pagesToBeNotAccessed!==null && !pagesToBeNotAccessed.includes('ReportingStructure')?
           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/reportingstructure')}>
-            <ListItemButton
-              title={'View Reporting Structure'}
+          <ListItemButton
+            title={'View Reporting Structure'}
+            sx={{
+              minHeight: 45,
+              justifyContent: 'center',
+              px: 1.5,
+            }}
+          >
+            <ListItemIcon
               sx={{
-                minHeight: 45,
+                minWidth: 0,
+
+                mr: 3,
                 justifyContent: 'center',
-                px: 1.5,
+                alignItems: 'center'
+
               }}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: 'auto',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <CgListTree fontSize={20} />
+              <CgListTree fontSize={20} />
 
-              </ListItemIcon>
+            </ListItemIcon>
 
 
-            </ListItemButton>
-          </ListItem>
+          </ListItemButton>
+        </ListItem>
+          :
+          null
+        }
 
           <Divider />
 
@@ -516,159 +550,179 @@ export default function UserNavBar(props) {
 
       >
         <List sx={{ mt: 8 }}>
-          {['Dashboard', 'Attendance'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
-              <ListItemButton
-                sx={{
-                  minHeight: 45,
-                  justifyContent: 'center',
-                  px: 1.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: 3,
-                    justifyContent: 'center',
-                  }}
-                >
-                  {iconList[index]}
-                </ListItemIcon>
-                <ListItemText primary={<Typography sx={{ fontSize: 15 }}>{text}</Typography>} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-          {/*--------------------------------------Leaves----------------------------------*/}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Leaves')} >
-            <ListItemButton
-              sx={{
-                minHeight: 45,
-                justifyContent: 'center',
-                px: 1.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
+        {['Dashboard', 'Attendance'].map((text, index) => (
+               
+               pagesToBeNotAccessed!==null && !pagesToBeNotAccessed.includes(text)?
+             <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
+               <ListItemButton
+                 sx={{
+                   minHeight: 45,
+                   justifyContent: 'center',
+                   px: 1.5,
+                 }}
+               >
+                 <ListItemIcon
+                   sx={{
+                     minWidth: 0,
+                     mr: 3,
+                     justifyContent: 'center',
+                   }}
+                 >
+                   {iconList[index]}
+                 </ListItemIcon>
+                 <ListItemText primary={<Typography sx={{ fontSize: 15 }}>{text}</Typography>} />
+               </ListItemButton>
+             </ListItem>
+             :null
+           ))}
+           {/*--------------------------------------Leaves----------------------------------*/}
 
-              >
-                <WorkOff />
-              </ListItemIcon>
-              <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Leaves</Typography>} />
-              {expandedPage==='Leaves' ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            
+           {
+             pagesToBeNotAccessed!==null && (!pagesToBeNotAccessed.includes('ApplyLeave')||!pagesToBeNotAccessed.includes('BalanceLeaves'))
+             ?
+             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Leaves')} >
+             <ListItemButton
+               sx={{
+                 minHeight: 45,
+                 justifyContent: 'center',
+                 px: 1.5,
+               }}
+             >
+               <ListItemIcon
+                 sx={{
+                   minWidth: 0,
+                   mr: 3,
+                   justifyContent: 'center',
 
-            
-            <Collapse in={expandedPage==='Leaves'} timeout={'auto'} unmountOnExit>
-            
-            <Divider />
-                <List>
+                 }}
 
-                  <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/applyleave')}>
-                    <ListItemButton
-                      sx={{
-                        minHeight: 45,
-                        justifyContent: 'center',
-                        px: 1.5,
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: 0,
-                          mr: 3,
-                          ml: 3,
-                          justifyContent: 'center',
-                          alignItems: 'center'
-                        }}
+               >
+                 <WorkOff />
+               </ListItemIcon>
+               <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Leaves</Typography>} />
+               {expandedPage === 'Leaves' ? <ExpandLess /> : <ExpandMore />}
+             </ListItemButton>
+             
+             <Collapse in={expandedPage === 'Leaves'} timeout={'auto'} unmountOnExit>
+               <List>
+               {
+               pagesToBeNotAccessed!==null && !pagesToBeNotAccessed.includes('ApplyLeave')?
+               <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/applyleave')}>
+                   <ListItemButton
+                     sx={{
+                       minHeight: 45,
+                       justifyContent: 'center',
+                       px: 1.5,
+                     }}
+                   >
+                     <ListItemIcon
+                       sx={{
+                         minWidth: 0,
+                         mr: 3,
+                         ml: 3,
+                         justifyContent: 'center',
 
-                      >
-                        <ForwardToInbox />
-                      </ListItemIcon>
-                      <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Apply Leave</Typography>} />
-                    </ListItemButton>
-                  </ListItem>
+                       }}
 
-                  <ListItem disablePadding sx={{ display: 'flex' }} onClick={() => navigate('/balanceleaves')} >
-                    <ListItemButton
-                      sx={{
-                        minHeight: 45,
-                        justifyContent: 'center',
-                        px: 1.5,
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: 0,
-                          mr: 3,
-                          ml: 3,
-                          justifyContent: 'center',
-                          alignItems: 'center'
-                        }}
+                     >
+                       <ForwardToInbox />
+                     </ListItemIcon>
+                     <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Apply Leave</Typography>} />
+                   </ListItemButton>
+                 </ListItem>
 
-                      >
-                        <AccountBalanceWallet />
-                      </ListItemIcon>
-                      <ListItemText  primary={<Typography sx={{ fontSize: 15 }}>Balance Leaves</Typography>} />
-                    </ListItemButton>
-                  </ListItem>
+               :null
+             }
+             {
+               pagesToBeNotAccessed!==null && !pagesToBeNotAccessed.includes('BalanceLeaves')?
+               <ListItem disablePadding sx={{ display: 'flex' }} onClick={() => navigate('/balanceleaves')}>
+                   <ListItemButton
+                     sx={{
+                       minHeight: 45,
+                       justifyContent: 'center',
+                       px: 1.5,
+                     }}
+                   >
+                     <ListItemIcon
+                       sx={{
+                         minWidth: 0,
+                         mr: 3,
+                         ml: 3,
+                         justifyContent: 'center',
 
-                </List>
+                       }}
 
-            </Collapse>
+                     >
+                       <AccountBalanceWallet />
+                     </ListItemIcon>
+                     <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Balance Leaves</Typography>} />
+                   </ListItemButton>
+                 </ListItem>
+               :null
 
-          </ListItem>
+             }
+               </List>
+             </Collapse>
 
-          {/*----------------------------------History Log Of All application---------------------------*/}
+           </ListItem>
+           :
+             null
+           }
+           
+           {/*----------------------------------History Log Of All application---------------------------*/}
+           {
+               pagesToBeNotAccessed!==null && !pagesToBeNotAccessed.includes('HistoryLog')?
+               <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog')}  >
+             <ListItemButton
+               sx={{
+                 minHeight: 45,
+                 justifyContent: 'center',
+                 px: 1.5,
+               }}
+             >
+               <ListItemIcon
+                 sx={{
+                   minWidth: 0,
+                   mr: 3,
+                   justifyContent: 'center',
+                 }}
+               >
+                 <WorkHistory />
+               </ListItemIcon>
+               <ListItemText primary={<Typography sx={{ fontSize: 15 }}>History Log for all Application</Typography>} />
+             </ListItemButton>
+           </ListItem>
 
+               :null
+           }
+           
+           {/* --------------------reporting structure-------------------------------------------- */}
 
+           {
+               pagesToBeNotAccessed!==null && !pagesToBeNotAccessed.includes('ReportingStructure')?
+               <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/reportingstructure')} >
+             <ListItemButton
+               sx={{
+                 minHeight: 45,
+                 justifyContent: 'center',
+                 px: 1.5,
+               }}
+             >
+               <ListItemIcon
+                 sx={{
+                   minWidth: 0,
+                   mr: 3,
+                   justifyContent: 'center',
+                 }}
+               >
+                 < CgListTree fontSize={20} />
+               </ListItemIcon>
+               <ListItemText primary={<Typography sx={{ fontSize: 15 }}>View Reporting Structure</Typography>} />
+             </ListItemButton>
+           </ListItem>
 
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/historylog')} >
-            <ListItemButton
-              sx={{
-                minHeight: 45,
-                justifyContent: 'center',
-                px: 1.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'center',
-                }}
-              >
-                <WorkHistory />
-              </ListItemIcon>
-              <ListItemText primary={<Typography sx={{ fontSize: 15 }}>History Log for all Application</Typography>} />
-            </ListItemButton>
-          </ListItem>
-
-          {/* ------------------------------------------reporting structure-------------------------------- */}
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/reportingstructure')} >
-            <ListItemButton
-              sx={{
-                minHeight: 45,
-                justifyContent: 'center',
-                px: 1.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: 3,
-                  justifyContent: 'center',
-                }}
-              >
-                < CgListTree fontSize={20} />
-              </ListItemIcon>
-              <ListItemText primary={ <Typography sx={{ fontSize: 15 }}>View Reporting Structure</Typography>}  />
-            </ListItemButton>
-          </ListItem>
+               :null
+           }
 
 
 

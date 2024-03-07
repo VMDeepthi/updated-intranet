@@ -8,8 +8,8 @@ function AttendanceGraph(props) {
     const {graphData} = props
     
     // const workingHours = [0, 0, 9.15, 9.00, 9.00, 9.00, 9.00, 0, 0, 9.00, ]
-    // console.log(graphData)
-    console.log('m:',graphData)
+    // //console.log(graphData)
+    //console.log('m:',graphData)
 
     const data = {
         series: [

@@ -22,7 +22,7 @@ const BirthDayList = (props) => {
     const {userDetails}  = useContext(UserContext)
 
     const handleClickOpen = (user) => {
-        //console.log(activeStep)
+        console.log(activeStep)
         setSelectedUser(user)
         setOpen(true);
     };
@@ -47,11 +47,11 @@ const BirthDayList = (props) => {
 
 
     useEffect(() => {
-        console.log('bir',birthdayData)
+        // console.log('bir',birthdayData)
         const filteredList = birthdayData.filter((data) => new Date(new Date(data.date_of_birth).toLocaleString('en-CA').slice(0, 10)).getMonth() === activeStep)
-        console.log(filteredList)
+        // console.log(filteredList)
         const birthdayList = filteredList.map(d => ({ profile: d.profile_pic, name: `${d.first_name} ${d.last_name}`, email: d.email, dob: `${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(new Date(d.date_of_birth).toLocaleString('en-CA').slice(0, 10)))} ${new Date(new Date(d.date_of_birth).toLocaleString('en-CA').slice(0, 10)).getDate()}` }))
-        console.log(birthdayList)
+        // console.log(birthdayList)
         setFilterBirthdayList(birthdayList)
     }, [birthdayData, activeStep])
 
@@ -73,7 +73,7 @@ const BirthDayList = (props) => {
             setSubject('')
         };
         const handleSendBirthdayGreeting = (e)=>{
-            console.log(birthdayMsg)
+            // console.log(birthdayMsg)
             e.preventDefault()
             if(birthdayMsg!==''){
                 toast.promise(axios.post('/api/sendbirthdaywishes',{to:selectedUser.email,name:`${userDetails.first_name} ${userDetails.last_name}`,from:userDetails.email,subject:subject,msg:birthdayMsg}),{
