@@ -108,6 +108,7 @@ const PaySlips = () => {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [showTable, setShowTable] = useState(false);
+  const [companyDetails, setCompanyDetails] = useState({})
 
   const handleAddFormDataMonth = (e) => {
     setMonth(e.target.value);
@@ -137,6 +138,14 @@ const PaySlips = () => {
         .catch(() => {
           toast.error("unable to fetch data");
         });
+        axios.post('/api/companydetails',{emp_id: userDetails.employee_id})
+        .then((res) => {
+          console.log(res.data)
+          setCompanyDetails(res.data[0])
+        })
+        .catch(() => {
+          toast.error("unable to fetch data");
+        });
     } catch (err) {
       console.log(err);
     }
@@ -149,18 +158,18 @@ const PaySlips = () => {
   // const years = Array.from(
   //   { length: currentYear - 2014 + 1 },
   //   (_, index) => 2014 + index
-    
+
   // );
   // const years = Array.from(
   //   { length: currentYear - 2014 + 1 },
   //   (_, index) => 2014 + index
-    
+
   // );
   const years = Array.from(
     { length: currentYear - 2014 + 1 },
     (_, index) => 2014 + index
   );
-  
+
   const reversedYears = years.filter(year => year <= 2024).reverse();
   const handleResetForm = () => {
     console.log(month);
@@ -180,22 +189,22 @@ const PaySlips = () => {
 
     tempRows.push(createData("Basic", data.empsalorgbasic, data.empsalbasic, "EPF", data.empsalorgepf, data.empsalepf))
     tempRows.push(createData("HRA", data.empsalorghra, data.empsalhra, "ESI", data.empsalorgesi, data.empsalesi))
-    tempRows.push(createData("Conveyance", data.empsalorgconv, data.empsalconv, "SAL PT", data.empsalorgpt,data.empsalpt))
-    tempRows.push(createData("Education Allowance",data.empsalorgedu,data.empsaldeductions , "Income Tax", "NA",data.empsalitax))
-    tempRows.push(createData("Shift Allowance", data.empsalorgshift,data.empsalshift, "Others", "NA",data.empsaldebitother))
-    tempRows.push(createData("Medical Allowance",data.empsalmedical,data.empsalmed, "Meal Vouchers", "NA",data.empsalsodexo))
-    tempRows.push(createData("Travel Allowance",data.empsaltravel,data.empsallta,"Total Deductions","",data.empsaldeductions))
+    tempRows.push(createData("Conveyance", data.empsalorgconv, data.empsalconv, "SAL PT", data.empsalorgpt, data.empsalpt))
+    tempRows.push(createData("Education Allowance", data.empsalorgedu, data.empsaldeductions, "Income Tax", "NA", data.empsalitax))
+    tempRows.push(createData("Shift Allowance", data.empsalorgshift, data.empsalshift, "Others", "NA", data.empsaldebitother))
+    tempRows.push(createData("Medical Allowance", data.empsalmedical, data.empsalmed, "Meal Vouchers", "NA", data.empsalsodexo))
+    tempRows.push(createData("Travel Allowance", data.empsaltravel, data.empsallta, "Total Deductions", "", data.empsaldeductions))
     tempRows.push(createData("LTA", "NA", data["T/H"], "", "", ""))
-    tempRows.push(createData("Others",data.empsalorgsundrycreditothers,data.empsalsundrycreditothers, "", "", ""))
+    tempRows.push(createData("Others", data.empsalorgsundrycreditothers, data.empsalsundrycreditothers, "", "", ""))
     tempRows.push(createData("Adjustments", "", "", " ", "", ""))
-    tempRows.push(createData("Laptop", "NA",data.empsallaptop, "", "", ""))
-    tempRows.push(createData("Internet", "NA",data.empsalinternet, "", "", ""))
-    tempRows.push(createData("Client Incentive", "NA",data.empsalclientincentive, "", "", ""))
-    tempRows.push(createData("Spl. Incentive", "NA",data.empsalincentive, "", "", ""))
-    tempRows.push(createData("Bonus", "NA",data.empsalbonus, "", "", ""))
-    tempRows.push(createData("Awards", "NA",data.empsalawards, "", "", ""))
-    tempRows.push(createData("Others", "NA",data.empsalothers, "", "", ""))
-    tempRows.push(createData("Gross Salary of The Employee",data.emporggross,data.empsalgross, "", "", ""))
+    tempRows.push(createData("Laptop", "NA", data.empsallaptop, "", "", ""))
+    tempRows.push(createData("Internet", "NA", data.empsalinternet, "", "", ""))
+    tempRows.push(createData("Client Incentive", "NA", data.empsalclientincentive, "", "", ""))
+    tempRows.push(createData("Spl. Incentive", "NA", data.empsalincentive, "", "", ""))
+    tempRows.push(createData("Bonus", "NA", data.empsalbonus, "", "", ""))
+    tempRows.push(createData("Awards", "NA", data.empsalawards, "", "", ""))
+    tempRows.push(createData("Others", "NA", data.empsalothers, "", "", ""))
+    tempRows.push(createData("Gross Salary of The Employee", data.emporggross, data.empsalgross, "", "", ""))
     tempRows.push(createData("", "", "", "", "", ""))
     tempRows.push(createData("Net Salary", "", "", "", "", data.empsalnet))
     setRows(tempRows)
@@ -210,7 +219,7 @@ const PaySlips = () => {
       // padding: {top: 40}
     });
     let imageHeader = new Image();
-    imageHeader.src = "bcglogo.png";
+    imageHeader.src = `${process.env.REACT_APP_BACKEND_SERVER+companyDetails.company_logo}`;
     doc.addImage(
       imageHeader,
       // param.logo.type,
@@ -221,15 +230,13 @@ const PaySlips = () => {
     );
     doc.setFontSize(10);
     doc.text(
-      `          Brightcom Group Ltd.
-      Floor: 5, Holiday Inn Express & Suites,
-   Road No: 2, Nanakramguda, Gachibowli,
-      Hyderabad,Telangana - 500032.`,
+      `${companyDetails.company_address}`,
       120,
-      20
+      20,
+      {maxWidth: 60, align: "justify"}
     );
     const empName = userDetails.first_name + " " + userDetails.last_name;
-    const empCode = userDetails.employee_id ;
+    const empCode = userDetails.employee_id;
     const monthYear = month + " " + year;
     doc.text(
       `\nName of the Employee: ${empName} \nEmployee Code: ${empCode} \nDesignation: null \nPF Number: null \nPAN Number: null \n\nPay slip for the month of ${monthYear}`,
@@ -490,9 +497,8 @@ const Root = styled("div")(
   
     td,
     th {
-      border: 1px solid ${
-        theme.palette.mode === "dark" ? grey[500] : grey[200]
-      };
+      border: 1px solid ${theme.palette.mode === "dark" ? grey[500] : grey[200]
+    };
       text-align: left;
       padding: 8px;
     }

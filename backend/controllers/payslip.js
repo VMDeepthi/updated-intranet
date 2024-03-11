@@ -141,3 +141,16 @@ export const payslips = async (req, res) => {
     }
 
 };
+
+export const companydetails = (req, res) =>{
+    const {emp_id} = req.body
+    const company_details_query = `select company_logo, company_address from companymanagement inner join usermanagement on usermanagement.company_name = companymanagement.company_name where employee_id =? `
+    const company_details_values = [emp_id]
+    db.query(company_details_query, company_details_values,(err, result)=>{
+        if(err)return res.status(500).json("Error occured")
+        else{
+            return res.status(200).json(result)
+        }
+
+    })
+}
