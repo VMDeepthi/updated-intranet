@@ -46,8 +46,6 @@ import UploadGallary from './Components/Admin/ManageOfficeGallary/UploadGallary'
 import ViewGallery from './Components/Admin/ManageOfficeGallary/ViewGallery'
 import UploadSalaryDetails from './Components/Admin/SalaryManagement/UploadSalaryDetails'
 import ViewSalaryDetails from './Components/Admin/SalaryManagement/ViewSalaryDetails'
-import AddExperience from './Components/Admin/Experience/AddExperience'
-import ViewExperience from './Components/Admin/Experience/ViewExperience'
 import UserAccessManagement from './Components/Admin/UserManagement/UserAccessManagement'
 import { UserAccessProvider } from './Components/context/UserAccessContext'
 
@@ -58,54 +56,51 @@ export default function App() {
       <BrowserRouter>
         <UserProvider>
           <UserAccessProvider>
-          <Routes>
-            <Route path='/login' element={<Login />} />
-            <Route path='/reportingheadlogin/application/:status?' Component={ReportingHeadLogin} />
-            <Route path='/forgotpassword' Component={ForgotPassword} />
-            {Cookies.get('USERAUTHID') === undefined ? <Route path='*' element={<Navigate to='/login' replace />} /> : <Route path='*' element={<Navigate replace to='/' />} />}
-            <Route path='/' element={<CommanProtectedRoute component={<Dashboard />} />} />
-            <Route path='/timezones' element={<CommanProtectedRoute component={<TimeZone />} />} />
-            <Route path='/attendance' element={<CommanProtectedRoute component={<Attendance />} />} />
-            <Route path='/changepassword' element={<CommanProtectedRoute component={<ChangePassword />} />} />
-            <Route path='/myprofile' element={<CommanProtectedRoute component={<ProfileSection />} />} />
-            <Route path='/directorysearch' element={<CommanProtectedRoute component={<DirectorySearch />} />} />
-            <Route path='/viewuserprofile/:emp_id/info' element={<CommanProtectedRoute component={<UserProfileSection />} />} />
-            <Route path='/crossroads' element={<CommanProtectedRoute component={<CrossRoadsSection />} />} />
-            <Route path='/teams' element={<CommanProtectedRoute component={<TeamsSection />} />} />
-            <Route path='/applyleave' element={<CommanProtectedRoute component={<ApplyLeave />} />} />
-            <Route path='/balanceleaves' element={<CommanProtectedRoute component={<BalanceLeaves />} />} />
-            <Route path='/reportingstructure' element={<CommanProtectedRoute component={<ReportingStructure />} />} />
-            <Route path='/historylog' element={<CommanProtectedRoute component={<HistoryLog />} />} />
-            <Route path='/payslips' element={<CommanProtectedRoute component={<PaySlips />} />} />
-            
-            {/*----------------------------ADMIN------------------------------------------------------------------------------------ */}
-            <Route path='/addcompany' element={<AdminProtectedRoute component={<AddCompany />} />} />
-            <Route path='/viewcompany' element={<AdminProtectedRoute component={<ViewCompany />} />} />
-            <Route path='/addcompanypages' element={<AdminProtectedRoute component={<AddCompanyPages />} />} />
-            <Route path='/viewcompanypages' element={<AdminProtectedRoute component={<ViewCompanyPages />} />} />
-            <Route path='/adduser' element={<AdminProtectedRoute component={<AddUser />} />} />
-            <Route path='/viewusers' element={<AdminProtectedRoute component={<ViewUser />} />} />
-            <Route path='/user-access-management' element={<AdminProtectedRoute component={<UserAccessManagement />} />} />
-            <Route path='/experience' element={<AdminProtectedRoute component={<Experience />} />} />
-            <Route path='/addannouncement' element={<AdminProtectedRoute component={<AddAnnouncement />} />} />
-            <Route path='/viewannouncements' element={<AdminProtectedRoute component={<ViewAnnouncements />} />} />
-            <Route path='/uploadattendance' element={<AdminProtectedRoute component={<UploadAttendance />} />} />
-            <Route path='/viewattendance' element={<AdminProtectedRoute component={<ViewAttendance />} />} />
-            <Route path='/createreportingstructure' element={<AdminProtectedRoute component={<CreateReportingStructure />} />} />
-            <Route path='/viewreportingstructure' element={<AdminProtectedRoute component={<ViewReportingStructure />} />} />
-            <Route path='/historylog-admin' element={<AdminProtectedRoute component={<HistoryLogAdmin />} />} />
-            <Route path='/manage-balance-leaves' element={<AdminProtectedRoute component={<ManageBalanceLeaves />} />} />
-            <Route path='/upload-gallery' element={<AdminProtectedRoute component={<UploadGallary />} />} />
-            <Route path='/view-gallery' element={<AdminProtectedRoute component={<ViewGallery />} />} />
+            <Routes>
+              <Route path='/login' element={<Login />} />
+              <Route path='/reportingheadlogin/application/:status?' Component={ReportingHeadLogin} />
+              <Route path='/forgotpassword' Component={ForgotPassword} />
+              {Cookies.get('USERAUTHID') === undefined ? <Route path='*' element={<Navigate to='/login' replace />} /> : <Route path='*' element={<Navigate replace to='/' />} />}
+              <Route path='/' element={<CommanProtectedRoute component={<Dashboard />} />} />
+              <Route path='/timezones' element={<CommanProtectedRoute component={<TimeZone />} />} />
+              <Route path='/attendance' element={<CommanProtectedRoute component={<Attendance />} />} />
+              <Route path='/changepassword' element={<CommanProtectedRoute component={<ChangePassword />} />} />
+              <Route path='/myprofile' element={<CommanProtectedRoute component={<ProfileSection />} />} />
+              <Route path='/directorysearch' element={<CommanProtectedRoute component={<DirectorySearch />} />} />
+              <Route path='/viewuserprofile/:emp_id/info' element={<CommanProtectedRoute component={<UserProfileSection />} />} />
+              <Route path='/crossroads' element={<CommanProtectedRoute component={<CrossRoadsSection />} />} />
+              <Route path='/teams' element={<CommanProtectedRoute component={<TeamsSection />} />} />
+              <Route path='/applyleave' element={<CommanProtectedRoute component={<ApplyLeave />} />} />
+              <Route path='/balanceleaves' element={<CommanProtectedRoute component={<BalanceLeaves />} />} />
+              <Route path='/reportingstructure' element={<CommanProtectedRoute component={<ReportingStructure />} />} />
+              <Route path='/historylog' element={<CommanProtectedRoute component={<HistoryLog />} />} />
+              <Route path='/payslips' element={<CommanProtectedRoute component={<PaySlips />} />} />
+
+              {/*----------------------------ADMIN------------------------------------------------------------------------------------ */}
+              <Route path='/addcompany' element={<AdminProtectedRoute component={<AddCompany />} />} />
+              <Route path='/viewcompany' element={<AdminProtectedRoute component={<ViewCompany />} />} />
+              <Route path='/addcompanypages' element={<AdminProtectedRoute component={<AddCompanyPages />} />} />
+              <Route path='/viewcompanypages' element={<AdminProtectedRoute component={<ViewCompanyPages />} />} />
+              <Route path='/adduser' element={<AdminProtectedRoute component={<AddUser />} />} />
+              <Route path='/viewusers' element={<AdminProtectedRoute component={<ViewUser />} />} />
+              <Route path='/user-access-management' element={<AdminProtectedRoute component={<UserAccessManagement />} />} />
+              <Route path='/experience' element={<AdminProtectedRoute component={<Experience />} />} />
+              <Route path='/addannouncement' element={<AdminProtectedRoute component={<AddAnnouncement />} />} />
+              <Route path='/viewannouncements' element={<AdminProtectedRoute component={<ViewAnnouncements />} />} />
+              <Route path='/uploadattendance' element={<AdminProtectedRoute component={<UploadAttendance />} />} />
+              <Route path='/viewattendance' element={<AdminProtectedRoute component={<ViewAttendance />} />} />
+              <Route path='/createreportingstructure' element={<AdminProtectedRoute component={<CreateReportingStructure />} />} />
+              <Route path='/viewreportingstructure' element={<AdminProtectedRoute component={<ViewReportingStructure />} />} />
+              <Route path='/historylog-admin' element={<AdminProtectedRoute component={<HistoryLogAdmin />} />} />
+              <Route path='/manage-balance-leaves' element={<AdminProtectedRoute component={<ManageBalanceLeaves />} />} />
+              <Route path='/upload-gallery' element={<AdminProtectedRoute component={<UploadGallary />} />} />
+              <Route path='/view-gallery' element={<AdminProtectedRoute component={<ViewGallery />} />} />
 
 
-            <Route path='/uploadsalarydetails' element={<AdminProtectedRoute component={<UploadSalaryDetails />} />} />
-            <Route path='/viewsalarydetails' element={<AdminProtectedRoute component={<ViewSalaryDetails />} />} />
+              <Route path='/uploadsalarydetails' element={<AdminProtectedRoute component={<UploadSalaryDetails />} />} />
+              <Route path='/viewsalarydetails' element={<AdminProtectedRoute component={<ViewSalaryDetails />} />} />
 
-            <Route path='/Addexperience' element={<AdminProtectedRoute component={<AddExperience />} />} />
-            <Route path='/Viewexperience' element={<AdminProtectedRoute component={<ViewExperience />} />} />
-
-          </Routes>
+            </Routes>
           </UserAccessProvider>
         </UserProvider>
 

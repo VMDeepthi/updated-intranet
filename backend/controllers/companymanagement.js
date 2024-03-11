@@ -76,7 +76,7 @@ export const viewcompany = (req, res) => {
         const q = 'select * from companymanagement order by serial_no desc'
         db.query(q, (err, result) => {
             if (err) {
-                //console.log(err)
+                console.log(err)
                 return res.status(500).json('error occured!')
             }
             else {

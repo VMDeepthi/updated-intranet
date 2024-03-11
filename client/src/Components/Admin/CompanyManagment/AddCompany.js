@@ -95,7 +95,7 @@ function AddComapny() {
           },
           success: {
             render(res) {
-              //handleResetCompForm()
+              handleResetCompForm()
               return (res.data.data)
             }
           },
@@ -133,7 +133,7 @@ function AddComapny() {
                         <Business sx={{ fontSize: '60px', mt: 1, mb: 0 }} />
                       }
                       <Stack direction={'row'} spacing={0.1}>
-                    <Button type="file" size="small" component="label"  > Upload Logo <VisuallyHiddenInput type="file" onInput={handleCapture} accept="image/png, image/jpeg" /> </Button>
+                    <Button type="file" size="small" component="label"  > Upload Logo <VisuallyHiddenInput required type="file" onInput={handleCapture} accept="image/png, image/jpeg" /> </Button>
                         {
                              companyLogoUrl?
                              <IconButton size='small' color='error' onClick={()=>{
