@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, Container,  Grid, Paper, Tab, Tabs, Typography } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import UserContext from '../../context/UserContext'
 import AdminNavBar from '../NavBar/AdminNavBar'
 import UserNavBar from '../NavBar/UserNavBar'
@@ -14,6 +14,7 @@ import UserContactInfo from './UserContactInfo'
 import UserFunInfo from './UserFunInfo'
 import UserFamilyInfo from './UserFamilyInfo'
 import SendBirthDayWishes from './SendBirthDayWishes'
+import UserExperience from './UserExperience'
 
 
 function UserProfileSection() {
@@ -73,7 +74,7 @@ function UserProfileSection() {
     })
     const [loader, setLoader] = useState(true)
     const { userDetails } = useContext(UserContext)
-    const navigate = useNavigate()
+    const [experienceData, setExperienceData] = useState([]);
 
     const handleSectionChange = (event, newValue) => {
         //console.log(event,newValue)
@@ -111,6 +112,16 @@ function UserProfileSection() {
                     setContactInfo(contactData.data[0])
 
                 }
+                const experienceData = await axios.post('/api/getuserexperience', { emp_id:emp_id });
+                    if (experienceData.data.length !== 0) {
+                        const data = experienceData.data.map((exp, index) => ({
+                            ...exp,
+                            timerange: `${new Date(exp.promotion_date).toLocaleString(undefined, { month: 'short', year: 'numeric' })} - ${experienceData.data[index + 1] === undefined ? 'Present' : new Date(experienceData.data[index + 1].promotion_date).toLocaleString(undefined, { month: 'short', year: 'numeric' })}`,
+                            roles_and_responsibility: `${exp.roles_and_responsibility === '' ? 'Not Mentioned' : exp.roles_and_responsibility}`
+                  
+                          })).reverse()
+                          setExperienceData(data)
+                    }
 
                 setLoader(false)
 
@@ -159,6 +170,7 @@ function UserProfileSection() {
                                             <Tab label="Contact Info" />
                                             <Tab label="Family Info" />
                                             <Tab label="Fun Info" />
+                                            <Tab label="Experince" />
                                             <Tab label="Send Birthday Wishes" />
                                         </Tabs>
 
@@ -213,7 +225,7 @@ function UserProfileSection() {
                             </Grid>
                             <Grid item xs={12} sm={9} lg={9}>
                                 {
-                                    section === 0 ? <UserPersonalInfo personalInfo={personalInfo} /> : section === 1 ? < UserContactInfo contactInfo={contactInfo} /> : section === 2 ? <UserFamilyInfo familyInfo={familyData} /> : section === 3 ? <UserFunInfo funInfo={funInfo} /> : section === 4 ? <SendBirthDayWishes sendData={{ name: `${userDetails.first_name} ${userDetails.last_name}`, from: userDetails.email, to: personalInfo.email }} /> : null
+                                    section === 0 ? <UserPersonalInfo personalInfo={personalInfo} /> : section === 1 ? < UserContactInfo contactInfo={contactInfo} /> : section === 2 ? <UserFamilyInfo familyInfo={familyData} /> : section === 3 ? <UserFunInfo funInfo={funInfo} /> : section === 4 ?<UserExperience experienceData={experienceData} />:section===5? <SendBirthDayWishes sendData={{ name: `${userDetails.first_name} ${userDetails.last_name}`, from: userDetails.email, to: personalInfo.email }} /> : null
                                 }
                             </Grid>
                         </Grid>

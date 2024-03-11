@@ -227,6 +227,7 @@ function AddAnnouncement() {
                                                     placeholder="Enter Description"
                                                     onChange={handleAddFormData}
                                                     size='small'
+                                                    inputProps={{ maxLength: 295 }}
                                                 />
                                             </FormControl>
 

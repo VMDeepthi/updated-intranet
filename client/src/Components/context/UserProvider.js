@@ -17,7 +17,10 @@ function UserProvider(props) {
 
     if (Cookies.get('USERAUTHID') !== undefined) {
       axios.get('/api/checkuser')
-        .then(res => setUserDetails(res.data))
+        .then(res => {
+          console.log('checking User')
+          setUserDetails(res.data)
+        })
         .catch(err => {
 
           if (err.response.data === "Unauthorized") {

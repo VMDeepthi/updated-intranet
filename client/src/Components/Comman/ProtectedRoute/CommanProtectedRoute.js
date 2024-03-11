@@ -12,7 +12,7 @@ function CommanProtectedRoute(props) {
     let pages = []
 
     if (pagesToBeNotAccessed !== null) {
-        pages = pagesToBeNotAccessed.map(page => page.toLowerCase()).filter(page=>page!=='')
+        pages = pagesToBeNotAccessed.map(page => page.toLowerCase()).filter(page => page !== '')
     }
 
 
@@ -22,12 +22,12 @@ function CommanProtectedRoute(props) {
     if (Cookies.get('USERAUTHID') === undefined) {
         return <Navigate to='/login' />
     }
-    else if ((pages.length !== 0 && pages.includes(path)) && pagesToBeNotAccessed !== null) {
-        console.log('com', component)
-        return <Navigate to='/' />
-        
+    else if (pagesToBeNotAccessed === null) {
+        return <Navigate to={location.pathname} replace />
     }
-
+    else if (pages.includes(path)) {
+        return <Navigate to='/' />
+    }
     else {
         return component
     }

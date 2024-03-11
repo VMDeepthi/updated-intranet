@@ -30,6 +30,7 @@ import userIntroTourRoute from './routes/userintrotour.js'
 import manageOfficeGalleryRoute from './routes/manageofficegallery.js'
 import payslipRoute from './routes/payslip.js'
 import experienceRoute from './routes/experience.js'
+import userExperienceRoute from './routes/userexperince.js'
 
 //import authMiddleware from './middleware/authUsers.js'
 import { checkAuthentication } from './middleware/authUsers.js'
@@ -71,6 +72,7 @@ app.use('/api/',userIntroTourRoute)
 app.use('/api/',manageOfficeGalleryRoute)
 app.use('/api/',payslipRoute)
 app.use('/api/',experienceRoute)
+app.use('/api/',userExperienceRoute)
 
 
 

@@ -19,7 +19,7 @@ function UserAccessManagement() {
             try {
 
                 const userData = await axios.get('/api/getemployeedata')
-                console.log(userData)
+                //console.log(userData)
                 setUsers(userData.data)
 
                 setLoader(false)
@@ -61,20 +61,22 @@ function UserAccessManagement() {
             'Admin Access': {
                 AddCompany: true,
                 ViewCompany: true,
-                AddCompanyPages:true,
-                ViewCompanyPages:true,
-                AddUser:true,
-                ViewUsers:true,
-                AddAnnouncement:true,
-                ViewAnnouncements:true,
-                UploadGallery:true,
-                ViewGallery:true,
-                UploadAttendance:true,
-                ViewAttendance:true,
-                CreateReportingStructure:true,
-                ViewReportingStructure:true,
-                HistorylogAdmin:true,
-                ManageBalanceLeaves:true
+                AddCompanyPages: true,
+                ViewCompanyPages: true,
+                AddUser: true,
+                ViewUsers: true,
+                UserAccessManagement: true,
+                Experience: true,
+                AddAnnouncement: true,
+                ViewAnnouncements: true,
+                UploadGallery: true,
+                ViewGallery: true,
+                UploadAttendance: true,
+                ViewAttendance: true,
+                CreateReportingStructure: true,
+                ViewReportingStructure: true,
+                HistorylogAdmin: true,
+                ManageBalanceLeaves: true
 
             }
         }
@@ -82,19 +84,19 @@ function UserAccessManagement() {
     }
 
     const handleUserSelection = (_, newValue) => {
-        console.log(newValue)
+        //console.log(newValue)
         if (newValue !== null) {
             const { value } = newValue
             setLoader(true)
             setUserData({ ...userData, user: newValue, emp_id: value.employee_id, status: value.status, department: value.department, user_type: value.user_type })
             axios.post('/api/getaccessdata', { emp_id: value.employee_id })
                 .then(res => {
-                    console.log(res.data)
+                    //console.log(res.data)
                     setLoader(false)
 
                     if (res.data.length === 0) {
                         if (value.user_type === 'admin' && value.department === 'management') {
-                            console.log(acceessType.admin)
+                            //console.log(acceessType.admin)
                             setAccessData(acceessType['admin'])
                         }
                         else {
@@ -114,7 +116,7 @@ function UserAccessManagement() {
                         }
                         Object.keys(selectedAccessType).forEach(acc => {
                             Object.keys(selectedAccessType[acc]).forEach(page => {
-                                console.log(page)
+                                //console.log(page)
                                 if (access_pages.includes(page)) {
                                     selectedAccessType[acc][page] = false
                                 }
@@ -143,7 +145,7 @@ function UserAccessManagement() {
 
     const handleResetAccess = () => {
         if (userData.user_type === 'admin' && userData.department === 'management') {
-            console.log(acceessType.admin)
+            //console.log(acceessType.admin)
             setAccessData(acceessType['admin'])
         }
         else {
@@ -153,9 +155,9 @@ function UserAccessManagement() {
     }
 
     const handleUpdateAccess = () => {
-        console.log(acceessData)
+        //console.log(acceessData)
         const pagesToBeAccessed = Object.keys(acceessData).map(accType => Object.keys(acceessData[accType]).filter(page => !acceessData[accType][page])).flat(1)
-        console.log(pagesToBeAccessed)
+        //console.log(pagesToBeAccessed)
         toast.promise(axios.post('/api/updateuseraccess', { emp_id: userData.emp_id, pagesToBeAccessed: pagesToBeAccessed }), {
             pending: {
                 render() {
@@ -178,6 +180,7 @@ function UserAccessManagement() {
     }
     return (
         <>
+        
             <Box sx={{ minHeight: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
                 <AdminNavBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, height: 'auto', backgroundColor: '#F5F5F5' }}>
@@ -251,7 +254,7 @@ function UserAccessManagement() {
                                                                             <FormGroup >
                                                                                 {
                                                                                     Object.keys(acceessData[acc]).map(page => (
-                                                                                        
+
 
                                                                                         <FormControlLabel
                                                                                             key={page}
@@ -260,7 +263,7 @@ function UserAccessManagement() {
                                                                                                 <Checkbox size='small' name={page} checked={acceessData[acc][page]} onChange={e => setAccessData({ ...acceessData, [acc]: { ...acceessData[acc], [page]: e.target.checked } })} />
                                                                                             }
                                                                                             label={page}
-                                                                                            
+
                                                                                         />
                                                                                     )
                                                                                     )
@@ -282,6 +285,12 @@ function UserAccessManagement() {
                                                         </Box>
                                                     </Box>
                                                 </Collapse>
+                                                {Object.keys(acceessData).length === 0 ?
+                                                    <Box sx={{ maxHeight: '300px', width: '100%', display: 'flex', justifyContent: 'center', }}>
+                                                        <img style={{ objectFit: 'contain', width: '100%', height: 'auto' }} src='access.png' alt='experience' />
+                                                    </Box>
+                                                    : null
+                                                }
                                             </Stack>
                                         </Box>
                                     </Container>

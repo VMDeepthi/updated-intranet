@@ -29,7 +29,7 @@ function AdminProtectedRoute(props) {
 
 
   // const verify = jwt_decode(token, process.env.REACT_APP_JWT_SECRET)
-  console.log('pageAccess', pages.includes(path),userDetails.employee_id)
+  console.log('pageAccess', pages.includes(path),userDetails.employee_id,pagesToBeNotAccessed)
 
 
 
@@ -39,14 +39,15 @@ function AdminProtectedRoute(props) {
   if (Cookies.get('USERAUTHID') === undefined) {
     return <Navigate to='/login' />
   }
-  else if(pages.includes(path) && pagesToBeNotAccessed !== null){
-    return <Navigate to='/' />
-  }
-  else if (userDetails.user_type === undefined && userDetails.department === undefined) {
+  else if(pagesToBeNotAccessed===null ){
     return <Navigate to={location.pathname} replace />
   }
-  else if (userDetails.user_type === 'admin' && userDetails.department === 'management') {
-    console.log('com', component)
+  else if(pages.includes(path)){
+    return <Navigate to='/' />
+
+  }
+  else if (!pages.includes(path)&&userDetails.user_type === 'admin' && userDetails.department === 'management') {
+    //console.log('com', component)
     return component
   }
   else{

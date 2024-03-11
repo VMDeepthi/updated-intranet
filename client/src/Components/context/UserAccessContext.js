@@ -10,6 +10,7 @@ function UserAccessProvider(props) {
     const {userDetails} = useContext(UserContext)
     //console.log('userDtails',userDetails)
     const [pagesToBeNotAccessed, setPagesToBeNotAccessed] = useState(null)
+    const [update, setUpdate] = useState(0)
   
     useEffect(() => {
         const fetchUserAccess = () =>{
@@ -36,12 +37,16 @@ function UserAccessProvider(props) {
      
        
   
-    }, [userDetails.employee_id])
+    }, [userDetails.employee_id,update])
     //console.log('context called')
+
+    const updateAccess = ()=>{
+        setUpdate(prev=>prev+1)
+    }
   
     
     return (
-      <UserAccessContext.Provider value={{pagesToBeNotAccessed}}>
+      <UserAccessContext.Provider value={{pagesToBeNotAccessed,updateAccess}}>
   
         {props.children}
         

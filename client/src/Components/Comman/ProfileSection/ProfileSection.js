@@ -10,7 +10,8 @@ import FunInfo from './FunInfo'
 import TimeZone from './TimezoneInfo'
 import axios from 'axios'
 import Loader from '../Loader'
-import ViewExperience from './ViewExperience'
+//import ViewExperience from './ViewExperience'
+import Experience from './Experince'
 
 
 function ProfileSection() {
@@ -93,10 +94,17 @@ function ProfileSection() {
                         setContactInfo(contactData.data[0])
 
                     }
-                    const experienceData = await axios.post('/api/viewexperience', { emp_id: userDetails.employee_id });
+                    const experienceData = await axios.post('/api/getuserexperience', { emp_id: userDetails.employee_id });
                     if (experienceData.data.length !== 0) {
-                        setExperienceData(experienceData.data[0]);
-                        console.log('Experience Data:', experienceData);
+                        const data = experienceData.data.map((exp, index) => ({
+                            ...exp,
+                            timerange: `${new Date(exp.promotion_date).toLocaleString(undefined, { month: 'short', year: 'numeric' })} - ${experienceData.data[index + 1] === undefined ? 'Present' : new Date(experienceData.data[index + 1].promotion_date).toLocaleString(undefined, { month: 'short', year: 'numeric' })}`,
+                            roles_and_responsibility: `${exp.roles_and_responsibility === '' ? 'Not Mentioned' : exp.roles_and_responsibility}`
+                  
+                          })).reverse()
+                          setExperienceData(data)
+                        
+                        //onsole.log('Experience Data:', experienceData);
                     }
 
                     setLoader(false)
@@ -150,7 +158,7 @@ function ProfileSection() {
                             </Card>
                             <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
                                 <Paper elevation={5} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: { xs: '100%', lg: '43ch' }, width: '80%', p: 1 }}>
-                                    {section === 0 ? <PersonalInfo userDetails={userDetails} handleUserDetails={handleUserDetails} /> : section === 1 ? <ContactInfo contactInfo={contactInfo} setContactInfo={setContactInfo} /> : section === 2 ? <FamilyInfo familyData={familyData} setFamilyData={setFamilyData} /> : section === 3 ? <FunInfo funInfo={funInfo} setFunInfo={setFunInfo} /> : section === 4 ? <TimeZone timezoneInfo={timezone} setTimeZoneInfo={setTimezone} /> :section === 5 ? <ViewExperience experience={experienceData} setExperience={setExperienceData}/>: <></>}
+                                    {section === 0 ? <PersonalInfo userDetails={userDetails} handleUserDetails={handleUserDetails} /> : section === 1 ? <ContactInfo contactInfo={contactInfo} setContactInfo={setContactInfo} /> : section === 2 ? <FamilyInfo familyData={familyData} setFamilyData={setFamilyData} /> : section === 3 ? <FunInfo funInfo={funInfo} setFunInfo={setFunInfo} /> : section === 4 ? <TimeZone timezoneInfo={timezone} setTimeZoneInfo={setTimezone} /> :section === 5 ? <Experience experienceData={experienceData} />: <></>}
                                 </Paper>
                             </Box>
 

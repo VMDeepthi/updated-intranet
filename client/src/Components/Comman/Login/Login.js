@@ -6,11 +6,13 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { Navigate, useNavigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
+
 import { Box, Button, FormControl, Grid, IconButton, InputAdornment, Container, InputLabel, OutlinedInput, Paper, Typography, } from '@mui/material';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import { AccountCircle, LockPerson, Visibility, VisibilityOff } from '@mui/icons-material';
 import LoginIcon from '@mui/icons-material/Login';
+import { UserAccessContext } from '../../context/UserAccessContext';
 
 const Footer = () => {
   return (
@@ -43,6 +45,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loadLogin, setLoadLogin] = useState(false);
   const { handleUserDetails } = useContext(UserContext);
+  const {updateAccess} = useContext(UserAccessContext)
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -57,6 +60,7 @@ function Login() {
       .then((res) => {
         setLoadLogin(false);
         handleUserDetails(res.data);
+        updateAccess()
         navigate('/', { replace: true });
       })
       .catch((err) => {

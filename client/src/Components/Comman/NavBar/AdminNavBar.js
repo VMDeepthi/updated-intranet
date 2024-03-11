@@ -31,7 +31,7 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 //import CssBaseline from '@mui/material/CssBaseline';
 import BusinessIcon from '@mui/icons-material/Business';
-import { AccountBalance, AccountBalanceWallet, AccountBox, AddAPhoto, AddAlert, AddPhotoAlternate, AdsClick, Announcement, BadgeRounded, Balance, BrowseGallery, Campaign, CardTravel, CreditScore, Description, EventAvailable, ExpandLess, ExpandMore, ForwardToInbox, GroupAdd, Key, LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, MoreTime, NoteAdd, PersonAdd, Send, Settings, SupervisedUserCircle, TrendingUp, UploadFile, WorkHistory, WorkOff, Wysiwyg } from '@mui/icons-material';
+import { AccountBalance, AccountBalanceWallet, AccountBox, AddAPhoto, AddAlert, AddPhotoAlternate, AdsClick, Announcement, BadgeRounded, Balance, BrowseGallery, Campaign, CardTravel, CreditScore, Description, EventAvailable, ExpandLess, ExpandMore, ForwardToInbox, GroupAdd, Insights, Key, LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, MoreTime, NoteAdd, PersonAdd, Send, Settings, SupervisedUserCircle, TrendingUp, UploadFile, WorkHistory, WorkOff, Wysiwyg } from '@mui/icons-material';
 
 
 import { CgListTree } from 'react-icons/cg'
@@ -312,7 +312,7 @@ export default function AdminNavBar(props) {
             sx={{ display: { xs: 'block', sm: 'block' } }}
           >
             <Link href="/" underline="none">
-              <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '80%',height:'45px' }} />
+              <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '80%',height:'40px' }} />
             </Link>
           </Typography>
 
@@ -333,7 +333,7 @@ export default function AdminNavBar(props) {
               </Badge>
             </IconButton> */}
             <Stack spacing={-0.5}>
-            <Typography variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center' ,color:'gray', fontSize:'20px'}}>
+            <Typography variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center' ,color:'gray',fontSize:'20px' }}>
                 {time}
               </Typography>
               <Typography variant='subtitle2' color={'ButtonText'} sx={{color:'gray'}}>{day} </Typography>
@@ -1274,6 +1274,38 @@ export default function AdminNavBar(props) {
                         <Key />
                       </ListItemIcon>
                       <ListItemText primary={<Typography sx={{ fontSize: 15 }}>User Access Management</Typography>} />
+                    </ListItemButton>
+                  </ListItem>
+
+
+                :null
+
+              }
+
+{
+                pagesToBeNotAccessed!==null && !pagesToBeNotAccessed.includes('Experience')?
+                <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/experience")}>
+                
+                    <ListItemButton
+                      sx={{
+                        minHeight: 45,
+                        justifyContent: 'center',
+                        px: 1.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: 3,
+                          ml: 3,
+                          justifyContent: 'center',
+
+                        }}
+
+                      >
+                        <Insights />
+                      </ListItemIcon>
+                      <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Experience</Typography>} />
                     </ListItemButton>
                   </ListItem>
 
