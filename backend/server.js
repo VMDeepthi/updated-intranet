@@ -72,26 +72,6 @@ app.use('/api/',manageOfficeGalleryRoute)
 app.use('/api/',payslipRoute)
 app.use('/api/',userExperienceRoute)
 
-
-
-//---------deepthi-----------------------
-app.post('/api/addexperience', (req, res) => {
-    const { formdata, designationTitle } = req.body;
-    console.log('deepthi')
-  
-    // Insert data into MySQL table
-    const sql = `INSERT INTO designation (designationtitle, description, date) VALUES (?, ?, ?)`;
-    db.query(sql, [designationTitle, formdata.description, formdata.date], (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send('Internal Server Error');
-      }
-  
-      return res.json({ data: 'Experience added successfully' });
-    });
-  });
-
-
 app.listen(8080,()=>{
     console.log('Hii server is running at: http://localhost:8080/')
 })

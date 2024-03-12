@@ -108,7 +108,7 @@ const PaySlips = () => {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [showTable, setShowTable] = useState(false);
-  const [companyDetails, setCompanyDetails] = useState({})
+  const [companyDetails, setCompanyDetails] = useState({company_logo:'', company_address:''})
 
   const handleAddFormDataMonth = (e) => {
     setMonth(e.target.value);
@@ -219,7 +219,7 @@ const PaySlips = () => {
       // padding: {top: 40}
     });
     let imageHeader = new Image();
-    imageHeader.src = `${process.env.REACT_APP_BACKEND_SERVER+companyDetails.company_logo}`;
+    imageHeader.src = `${companyDetails.company_logo===''?'':process.env.REACT_APP_BACKEND_SERVER+companyDetails.company_logo}`;
     doc.addImage(
       imageHeader,
       // param.logo.type,
