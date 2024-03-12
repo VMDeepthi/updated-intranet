@@ -10,7 +10,6 @@ import FunInfo from './FunInfo'
 import TimeZone from './TimezoneInfo'
 import axios from 'axios'
 import Loader from '../Loader'
-//import ViewExperience from './ViewExperience'
 import Experience from './Experince'
 
 

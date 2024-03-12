@@ -44,10 +44,10 @@ import HistoryLogAdmin from './Components/Admin/LeaveManagement/HistoryLogAdmin'
 import ManageBalanceLeaves from './Components/Admin/LeaveManagement/ManageBalanceLeaves'
 import UploadGallary from './Components/Admin/ManageOfficeGallary/UploadGallary'
 import ViewGallery from './Components/Admin/ManageOfficeGallary/ViewGallery'
+
 import UploadSalaryDetails from './Components/Admin/SalaryManagement/UploadSalaryDetails'
 import ViewSalaryDetails from './Components/Admin/SalaryManagement/ViewSalaryDetails'
-import AddExperience from './Components/Admin/Experience/AddExperience'
-import ViewExperience from './Components/Admin/Experience/ViewExperience'
+
 import UserAccessManagement from './Components/Admin/UserManagement/UserAccessManagement'
 import { UserAccessProvider } from './Components/context/UserAccessContext'
 
@@ -102,8 +102,6 @@ export default function App() {
             <Route path='/uploadsalarydetails' element={<AdminProtectedRoute component={<UploadSalaryDetails />} />} />
             <Route path='/viewsalarydetails' element={<AdminProtectedRoute component={<ViewSalaryDetails />} />} />
 
-            <Route path='/Addexperience' element={<AdminProtectedRoute component={<AddExperience />} />} />
-            <Route path='/Viewexperience' element={<AdminProtectedRoute component={<ViewExperience />} />} />
 
           </Routes>
           </UserAccessProvider>

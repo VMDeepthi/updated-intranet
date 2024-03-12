@@ -34,7 +34,7 @@ function Experience() {
       try {
 
         const userData = await axios.get('/api/getemployeedata')
-        //console.log(userData)
+        ////console.log(userData)
         setUsers(userData.data)
 
         setLoader(false)
@@ -48,10 +48,10 @@ function Experience() {
   }, [])
 
   const getUserExperinceData = (emp_id) => {
-    console.log(emp_id)
+    //console.log(emp_id)
     axios.post('/api/getuserexperience', { emp_id: emp_id })
       .then(res => {
-        //console.log(res.data)
+        ////console.log(res.data)
         setLoader(false)
         const data = res.data.map((exp, index) => ({
           ...exp,
@@ -60,7 +60,7 @@ function Experience() {
 
         })).reverse()
         setExperienceData(data)
-        //console.log('data', data)
+        ////console.log('data', data)
 
       })
       .catch((err) => {
@@ -71,7 +71,7 @@ function Experience() {
   }
 
   const handleUserSelection = (_, newValue) => {
-    //console.log(newValue)
+    ////console.log(newValue)
     if (newValue !== null) {
       const { value } = newValue
       getUserExperinceData(value.employee_id)
@@ -88,9 +88,9 @@ function Experience() {
 
   const handleAddPromotionOpen = () => {
     setPromotionDialog(true)
-    const prevData = experienceData[experienceData.length - 1]
+    const prevData = experienceData[0]
     const { emp_id, promotion_title, promotion_date } = prevData
-    console.log(promotion_title, promotion_date)
+    //console.log(promotion_title, promotion_date)
     setNewPromotionData({ ...newPromotionData, emp_id: emp_id, prev_promotion_title: promotion_title, prev_promotion_date: new Date(promotion_date).toLocaleString('en-CA').slice(0, 10),date_of_joining: new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10) })
   }
 
@@ -99,7 +99,7 @@ function Experience() {
   }
 
   const handleModifyPromotion = (exp) => {
-    console.log(new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10))
+    //console.log(new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10))
     setModifyPromotionDialog(true)
     setModifyPromotionData({ ...exp, promotion_date: new Date(exp.promotion_date).toLocaleString('en-CA').slice(0, 10),date_of_joining: new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10) })
     setPrevModificationData(({ ...exp, promotion_date: new Date(exp.promotion_date).toLocaleString('en-CA').slice(0, 10),date_of_joining:new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10) }))
@@ -117,7 +117,7 @@ function Experience() {
     }
     const handleModifyPromotionSubmit = (e) => {
       e.preventDefault()
-      //console.log('submit', newPromotionData)
+      ////console.log('submit', newPromotionData)
       if (JSON.stringify(prevModificationData) !== JSON.stringify(modifyPromotionData)) {
         toast.promise(axios.post('/api/modifypromotion', modifyPromotionData), {
           pending: {
@@ -263,7 +263,7 @@ function Experience() {
     }
     const handleAddNewPromotion = (e) => {
       e.preventDefault()
-      console.log('submit', newPromotionData)
+      //console.log('submit', newPromotionData)
       toast.promise(axios.post('/api/addnewpromotion', newPromotionData), {
         pending: {
           render() {

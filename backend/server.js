@@ -29,7 +29,6 @@ import balanaceLeavesRoute from './routes/balanceleaves.js'
 import userIntroTourRoute from './routes/userintrotour.js'
 import manageOfficeGalleryRoute from './routes/manageofficegallery.js'
 import payslipRoute from './routes/payslip.js'
-import experienceRoute from './routes/experience.js'
 import userExperienceRoute from './routes/userexperince.js'
 
 //import authMiddleware from './middleware/authUsers.js'
@@ -71,7 +70,6 @@ app.use('/api/',balanaceLeavesRoute)
 app.use('/api/',userIntroTourRoute)
 app.use('/api/',manageOfficeGalleryRoute)
 app.use('/api/',payslipRoute)
-app.use('/api/',experienceRoute)
 app.use('/api/',userExperienceRoute)
 
 
