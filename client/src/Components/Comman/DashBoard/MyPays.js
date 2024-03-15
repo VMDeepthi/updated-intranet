@@ -1,61 +1,23 @@
 import { Paper,Box,Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from "react";
-import userContext from '../../context/UserContext'
 
-function MyPays() {
-    const [payslipData, setPayslipData] = useState([]); // State to store fetched payslip data
-    const navigate = useNavigate();
-    const {userDetails} = useContext(userContext)
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-     useEffect(() => {
-        const fetchPayslipData = async () => {
-            try {
-                const response = await fetch('/api/payslips', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ emp_id: userDetails.employee_id })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch payslip data');
-                }
-
-                let payslipData = await response.json();
-                payslipData = payslipData.map(e => {
-                    return {
-                        ...e,
-                        MONTH: months[e.MONTH.split('T')[0].split('-')[1] - 1]
-                    }
-                }).reverse()
-
-                setPayslipData(payslipData);
-            } catch (error) {
-                console.error('Error fetching payslip data:', error);
-            }
-        };
-
-        fetchPayslipData();
-    }, [userDetails.employee_id]);
-    const onNavigate = () => {
-        navigate('/payslips');
-    };
+function MyPays(props) {
+    const {salaryData} = props
+    const navigate = useNavigate();   
 
     return (
-          <div style={{ height: '220px', overflow: 'auto' }}> 
+          <div style={{ minHeight: '220px', overflow: 'auto' }}> 
         <Box>
             <Typography component='h4' variant='p' sx={{ p: 1, ml: 1 }}>
                 Last 3 Months Transaction
             </Typography>
             
-            <Container sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: "center" }}>
+            <Container sx={{ width: '100%',maxHeight:150, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: "center" }}>
              
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 200 }} size="small" aria-label="a dense table">
+                    <Table sx={{ minWidth: 180 }} size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">Month</TableCell>
@@ -64,9 +26,9 @@ function MyPays() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {payslipData.map((row, index) => (
+                            {salaryData.map((row, index) => (
                                 <TableRow key={index}>
-                                    <TableCell align="center">{row.MONTH}</TableCell>
+                                    <TableCell align="center">{row.uploaded_month}</TableCell>
                                     <TableCell align="center">{row.empsalnet}</TableCell>
                                     <TableCell align="center">{row.empsalepf}</TableCell>
                                 </TableRow>
@@ -75,8 +37,8 @@ function MyPays() {
                     </Table>
                 </TableContainer>
                 </Container>
-            <Container sx={{ display: 'block', p: 2 }} onClick={() => navigate("/payslips")}>
-                <Button onClick={onNavigate} variant="contained">Pay slips</Button>
+            <Container sx={{ display: 'block', p: 2 }} >
+                <Button onClick={()=>navigate("/payslips")} variant="contained">Pay slips</Button>
             </Container>  
         </Box>
     </div>     

@@ -19,7 +19,8 @@ export const login = (req, res) => {
                 const token = jwt.sign({ employee_id: result.employee_id, email: result.email, user_type: result.user_type, department: result.department }, process.env.JWT_SECRET)
                 console.log(token)
                 delete result.password
-                res.cookie('USERAUTHID', token, { maxAge: 10800000 }).status(200).json(result)
+                //res.cookie('USERAUTHID', token, { maxAge: 10800000 }).status(200).json(result)
+                return res.cookie('USERAUTHID', token).status(200).json(result)
             }
             else {
                 return res.status(401).json('Invalid email/password!')
@@ -124,9 +125,11 @@ export const resetpassword = async (req, res) => {
     console.log(pass)
     try {
         await db.promise().query(q, [pass, req.body.email])
+        console.log('inserted')
         return res.status(200).json('Password reseted successfully')
     }
-    catch {
+    catch(err) {
+        console.log(err)
         return res.status(500).json('error occured!')
     }
 

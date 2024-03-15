@@ -1,5 +1,5 @@
 import { ArrowBack, LockReset, Visibility, VisibilityOff } from '@mui/icons-material'
-import { Box, Button,  Container, Fade, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, Container, Fade, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
 import axios from 'axios'
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -16,12 +16,13 @@ function ForgotPassword() {
   const [showPassword, setShowPassword] = useState({ newPass: false, confirmPass: false });
   const [password, setPassword] = useState({ newPass: '', confirmPass: '' })
   const [loadSubmit, setLoadSubmit] = useState(false)
+  const [loadReset, setLoadReset] = useState(false)
 
   const navigate = useNavigate()
 
-  const ForgotPassView = ()=> {
+  const ForgotPassView = () => {
 
-    const handleResetPassword = async(e) => {
+    const handleResetPassword = async (e) => {
       e.preventDefault()
       console.log(email)
       setLoadSubmit(true)
@@ -50,7 +51,7 @@ function ForgotPassword() {
 
         // })
         const result = await axios.post('/api/forgotpasword', { email: email })
-        console.log(result)
+        //console.log(result)
         setActiveView(1)
         setOtp(result.data.otp)
         setLoadSubmit(false)
@@ -100,16 +101,16 @@ function ForgotPassword() {
             </FormControl>
             {/* </Box></Box><Button type='submit' color='info' sx={{ mt: 2, mb: 5 }} variant='contained'>Submit</Button> */}
             <LoadingButton
-            sx={{ mt: 2, mb: 5 }}
-                    color='info'
-                    type='submit'
-                    loading={loadSubmit}
-                   
-                    
-                    variant="contained"
-                  >
-                   Submit
-                  </LoadingButton>
+              sx={{ mt: 2, mb: 5 }}
+              color='info'
+              type='submit'
+              loading={loadSubmit}
+
+
+              variant="contained"
+            >
+              Submit
+            </LoadingButton>
           </Box>
         </Box>
       </Paper>
@@ -121,7 +122,7 @@ function ForgotPassword() {
   const OtpView = useMemo(() => {
     const handleSubmitOTP = (e) => {
       e.preventDefault()
-      console.log(clientOtp, otp)
+      //console.log(clientOtp, otp)
       if (clientOtp !== otp) {
 
         toast.error('Invalid Otp!')
@@ -171,127 +172,134 @@ function ForgotPassword() {
   }, [clientOtp, otp])
 
 
-  const ResetView =() => {
+  const ResetView = () => {
 
-    const handleResetPassword = (e) => {
+    const handleResetPassword = async (e) => {
       e.preventDefault()
       if (password.newPass !== '' && password.confirmPass !== '' && password.newPass !== password.confirmPass) {
         toast.warning('confirm password must match with new password!')
       }
       else {
-        console.log(email,password)
-        try{
-          toast.promise(axios.post('/api/resetpassword',{email:email,password:password.confirmPass}),{
-            pending:{
-              render(){
-                return('Reseting your password')
-              }
-            },
-            success:{
-              render(res){
-                setEmail('')
-                setActiveView(0)
-                setClientOtp('')
-                setOtp('')
-                setPassword('')
-                setShowPassword('')
-                navigate('/login')
-                return(res.data.data)
-              }
-            },
-            error:{
-              render(err){
-                return(err.data.response.data)
-              }
-            }
-          })
+        setLoadReset(true)
+
+        console.log(email, password)
+        try {
+          const result = await axios.post('/api/resetpassword', { email: email, password: password.confirmPass })
+          toast.success(result.data)
+          setLoadReset(false)
+          
+          setEmail('')
+          setActiveView(0)
+          setClientOtp('')
+          setOtp('')
+          setPassword('')
+          setShowPassword('')
+          navigate('/login')
+          
+
         }
-        catch{
-          toast.error('Something went wrong. Please check your internet connection!')
+        catch (err) {
+          console.log(err)
+          setLoadReset(false)
+          toast.error(err.response.data)
         }
       }
+
+
     }
 
     return (
-      <Fade in={activeView===2} timeout={2000}>
-      <Paper square={false} elevation={10} sx={{ p: 2, maxHeight: '350px', flexGrow: 0.1, display: 'flex', flexDirection: 'column' }}>
-        <Stack maxHeight={25} direction={'row'} display={'flex'} justifyContent={'flex-start'}>
-          <IconButton size='small' onClick={() => {
-            setActiveView(0)
-            setClientOtp('')
-            setOtp('')
-            setPassword({newPass:'',confirmPass:''})
-            setShowPassword({ newPass: false, confirmPass: false });
-          }} >
-            <ArrowBack />
-          </IconButton>
-        </Stack>
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+      <Fade in={activeView === 2} timeout={2000}>
+        <Paper square={false} elevation={10} sx={{ p: 2, maxHeight: '350px', flexGrow: 0.1, display: 'flex', flexDirection: 'column' }}>
+          <Stack maxHeight={25} direction={'row'} display={'flex'} justifyContent={'flex-start'}>
+            <IconButton size='small' onClick={() => {
+              setActiveView(0)
+              setClientOtp('')
+              setOtp('')
+              setPassword({ newPass: '', confirmPass: '' })
+              setShowPassword({ newPass: false, confirmPass: false });
+            }} >
+              <ArrowBack />
+            </IconButton>
+          </Stack>
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
 
-          <svg
-            width='60px'
-            height='60px'
-          >
-            <LockReset sx={{ color: '#00ACFF', fontSize: 40 }} />
-          </svg>
+            <svg
+              width='60px'
+              height='60px'
+            >
+              <LockReset sx={{ color: '#00ACFF', fontSize: 40 }} />
+            </svg>
 
-          <Typography mt={1} variant='p' component={'h5'} sx={{ fontSize: { xs: '12px', lg: '20px' } }}>Reset Your Password</Typography>
+            <Typography mt={1} variant='p' component={'h5'} sx={{ fontSize: { xs: '12px', lg: '20px' } }}>Reset Your Password</Typography>
 
-          <Box component={'form'} onSubmit={handleResetPassword} mt={2} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <Stack spacing={2}>
-              <FormControl fullWidth>
-                <InputLabel>New Password</InputLabel>
-                <OutlinedInput
-                  name='newPass'
-                  required={true}
-                  value={password.newPass}
-                  onInput={e => setPassword({ ...password, newPass: e.target.value })}
-                  type={showPassword.newPass ? 'text' : 'password'}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowPassword({ ...showPassword, newPass: !showPassword.newPass })}
-                        onMouseDown={() => setShowPassword({ ...showPassword, newPass: !showPassword.newPass })}
-                        edge="end"
-                      >
-                        {showPassword.newPass ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="New Password"
-                />
-              </FormControl>
+            <Box component={'form'} onSubmit={handleResetPassword} mt={2} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Stack spacing={2}>
+                <FormControl fullWidth>
+                  <InputLabel>New Password</InputLabel>
+                  <OutlinedInput
+                    name='newPass'
+                    required={true}
+                    value={password.newPass}
+                    onInput={e => setPassword({ ...password, newPass: e.target.value })}
+                    type={showPassword.newPass ? 'text' : 'password'}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword({ ...showPassword, newPass: !showPassword.newPass })}
+                          onMouseDown={() => setShowPassword({ ...showPassword, newPass: !showPassword.newPass })}
+                          edge="end"
+                        >
+                          {showPassword.newPass ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="New Password"
+                  />
+                </FormControl>
 
-              <FormControl fullWidth>
-                <InputLabel error={password.newPass !== '' && password.confirmPass !== '' && password.newPass !== password.confirmPass}>Confirm Password</InputLabel>
-                <OutlinedInput
-                  error={password.newPass !== '' && password.confirmPass !== '' && password.newPass !== password.confirmPass}
-                  name='confirmPass'
-                  value={password.confirmPass}
-                  onInput={e => setPassword({ ...password, confirmPass: e.target.value })}
-                  required={true}
-                  type={showPassword.confirmPass ? 'text' : 'password'}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowPassword({ ...showPassword, confirmPass: !showPassword.confirmPass })}
-                        onMouseDown={() => setShowPassword({ ...showPassword, confirmPass: !showPassword.confirmPass })}
-                        edge="end"
-                      >
-                        {showPassword.confirmPass ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Confirm Password"
-                />
-              </FormControl>
-            </Stack>
-            <Button type='submit' color='info' sx={{ mt: 2, mb: 5 }} variant='contained'>Submit</Button>
+                <FormControl fullWidth>
+                  <InputLabel error={password.newPass !== '' && password.confirmPass !== '' && password.newPass !== password.confirmPass}>Confirm Password</InputLabel>
+                  <OutlinedInput
+                    error={password.newPass !== '' && password.confirmPass !== '' && password.newPass !== password.confirmPass}
+                    name='confirmPass'
+                    value={password.confirmPass}
+                    onInput={e => setPassword({ ...password, confirmPass: e.target.value })}
+                    required={true}
+                    type={showPassword.confirmPass ? 'text' : 'password'}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword({ ...showPassword, confirmPass: !showPassword.confirmPass })}
+                          onMouseDown={() => setShowPassword({ ...showPassword, confirmPass: !showPassword.confirmPass })}
+                          edge="end"
+                        >
+                          {showPassword.confirmPass ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Confirm Password"
+                  />
+                </FormControl>
+              </Stack>
+
+              <LoadingButton
+
+                type='submit'
+                loading={loadReset}
+                color='info'
+                sx={{ mt: 2, mb: 5 }}
+                variant="contained"
+
+              >
+                Submit
+              </LoadingButton>
+              {/* <Button type='submit' color='info' sx={{ mt: 2, mb: 5 }} variant='contained'>Submit</Button> */}
+            </Box>
           </Box>
-        </Box>
-      </Paper>
+        </Paper>
       </Fade>
     )
   }

@@ -28,8 +28,8 @@ import applyLeaveRoute from './routes/applyleave.js'
 import balanaceLeavesRoute from './routes/balanceleaves.js'
 import userIntroTourRoute from './routes/userintrotour.js'
 import manageOfficeGalleryRoute from './routes/manageofficegallery.js'
-import payslipRoute from './routes/payslip.js'
 import userExperienceRoute from './routes/userexperince.js'
+import salaryManagementRoute  from './routes/salarymanagement.js'
 
 //import authMiddleware from './middleware/authUsers.js'
 import { checkAuthentication } from './middleware/authUsers.js'
@@ -69,9 +69,10 @@ app.use('/api/',applyLeaveRoute)
 app.use('/api/',balanaceLeavesRoute)
 app.use('/api/',userIntroTourRoute)
 app.use('/api/',manageOfficeGalleryRoute)
-app.use('/api/',payslipRoute)
-app.use('/api/',userExperienceRoute)
 
-app.listen(8080,()=>{
+app.use('/api/',userExperienceRoute)
+app.use('/api/',salaryManagementRoute)
+
+app.listen(8080,'192.168.30.93',()=>{
     console.log('Hii server is running at: http://localhost:8080/')
 })

@@ -143,13 +143,16 @@ export default function UserNavBar(props) {
 
   function dateFormat(date) {
     const options = {
-      weekday: 'long',
+      
+      day: 'numeric',
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
+      weekday: 'long',
+      
     };
-    const formate = date.toLocaleDateString(undefined, options).replace(/ /g, ',').split(',').filter(x => x !== "")
-    const day = formate[1]
+    const formate = date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== "")
+    //console.log(formate,date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== ""))
+    const day = formate[2]
     let formated_day;
     switch (day) {
       case '1':
@@ -166,10 +169,10 @@ export default function UserNavBar(props) {
         break
 
     }
-    formate[1] = formated_day
+    formate[2] = formated_day
 
-
-    return `${formate.slice(0, 3).join(' ')}, ${formate[3]}`
+    //console.log(formated_day)
+    return `${formate[0]} ${formate[2]} ${formate[1]}, ${formate[3]}`
 
   }
 

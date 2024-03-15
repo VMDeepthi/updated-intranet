@@ -45,11 +45,9 @@ import ManageBalanceLeaves from './Components/Admin/LeaveManagement/ManageBalanc
 import UploadGallary from './Components/Admin/ManageOfficeGallary/UploadGallary'
 import ViewGallery from './Components/Admin/ManageOfficeGallary/ViewGallery'
 
-import UploadSalaryDetails from './Components/Admin/SalaryManagement/UploadSalaryDetails'
-import ViewSalaryDetails from './Components/Admin/SalaryManagement/ViewSalaryDetails'
-
 import UserAccessManagement from './Components/Admin/UserManagement/UserAccessManagement'
 import { UserAccessProvider } from './Components/context/UserAccessContext'
+import SalaryManagement from './Components/Accounts/SalaryManagement/SalaryManagement'
 
 export default function App() {
   //console.log(useContext(UserContext))
@@ -97,10 +95,7 @@ export default function App() {
               <Route path='/manage-balance-leaves' element={<AdminProtectedRoute component={<ManageBalanceLeaves />} />} />
               <Route path='/upload-gallery' element={<AdminProtectedRoute component={<UploadGallary />} />} />
               <Route path='/view-gallery' element={<AdminProtectedRoute component={<ViewGallery />} />} />
-
-
-              <Route path='/uploadsalarydetails' element={<AdminProtectedRoute component={<UploadSalaryDetails />} />} />
-              <Route path='/viewsalarydetails' element={<AdminProtectedRoute component={<ViewSalaryDetails />} />} />
+              <Route path='/salary-management' element={<AdminProtectedRoute component={<SalaryManagement />} />} />
 
 
             </Routes>

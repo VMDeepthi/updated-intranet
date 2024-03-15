@@ -35,59 +35,10 @@ import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
 import { toast } from 'react-toastify';
 
-import { Steps, Hints } from 'intro.js-react';
+import { Steps} from 'intro.js-react';
 import "intro.js/introjs.css";
 import { UserAccessContext } from '../../context/UserAccessContext';
 
-
-
-
-// const convertDateFormat = (date) => {
-//     let day = date.getDate()
-//     if (day < 10) {
-//         day = '0' + day
-//     }
-//     let month = date.getMonth() + 1
-//     if (month < 10) {
-//         month = '0' + month
-//     }
-//     return date.getFullYear() + '-' + month + '-' + day
-// }
-
-// var d = new Date();
-// var getTot = daysInMonth(d.getMonth(), d.getFullYear()); //Get total days in a month
-// console.log('tot', getTot)
-// var sat = [];   //Declaring array for inserting Saturdays
-// var sun = [];   //Declaring array for inserting Sundays
-
-// for (var i = 1; i <= getTot; i++) {    //looping through days in month
-//     var newDate = new Date(d.getFullYear(), d.getMonth(), i)
-//     //console.log(newDate)
-//     if (newDate.getDay() === 0) {   //if Sunday
-//         sun.push(convertDateFormat(newDate))
-//     }
-//     if (newDate.getDay() === 6) {   //if Saturday
-//         sat.push(convertDateFormat(newDate));
-//     }
-
-// }
-// console.log('sat:', sat);
-// console.log('sun:', sun);
-
-
-// function daysInMonth(month, year) {
-//     return new Date(year, month, 0).getDate();
-// }
-
-// const lastTenDays = new Date((new Date()).getTime() - (11 * 86400000))
-// console.log('10:', lastTenDays)
-// const tenDays = []
-
-// for (let i = 1; i <= 10; i++) {
-//     tenDays.push(convertDateFormat(new Date(lastTenDays.getTime() + (i * 86400000))))
-
-// }
-// console.log('TenDays:', tenDays)
 
 
 const Dashboard = () => {
@@ -97,11 +48,11 @@ const Dashboard = () => {
     const [birthdayData, setBirthdayData] = useState([])
     const [calenderData, setCalenderData] = useState([])
     const [notice, setNotice] = useState([])
+    const [salaryData, setSalaryData] = useState([])
     const [loader, setLoader] = useState(true)
 
     const [stepsEnabled, setStepsEnabled] = useState(false);
     const [startTour, setStartTour] = useState(false);
-
     const { pagesToBeNotAccessed } = useContext(UserAccessContext)
 
     const steps = [
@@ -136,10 +87,7 @@ const Dashboard = () => {
             element: '.my-attendance',
             intro: 'In this section your 10 days attendance will be displayed in graph also you can check your balance hours as well'
         },
-        // {
-        //     element: '.hourbalance',
-        //     intro: 'Here extra balance hours will display in + symbol with green color and compensation hour will display in - symbol with red color'
-        // },
+        
         {
             element: '.my-pays',
             intro: 'In this section your last 3 months transaction will display '
@@ -148,10 +96,7 @@ const Dashboard = () => {
             element: '.my-accounts',
             intro: 'In this section your account numbers like UAN, Insurance Police, Salary Account number will display'
         },
-        // {
-        //     element: '.links',
-        //     intro: 'In this section UAN, Insurance Police, ICICI Bank links will display'
-        // },
+        
         {
             element: '.birthday-list',
             intro: 'Here current month employees birthday will display',
@@ -166,18 +111,12 @@ const Dashboard = () => {
             element: '.office-calender',
             intro: 'Here you will find a calender having holidays'
         },
-        // {
-        //     element: '.office-holidaylist-title-select',
-        //     intro: 'Here you need to select holiday list title '
-        // },
+       
         {
             element: '.view-link-calender',
             intro: 'from here ypu can explore the various company pages like holidays list'
         },
-        // {
-        //     element: '.holidays',
-        //     intro: 'Holidays of current month will display here'
-        // },
+        
         {
             element: '.account-menu',
             intro: 'In this section you can view profile, change password and logout'
@@ -223,7 +162,8 @@ const Dashboard = () => {
                 const totalhrsData = totalhrs.reverse().slice(0, 10).reverse()
                 const bal_hr = res.data.balance
                 setGraphData({ date: dateData, totalhrs: totalhrsData, bal_hr: bal_hr })
-
+                const salary = await axios.post('/api/lastsalarythreerecoreds',{emp_id:userDetails.employee_id})
+                setSalaryData(salary.data)
                 const holidays = await axios.post('/api/holidaylist', { department: userDetails.department })
                 setCalenderData(holidays.data)
                 const birthdays = await axios.get('/api/birthdaylist')
@@ -335,7 +275,7 @@ const Dashboard = () => {
                 </Tabs>
                 <Box sx={{ height: 290, width: '100%', display: 'flex', flexDirection: 'column' }}>
                     {
-                        value === 0 ? <AttendanceGraph graphData={graphData} /> : value === 1 ? <MyPays /> : value === 2 ? <MyAccounts /> : null
+                        value === 0 ? <AttendanceGraph graphData={graphData} /> : value === 1 ? <MyPays salaryData={salaryData} /> : value === 2 ? <MyAccounts /> : null
                     }
                 </Box>
             </Box>

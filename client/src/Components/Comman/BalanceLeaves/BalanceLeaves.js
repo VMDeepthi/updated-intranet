@@ -232,9 +232,10 @@ function BalanceLeaves() {
         else {
             const sat = [];   //Saturdays
             const sun = [];   //Sundays
-            const from_date = new Date(year, month - 1, 26).toLocaleString('en-CA').slice(0, 10)
-            const to_date = new Date(year, month, 25).toLocaleString('en-CA').slice(0, 10)
-            let startDate = from_date
+            const from_date = new Date(year, month - 1, 26)
+            const to_date = new Date(year, month, 25)
+           
+            let startDate = new Date(year, month - 1, 26)
             let totalDays = 0
             while (startDate <= to_date) {
                 if (startDate.getDay() === 0) { // if Sunday
@@ -248,20 +249,22 @@ function BalanceLeaves() {
                 totalDays = totalDays + 1
 
             }
-            //console.log("total days", totalDays)
-            //console.log('sat:', sat.length, sat);
-            //console.log('sun:', sun.length, sun);
-            //console.log(from_date, to_date)
+            console.log("total days", totalDays)
+            console.log('sat:', sat.length, sat);
+            console.log('sun:', sun.length, sun);
+            console.log(from_date, to_date)
+            console.log('dates',  from_date.toLocaleString('en-CA').slice(0,10), to_date.toLocaleString('en-CA').slice(0,10))
+            
 
-            axios.post('/api/monthattendance', { emp_id: userDetails.employee_id, from_date: from_date, to_date: to_date })
+            axios.post('/api/monthattendance', { emp_id: userDetails.employee_id, from_date: from_date.toLocaleString('en-CA').slice(0,10), to_date: to_date.toLocaleString('en-CA').slice(0,10) })
                 .then(res => {
-                    //console.log(res)
+                    console.log(res)
                     setDisplayData(true)
                     if (res.data.length === totalDays) {
                         setAttendanceData(res.data)
                         const present = res.data.filter(data => data.totalhrs !== 0)
-                        const leaves = res.data.filter(data => (data.updated_status === 'SL' || data.updated_status === 'CL'))
-                        const abbsent = res.data.filter(data => (!sat.includes(data.pdate) && !sun.includes(data.pdate) && (( data.updated_status === 'AA') || (data.status === 'HH' && data.updated_status === 'HH'))))
+                        const leaves = res.data.filter(data => (data.updated_status === 'EL' || data.updated_status === 'XL'))
+                        const abbsent = res.data.filter(data => (!sat.includes(data.pdate) && !sun.includes(data.pdate) && (( data.updated_status === 'AA'))))
                         //const abbsent = res.data.filter(data => data.totalhrs === 0)
                         //console.log(res.data.length, present.length, leaves, abbsent.length)
                         setLoader(false)
@@ -269,7 +272,7 @@ function BalanceLeaves() {
 
                        
 
-                        const attendanceData = res.data.filter(data=>data.updated_status!=='CL'&& data.updated_status!=='SL')
+                        const attendanceData = res.data.filter(data=>data.updated_status!=='XL'&& data.updated_status!=='EL')
                         const hr_list = attendanceData.map(a => a.totalhrs <= 4 ? 0 : a.totalhrs)
                         //const hr_list = result.map(a => a.totalhrs <= 4 ? 0 :a.updated_status==='CL'?0:a.updated_status==='SL'?0: a.totalhrs)
                         ////console.log('list',hr_list,attendanceData)
@@ -293,7 +296,7 @@ function BalanceLeaves() {
 
                 })
                 .catch(() => toast.error('unable to fetch Data'))
-                axios.post('/api/monthbalance', { emp_id: userDetails.employee_id, from_date: from_date, to_date: to_date })
+                axios.post('/api/monthbalance', { emp_id: userDetails.employee_id,  from_date: from_date.toLocaleString('en-CA').slice(0,10), to_date: to_date.toLocaleString('en-CA').slice(0,10) })
                 .then(res => {
                     const balanceData = res.data
                     // console.log(balanceData)

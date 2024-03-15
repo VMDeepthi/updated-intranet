@@ -3,8 +3,8 @@ import db from "../config/connectiondb.js";
 
 export const monthattendance = (req, res) => {
     console.log(req.body)
-    const { emp_id, from_date, to_date } = req.body
-
+    let { emp_id, from_date, to_date } = req.body
+    
     console.log(from_date, to_date)
     const q = `select * from attendance where pdate>=date(?) and pdate<=date(?) and emp_id=? order by pdate`
     const v = [from_date, to_date, emp_id]

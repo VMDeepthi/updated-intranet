@@ -1,80 +1,32 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext,  useState } from "react";
 import axios from "axios";
 import {
   Box,
   Button,
+  Collapse,
+  Container,
+  Fade,
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
-  OutlinedInput,
   Paper,
   Select,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import UserContext from "../../context/UserContext";
-import NavBar from "../../Comman/NavBar/UserNavBar";
-import {
-  AccountBox,
-  UploadFile,
-  Download,
-  Dock,
-  WidthNormal,
-  LightRounded,
-} from "@mui/icons-material";
+
+import {FileDownload,} from "@mui/icons-material";
 import { styled } from "@mui/system";
-import {
-  TablePagination,
-  tablePaginationClasses as classes,
-} from "@mui/base/TablePagination";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import AdminNavBar from "../NavBar/AdminNavBar";
 import { toast } from "react-toastify";
 import UserNavBar from "../../Comman/NavBar/UserNavBar";
-import { light } from "@mui/material/styles/createPalette";
+import Loader from "../Loader";
 
-const columns = [
-  { id: "salary_category", label: "", minWidth: 140 },
-  {
-    id: "salary_actual",
-    label: "Actual",
-    minWidth: 70,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "salary_present",
-    label: "Present",
-    minWidth: 70,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  { id: "deduction_category", label: "", minWidth: 140 },
-  {
-    id: "deduction_actual",
-    label: "Actual",
-    minWidth: 70,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "deduction_present",
-    label: "Present",
-    minWidth: 70,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  // {
-  //   id: "density",
-  //   label: "Density",
-  //   minWidth: 170,
-  //   align: "right",
-  //   format: (value) => value.toFixed(2),
-  // },
-];
 
 function createData(
   salary_category,
@@ -96,93 +48,16 @@ function createData(
 }
 
 const PaySlips = () => {
-  const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
-
   const [loader, setLoader] = useState(false);
-
   const { userDetails } = useContext(UserContext);
-  console.log(userDetails);
+  const [companyDetails, setCompanyDetails] = useState({ company_logo: '', company_address: '' })
+  const [viewDetailsFields, setViewDetailsFields] = useState({ year: '', month: '' })
+  const [salaryData, setSalaryData] = useState(null)
 
-  const [noError, setNoError] = useState(false);
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  const [showTable, setShowTable] = useState(false);
-  const [companyDetails, setCompanyDetails] = useState({company_logo:'', company_address:''})
-
-  const handleAddFormDataMonth = (e) => {
-    setMonth(e.target.value);
-  };
-
-  const handleAddFormDataYear = (e) => {
-    setYear(e.target.value);
-  };
-
-  const handleUploadFile = async () => {
-    try {
-      if (!month || !year) {
-        toast.warning("Select month and year to upload!");
-        return;
-      }
-      const body = {
-        month: month,
-        year: year,
-        empid: userDetails.employee_id,
-      };
-      axios
-        .post("/api/viewemppayslip", body)
-        .then((res) => {
-          // setData(res.data);
-          populateTable(res.data[0])
-        })
-        .catch(() => {
-          toast.error("unable to fetch data");
-        });
-        axios.post('/api/companydetails',{emp_id: userDetails.employee_id})
-        .then((res) => {
-          console.log(res.data)
-          setCompanyDetails(res.data[0])
-        })
-        .catch(() => {
-          toast.error("unable to fetch data");
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // const getPayslipData = async () => {
-  // };
-
+  
   const currentYear = new Date().getFullYear();
-  // const years = Array.from(
-  //   { length: currentYear - 2014 + 1 },
-  //   (_, index) => 2014 + index
-
-  // );
-  // const years = Array.from(
-  //   { length: currentYear - 2014 + 1 },
-  //   (_, index) => 2014 + index
-
-  // );
-  const years = Array.from(
-    { length: currentYear - 2014 + 1 },
-    (_, index) => 2014 + index
-  );
-
-  const reversedYears = years.filter(year => year <= 2024).reverse();
-  const handleResetForm = () => {
-    console.log(month);
-    console.log(year);
-    setMonth("");
-    setYear("");
-    setNoError(false);
-  };
-
-  const handleSubmitCompForm = async (e) => {
-    e.preventDefault();
-    setShowTable(true);
-  };
+  const years = Array.from({ length: currentYear - 2000 + 1 }, (_, index) => 2000 + index).reverse();
 
   const populateTable = (data) => {
     const tempRows = []
@@ -219,7 +94,7 @@ const PaySlips = () => {
       // padding: {top: 40}
     });
     let imageHeader = new Image();
-    imageHeader.src = `${companyDetails.company_logo===''?'':process.env.REACT_APP_BACKEND_SERVER+companyDetails.company_logo}`;
+    imageHeader.src = `${companyDetails.company_logo === '' ? '' : process.env.REACT_APP_BACKEND_SERVER + companyDetails.company_logo}`;
     doc.addImage(
       imageHeader,
       // param.logo.type,
@@ -233,253 +108,233 @@ const PaySlips = () => {
       `${companyDetails.company_address}`,
       120,
       20,
-      {maxWidth: 60, align: "justify"}
+      { maxWidth: 60, align: "justify" }
     );
     const empName = userDetails.first_name + " " + userDetails.last_name;
-    const empCode = userDetails.employee_id;
-    const monthYear = month + " " + year;
+    const empCode = 'bcg/' + userDetails.employee_id;
+    const desg = userDetails.designation
+    const monthYear = viewDetailsFields.month + " " + viewDetailsFields.year;
     doc.text(
-      `\nName of the Employee: ${empName} \nEmployee Code: ${empCode} \nDesignation: null \nPF Number: null \nPAN Number: null \n\nPay slip for the month of ${monthYear}`,
+      `\nName of the Employee: ${empName} \nEmployee Code: ${empCode} \nDesignation: ${desg} \nPF Number: null \nPAN Number: null \n\nPay slip for the month of ${monthYear}`,
       30,
       40
     );
 
-    doc.save("payslip.pdf");
+    doc.save(`${viewDetailsFields.month.slice(0, 3)}_${viewDetailsFields.year}_payslip`);
+  };
+
+  const handleDisplayPayslip = async (e) => {
+    e.preventDefault()
+    try{
+      setLoader(true)
+      const salaryResult = await axios.post("/api/viewusermonthsalarydata", { ...viewDetailsFields, emp_id: userDetails.employee_id })
+      if (salaryResult.data.length !== 0) {
+        populateTable(salaryResult.data[0])
+      }
+      setSalaryData(salaryResult.data)
+      const compnayResult = await axios.post('/api/companydetails', { emp_id: userDetails.employee_id })
+      setCompanyDetails(compnayResult.data[0])
+      setLoader(false)
+    }
+    catch{
+      setLoader(false)
+      toast.error("unable to fetch data");
+
+    }
+
   };
 
   return (
     <>
-      {userDetails.access === "admin" ? <AdminNavBar /> : <UserNavBar />}
+      <Box sx={{ minHeight: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}  >
+        {userDetails.user_type === 'admin' && userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+        <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}  >
+          <div
 
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, ml: { xs: 8 }, mt: { xs: 4, md: 6, lg: 8 } }}
-      >
-        <div
-          style={{
-            height: "70vh",
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-        >
-          <Grid
-            container
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "center",
+            style={{
+              height: 'auto',
+              width: '100%',
+              backgroundColor: '#F5F5F5'
             }}
           >
-            <Grid item sm={12} lg={12} md={12}>
-              <Typography
-                variant="h5"
-                component={"h5"}
-                m={1}
-                p={1}
-                textAlign={"center"}
-              >
-                Employee Monthly Salary Details
-              </Typography>
-              <Paper
-                elevation={5}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  width: { xs: "70ch", md: "90ch", lg: "110ch" },
-                  height: { xs: "115ch", md: "95ch", lg: "95ch" },
-                  p: 1,
-                }}
-              >
-                <Box
-                  component={"form"}
-                  onSubmit={handleSubmitCompForm}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    width: { xs: "25ch", md: "60ch", lg: "100ch" },
-                    height: { xs: "55ch", sm: "55ch", md: "55ch", lg: "50ch" },
-                    p: 1,
-                  }}
-                >
-                  <Stack
-                    direction={{ xs: "column", md: "row" }}
-                    spacing={{ xs: 2, sm: 1, md: 2, lg: 2 }}
-                    sx={{
-                      width: { xs: "60ch", md: "80ch", lg: "100ch" },
-                    }}
-                  >
-                    <FormControl sx={{ mb: 2 }} fullWidth variant="outlined">
-                      <InputLabel size="small" required>
-                        Select Month
-                      </InputLabel>
-                      <Select
-                        size="small"
-                        label="Status"
-                        name="month"
-                        value={month}
-                        required
-                        onChange={handleAddFormDataMonth}
-                      >
-                        <MenuItem value="jan">January</MenuItem>
-                        <MenuItem value="feb">February</MenuItem>
-                        <MenuItem value="mar">March</MenuItem>
-                        <MenuItem value="apr">April</MenuItem>
-                        <MenuItem value="may">May</MenuItem>
-                        <MenuItem value="jun">June</MenuItem>
-                        <MenuItem value="jul">July</MenuItem>
-                        <MenuItem value="aug">August</MenuItem>
-                        <MenuItem value="sep">September</MenuItem>
-                        <MenuItem value="oct">October</MenuItem>
-                        <MenuItem value="nov">November</MenuItem>
-                        <MenuItem value="dec">December</MenuItem>
-                      </Select>
-                    </FormControl>
+            <Typography variant='h5' component={'h5'} m={1} textAlign={'center'} >Employee Monthly Salary Details</Typography>
+            <Grid container spacing={2} display={'flex'} justifyContent={'center'}  >
+              <Grid item xs={12} sm={12} lg={11}>
+                <Paper elevation={1} sx={{ p: 1, "&:hover": { boxShadow: 8 } }}>
+                  <Box component={'form'} onSubmit={handleDisplayPayslip} p={1}>
+                    <Stack spacing={2} direction={{ xs: 'column', lg: 'row' }} >
+                      <FormControl sx={{ mb: 2 }} fullWidth variant="outlined">
+                        <InputLabel size="small" required>
+                          Select Year
+                        </InputLabel>
+                        <Select
+                          size="small"
+                          label="Select Year"
+                          name="year"
+                          required
+                          value={viewDetailsFields.year}
+                          onChange={e => setViewDetailsFields({ ...viewDetailsFields, year: e.target.value })}
+                        >
+                          {years.map((name, index) => (
+                            <MenuItem key={index} value={name}>
+                              {name}
+                            </MenuItem>
+                          ))}
 
-                    <FormControl sx={{ mb: 2 }} fullWidth variant="outlined">
-                      <InputLabel size="small" required>
-                        Select year
-                      </InputLabel>
-                      <Select
-                        size="small"
-                        label="Status"
-                        name="year"
-                        value={year}
-                        required
-                        onChange={handleAddFormDataYear}
-                      >
-                        {reversedYears.map((name, index) => (
-                          <MenuItem key={index} value={name}>
-                            {name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                        </Select>
+                      </FormControl>
+                      <FormControl fullWidth variant="outlined">
+                        <InputLabel size="small" required>
+                          Select Month
+                        </InputLabel>
+                        <Select
+                          size="small"
+                          name="month"
+                          label='Select Month'
+                          required
+                          value={viewDetailsFields.month}
+                          onChange={e => setViewDetailsFields({ ...viewDetailsFields, month: e.target.value })}
+                        >
+                          <MenuItem value="january">January</MenuItem>
+                          <MenuItem value="february">February</MenuItem>
+                          <MenuItem value="march">March</MenuItem>
+                          <MenuItem value="april">April</MenuItem>
+                          <MenuItem value="may">May</MenuItem>
+                          <MenuItem value="june">June</MenuItem>
+                          <MenuItem value="july">July</MenuItem>
+                          <MenuItem value="august">August</MenuItem>
+                          <MenuItem value="september">September</MenuItem>
+                          <MenuItem value="october">October</MenuItem>
+                          <MenuItem value="nov">November</MenuItem>
+                          <MenuItem value="december">December</MenuItem>
+                        </Select>
+                      </FormControl>
 
-                    <Button
-                      variant="outlined"
-                      color="success"
-                      type="submit"
-                      onClick={handleUploadFile}
-                    >
-                      Display
-                    </Button>
-                    {showTable ? (
-                      <Button variant="outlined" onClick={exportPDF}>
-                        <Download fontSize="medium" />
-                      </Button>
-                    ) : (
-                      <></>
-                    )}
-                  </Stack>
-                </Box>
+                      <FormControl fullWidth variant="outlined">
+                        <Button color='info' variant="contained" type='submit'>View Details</Button>
+                      </FormControl>
+                      <Fade in={salaryData !== null && salaryData.length !== 0} timeout={1000} >
+                        <IconButton title="Download Payslip"  color="info" onClick={exportPDF}> <FileDownload /> </IconButton>
+                      </Fade>
 
-                {showTable ? (
-                  <Root
-                    sx={{
-                      maxWidth: "90%",
-                      width: "90%",
-                      my: "24px",
-                      backgroundColor: "#a2deb2",
-                    }}
-                  >
-                    <table
-                      aria-label="custom pagination table"
-                      id="payslip-table"
-                    >
-                      <tbody>
-                        <tr height="18">
-                          <th
-                            colSpan="3"
-                            align="center"
-                            style={{ backgroundColor: "#679e76" }}
+                    </Stack>
+
+                  </Box>
+                  <Collapse in={salaryData === null} timeout={'auto'} unmountOnExit>
+                    <Box sx={{ maxHeight: '300px', m: 2, width: '100%', display: 'flex', justifyContent: 'center',  }}>
+                      <img style={{ objectFit: 'contain', width: '100%', height: 'auto' }} src='salaryDetails.png' alt='salaryDetails' />
+                    </Box>
+                  </Collapse>
+                  <Collapse in={salaryData !== null} unmountOnExit timeout={'auto'}>
+
+                    <Collapse in={salaryData !== null && salaryData.length !== 0} timeout={'auto'} unmountOnExit>
+                      <Container sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Root
+                          sx={{
+                            maxWidth: "90%",
+                            width: "90%",
+                            my: "24px",
+                            backgroundColor: "#a2deb2",
+                          }}
+                        >
+                          <table
+                            aria-label="custom pagination table"
+                            id="payslip-table"
                           >
-                            Total Salary
-                          </th>
-                          <th
-                            colSpan="3"
-                            align="center"
-                            style={{ backgroundColor: "#679e76" }}
-                          >
-                            Deductions
-                          </th>
-                        </tr>
-                        <tr height="24">
-                          <th
-                            style={{ width: 160, backgroundColor: "#679e76" }}
-                          ></th>
-                          <th style={{ width: 60, backgroundColor: "#679e76" }}>
-                            Present
-                          </th>
-                          <th style={{ width: 60, backgroundColor: "#679e76" }}>
-                            Actuals
-                          </th>
-                          <th
-                            style={{ width: 160, backgroundColor: "#679e76" }}
-                          ></th>
-                          <th style={{ width: 60, backgroundColor: "#679e76" }}>
-                            Present
-                          </th>
-                          <th style={{ width: 60, backgroundColor: "#679e76" }}>
-                            Actuals
-                          </th>
-                        </tr>
-                        {rows.map((row) => (
-                          <tr height="2" key={row.salary_category}>
-                            <td style={{ width: 160 }}>
-                              {row.salary_category}
-                            </td>
-                            <td
-                              className="val"
-                              style={{ width: 60 }}
-                              align="right"
-                            >
-                              {row.salary_actual}
-                            </td>
-                            <td
-                              className="val"
-                              style={{ width: 60 }}
-                              align="right"
-                            >
-                              {row.salary_present}
-                            </td>
-                            <td style={{ width: 160 }}>
-                              {row.deduction_category}
-                            </td>
-                            <td
-                              className="val"
-                              style={{ width: 60 }}
-                              align="right"
-                            >
-                              {row.deduction_actual}
-                            </td>
-                            <td
-                              className="val"
-                              style={{ width: 60 }}
-                              align="right"
-                            >
-                              {row.deduction_present}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </Root>
-                ) : (
-                  <></>
-                )}
-              </Paper>
+                            <tbody>
+                              <tr height="18">
+                                <th
+                                  colSpan="3"
+                                  align="center"
+                                  style={{ backgroundColor: "#679e76" }}
+                                >
+                                  Total Salary
+                                </th>
+                                <th
+                                  colSpan="3"
+                                  align="center"
+                                  style={{ backgroundColor: "#679e76" }}
+                                >
+                                  Deductions
+                                </th>
+                              </tr>
+                              <tr height="24">
+                                <th
+                                  style={{ width: 160, backgroundColor: "#679e76" }}
+                                ></th>
+                                <th style={{ width: 60, backgroundColor: "#679e76" }}>
+                                  Present
+                                </th>
+                                <th style={{ width: 60, backgroundColor: "#679e76" }}>
+                                  Actuals
+                                </th>
+                                <th
+                                  style={{ width: 160, backgroundColor: "#679e76" }}
+                                ></th>
+                                <th style={{ width: 60, backgroundColor: "#679e76" }}>
+                                  Present
+                                </th>
+                                <th style={{ width: 60, backgroundColor: "#679e76" }}>
+                                  Actuals
+                                </th>
+                              </tr>
+                              {rows.map((row,index) => (
+                                <tr height="2" key={index}>
+                                  <td style={{ width: 160 }}>
+                                    {row.salary_category}
+                                  </td>
+                                  <td
+                                    className="val"
+                                    style={{ width: 60 }}
+                                    align="right"
+                                  >
+                                    {row.salary_actual}
+                                  </td>
+                                  <td
+                                    className="val"
+                                    style={{ width: 60 }}
+                                    align="right"
+                                  >
+                                    {row.salary_present}
+                                  </td>
+                                  <td style={{ width: 160 }}>
+                                    {row.deduction_category}
+                                  </td>
+                                  <td
+                                    className="val"
+                                    style={{ width: 60 }}
+                                    align="right"
+                                  >
+                                    {row.deduction_actual}
+                                  </td>
+                                  <td
+                                    className="val"
+                                    style={{ width: 60 }}
+                                    align="right"
+                                  >
+                                    {row.deduction_present}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </Root>
+                      </Container>
+                    </Collapse>
+                    <Collapse in={salaryData !== null && salaryData.length === 0} timeout={'auto'} unmountOnExit>
+                      <Box sx={{ maxHeight: '300px', width: '100%', display: 'flex', justifyContent: 'center',backgroundColor:'#fafbfd' }}>
+                        <img style={{ objectFit: 'contain', width: '100%', height: 'auto' }} src='norecordfound.gif' alt='norecordfound' />
+                      </Box>
+                    </Collapse>
+                  </Collapse>
+                </Paper>
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
+          </div>
+        </Box>
       </Box>
+      <Loader loader={loader} />
+      
     </>
   );
 };
@@ -494,7 +349,7 @@ const Root = styled("div")(
       border-collapse: collapse;
       width: 100%;
     }
-  
+
     td,
     th {
       border: 1px solid ${theme.palette.mode === "dark" ? grey[500] : grey[200]
@@ -511,7 +366,7 @@ const Root = styled("div")(
       text-align: right;
     }
 
-  
+
     th {
       background-color: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
     }
@@ -530,3 +385,4 @@ const grey = {
   800: "#303740",
   900: "#1C2025",
 };
+

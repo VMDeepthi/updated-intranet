@@ -37,6 +37,7 @@ function UserAccessManagement() {
                 PersonalSection: true,
                 BirthdayList: true,
                 OfficeCalender: true,
+                Payslips:true,
                 Attendance: true,
                 ApplyLeave: true,
                 BalanceLeaves: true,
@@ -50,6 +51,7 @@ function UserAccessManagement() {
                 PersonalSection: true,
                 BirthdayList: true,
                 OfficeCalender: true,
+                Payslips:true,
                 Attendance: true,
                 ApplyLeave: true,
                 BalanceLeaves: true,
@@ -77,6 +79,9 @@ function UserAccessManagement() {
                 HistorylogAdmin: true,
                 ManageBalanceLeaves: true
 
+            },
+            'Accounts':{
+                SalaryManagement:true
             }
         }
 
@@ -286,7 +291,7 @@ function UserAccessManagement() {
                                                 </Collapse>
                                                 {Object.keys(acceessData).length === 0 ?
                                                     <Box sx={{ maxHeight: '300px', width: '100%', display: 'flex', justifyContent: 'center', }}>
-                                                        <img style={{ objectFit: 'contain', width: '100%', height: 'auto' }} src='access.png' alt='experience' />
+                                                        <img style={{ objectFit: 'contain', width: '100%', height: 'auto' }} src='access.png' alt='Access' />
                                                     </Box>
                                                     : null
                                                 }
