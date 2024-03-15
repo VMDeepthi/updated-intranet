@@ -58,77 +58,92 @@ const Dashboard = () => {
     const steps = [
         {
             element: '.notice',
-            intro: 'All announcements will be displayed here'
+            intro: 'All announcements will be displayed here',
+            restrict:null
         },
         {
             element: ".profile-section",
             intro: "In this section your profile image with your name, emp id and designation will display",
             position: 'right',
-
+            restrict:null
         },
         {
             element: ".teams",
-            intro: "In teams section as per company names their corresponding company pages will display "
+            intro: "In teams section as per company names their corresponding company pages will display ",
+            restrict:null
         },
         {
             element: '.directory-search',
-            intro: 'In directory search section you can search employees based on various filters'
+            intro: 'In directory search section you can search employees based on various filters',
+            restrict:null
         },
         {
             element: '.cross-road',
-            intro: 'In this section you can see Birthday calender and Timezone'
+            intro: 'In this section you can see Birthday calender and Timezone',
+            restrict:null
         },
         {
             element: '.personal-section',
             intro: 'In this section you can view my attendance,my pays and my accounts',
-            position: 'right'
+            position: 'right',
+            restrict:'PersonalSection'
         },
         {
             element: '.my-attendance',
-            intro: 'In this section your 10 days attendance will be displayed in graph also you can check your balance hours as well'
+            intro: 'In this section your 10 days attendance will be displayed in graph also you can check your balance hours as well',
+            restrict:'PersonalSection'
         },
         
         {
             element: '.my-pays',
-            intro: 'In this section your last 3 months transaction will display '
+            intro: 'In this section your last 3 months transaction will display ',
+            restrict:'PersonalSection'
         },
         {
             element: '.my-accounts',
-            intro: 'In this section your account numbers like UAN, Insurance Police, Salary Account number will display'
+            intro: 'In this section your account numbers like UAN, Insurance Police, Salary Account number will display',
+            restrict:'PersonalSection'
         },
         
         {
             element: '.birthday-list',
             intro: 'Here current month employees birthday will display',
-            position: 'left'
+            position: 'left',
+            restrict:'BirthdayList'
         },
         {
             element: '.view-link-birthdays',
             intro: 'Here all/filtered employees birthday list will display ',
+            restrict:'BirthdayList'
 
         },
         {
             element: '.office-calender',
-            intro: 'Here you will find a calender having holidays'
+            intro: 'Here you will find a calender having holidays',
+            restrict:'OfficeCalender'
         },
        
         {
             element: '.view-link-calender',
-            intro: 'from here ypu can explore the various company pages like holidays list'
+            intro: 'from here ypu can explore the various company pages like holidays list',
+            restrict:'OfficeCalender'
         },
         
         {
             element: '.account-menu',
-            intro: 'In this section you can view profile, change password and logout'
+            intro: 'In this section you can view profile, change password and logout',
+            restrict:null
         },
         {
             element: '.navigation-menu',
-            intro: 'This is the navigation menu'
+            intro: 'This is the navigation menu',
+            restrict:null
         },
         {
 
             title: '<img style="max-width:200px;height:50px" src="https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png" alt="img" />',
-            intro: '<h2 >Welcome To Brightcom Group</h2>'
+            intro: '<h2 >Welcome To Brightcom Group</h2>',
+            restrict:null
 
         }
 
@@ -426,7 +441,7 @@ const Dashboard = () => {
             />
             <Steps
                 enabled={stepsEnabled}
-                steps={steps}
+                steps={steps.filter(st=>!pagesToBeNotAccessed.includes(st.restrict))}
                 initialStep={notice.length === 0 ? 1 : 0}
                 onExit={onExit}
                 options={{ doneLabel: 'Done', exitOnOverlayClick: false, exitOnEsc: false }}
