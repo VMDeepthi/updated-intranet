@@ -349,13 +349,13 @@ function Login() {
             </Stack> */}
           </Box>
         </Grid>
-        <Grid item lg={6} md={12} sm={12} xs={12} >
+        <Grid item lg={6} md={12} sm={12} xs={12} sx={{backgroundColor:'#f6f6ff'}} >
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 1 }} >
-            <img style={{ marginTop: 'auto', objectFit: 'contain', maxWidth: '100%', maxHeight: '500px' }} src='x4.gif' alt='norecordfound' />
+            <img style={{ marginTop: 'auto', objectFit: 'contain', maxWidth: '100%', maxHeight: '500px', borderRadius:'100px' }} src='x4.gif' alt='norecordfound' />
           </Box>
 
         </Grid>
-        <Grid item lg={6} md={12} sm={12} xs={12}>
+        <Grid item lg={6} md={12} sm={12} xs={12} sx={{backgroundColor:'#f6f6ff'}} >
 
           <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', p: 2 }}>
             <Box
