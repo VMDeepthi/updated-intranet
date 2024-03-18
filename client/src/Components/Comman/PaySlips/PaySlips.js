@@ -136,7 +136,8 @@ const PaySlips = () => {
       setCompanyDetails(compnayResult.data[0])
       setLoader(false)
     }
-    catch{
+    catch(err){
+      console.log(err)
       setLoader(false)
       toast.error("unable to fetch data");
 

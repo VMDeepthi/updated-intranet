@@ -96,7 +96,7 @@ function DirectorySearch() {
             {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
             <Box component='main' sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', p: 3, height: '90vh', mt: 6 }}>
                 <Typography variant="h4" align="center" gutterBottom>
-                    Dictionary Search
+                    Directory Search
                 </Typography>
                 <Grid spacing={3} container justifyContent="center" display={'flex'}>
                     <Grid item xs={12} lg={5}>

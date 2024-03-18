@@ -181,10 +181,6 @@ export default function AdminNavBar(props) {
   }
 
   const time = currentTime.toLocaleTimeString(undefined, { hour12: true });
-  // const day = currentTime.toLocaleString('default', { weekday: 'long' });
-  // var dd = String(currentTime.getDate()).padStart(2, '0');
-  // var mm = String(currentTime.getMonth() + 1).padStart(2, '0'); //January is 0!
-  // var yyyy = currentTime.getFullYear();
   const day = dateFormat(currentTime)
 
   //console.log("running")

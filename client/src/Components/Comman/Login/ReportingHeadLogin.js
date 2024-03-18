@@ -131,22 +131,22 @@ function ReportingHeadLogin() {
       <>
         <Container sx={{ height: { xs: '40vh', lg: '90vh' }, width: '100%', display: 'flex' }}>
           <Grid container spacing={2} mt={1} >
-            <Grid item xs={12} lg={12} >
+            {/* <Grid item xs={12} lg={12} >
               <Typography color={'#4B4747'} fontFamily={'Miso-Light'} component={'p'} sx={{ fontSize: { xs: '20px', lg: '35px' }, textAlign: { lg: 'center' } }} variant={'p'}>LEADING THROUGH <span style={{ color: '#F167DC' }}>TECHNOLOGY</span></Typography>
             </Grid>
             <Grid item xs={12} lg={12} >
               <Typography component={'p'} color={'#4B4747'} fontFamily={'Miso-Light'} sx={{ fontSize: { xs: '20px', lg: '35px' }, textAlign: { lg: 'center' } }} variant={'p'}>WINNING THROUGH <span style={{ color: '#F167DC' }}>PEOPLE</span></Typography>
-            </Grid>
+            </Grid> */}
             <Grid container >
 
-              <Grid item xs={0} lg={4}>
+              {/* <Grid item xs={0} lg={4}>
                 <Container sx={{ display: 'flex', justifyContent: 'center', height: '400px', alignItems: 'center', width: { xs: '0ch', lg: '400px' } }}>
                   <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1703591796/intranet/sacdwxhc2cr2lilenumw.png' alt='robo' style={{ maxWidth: '100%', maxHeight: '70%' }} />
                 </Container>
 
-              </Grid>
-              <Grid item xs={6} sm={6} md={6} lg={4}>
-                <Box sx={{ display: 'flex', justifyContent: 'flext-start', alignItems: 'center', height: '100%', width: '100%', p: 1 }} >
+              </Grid> */}
+              <Grid item xs={6} sm={6} md={6} lg={12}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%', p: 1 }} >
 
 
                   <Paper elevation={3} >
@@ -220,12 +220,12 @@ function ReportingHeadLogin() {
               </Grid>
 
 
-              <Grid item xs={0} lg={4}>
+              {/* <Grid item xs={0} lg={4}>
                 <Container sx={{ display: 'flex', justifyContent: 'center', height: '400px', alignItems: 'center', width: { xs: '0ch', lg: '400px' } }}>
                   <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1703591743/intranet/x8lfsmdftq6uo01qdmhk.png' alt='robo' style={{ maxWidth: '100%', maxHeight: '70%' }} />
                 </Container>
 
-              </Grid>
+              </Grid> */}
             </Grid>
 
 
