@@ -1148,7 +1148,7 @@ export default function AdminNavBar(props) {
                       }
 
                       {
-                        pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('AddCompanyPages') ?
+                        pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('ViewCompanyPages') ?
                           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewcompanypages")}>
                             <ListItemButton
                               sx={{
