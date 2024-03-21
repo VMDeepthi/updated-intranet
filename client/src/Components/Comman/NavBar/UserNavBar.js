@@ -355,7 +355,7 @@ export default function UserNavBar(props) {
             <Stack spacing={-0.5} m={1}>
                 <Typography  variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center', color: 'black', fontSize: '22px', paddingTop:'4px' }}>
                 
-               Dear {`${userDetails.first_name}  `}
+               Hi {`${userDetails.first_name}!  `}
                 </Typography>
                 {/* <Typography variant='subtitle2' color={'ButtonText'} sx={{ color: 'gray',alignItems:'center' }}>
                   {userDetails.designation}
