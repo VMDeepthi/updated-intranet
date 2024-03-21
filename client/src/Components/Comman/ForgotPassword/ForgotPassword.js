@@ -24,32 +24,9 @@ function ForgotPassword() {
 
     const handleResetPassword = async (e) => {
       e.preventDefault()
-      console.log(email)
+      //console.log(email)
       setLoadSubmit(true)
       try {
-
-        // toast.promise(axios.post('/api/forgotpasword', { email: email }), {
-        //   pending: {
-        //     render() {
-        //       return ('sending otp')
-        //     }
-        //   },
-        //   success: {
-        //     render(res) {
-        //       console.log(res)
-        //       setActiveView(1)
-        //       setOtp(res.data.data.otp)
-        //       return (res.data.data.msg)
-        //     }
-        //   },
-        //   error: {
-        //     render(err) {
-        //       console.log(err)
-        //       return (err.data.response.data)
-        //     }
-        //   }
-
-        // })
         const result = await axios.post('/api/forgotpasword', { email: email })
         //console.log(result)
         setActiveView(1)
@@ -59,7 +36,7 @@ function ForgotPassword() {
 
       }
       catch (err) {
-        console.log(err)
+        //console.log(err)
         setLoadSubmit(false)
         toast.error(err.response.data)
       }
@@ -74,16 +51,7 @@ function ForgotPassword() {
           </IconButton>
         </Stack>
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-          {/* <svg
-            width='80px'
-            height='80px'
-            >
-              <LockReset sx={{ color:'#00ACFF',fontSize: 40 }} />
-            </svg> */}
-
-          <img style={{ marginLeft: '10px', width: '80px', height: '80px' }} src='LOCK2.gif' alt='lock' />
-
-
+                   <img style={{ marginLeft: '10px', width: '80px', height: '80px' }} src='LOCK2.gif' alt='lock' />
           <Typography mt={2} variant='h5' component={'h5'}>Forgot/Reset Password ?</Typography>
 
           <Box component={'form'} onSubmit={handleResetPassword} mt={1} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
@@ -182,7 +150,7 @@ function ForgotPassword() {
       else {
         setLoadReset(true)
 
-        console.log(email, password)
+        //console.log(email, password)
         try {
           const result = await axios.post('/api/resetpassword', { email: email, password: password.confirmPass })
           toast.success(result.data)
@@ -199,7 +167,7 @@ function ForgotPassword() {
 
         }
         catch (err) {
-          console.log(err)
+          //console.log(err)
           setLoadReset(false)
           toast.error(err.response.data)
         }
@@ -296,7 +264,7 @@ function ForgotPassword() {
               >
                 Submit
               </LoadingButton>
-              {/* <Button type='submit' color='info' sx={{ mt: 2, mb: 5 }} variant='contained'>Submit</Button> */}
+              
             </Box>
           </Box>
         </Paper>

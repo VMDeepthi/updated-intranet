@@ -3,6 +3,7 @@ import { Box, Button, Container, Fade, FormControl, Grid, IconButton, ImageList,
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Loader from '../Loader';
+import { toast } from 'react-toastify';
 
 
 const theme = createTheme()
@@ -20,13 +21,14 @@ function OfficeGallery() {
         const fetchData = async () => {
             try {
                 const res = await axios.get('/api/getofficegalleries')
-                console.log(res.data)
+                //console.log(res.data)
                 setGalleryData(res.data)
                 setFilterGalleryData(res.data)
                 setLoader(false)
             }
-            catch {
+            catch(err) {
                 setLoader(false)
+                toast.err(err)
             }
 
 

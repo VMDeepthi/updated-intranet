@@ -163,7 +163,7 @@ function PersonalInfo(props) {
     }
     const handleUpdateProfile =(e)=>{
         e.preventDefault()
-        console.log({...userDetails,...userData})
+        //console.log({...userDetails,...userData})
         if(JSON.stringify(userData)!==JSON.stringify(prevData)){
             toast.promise(
                 axios.post(`/api/updatepersonalinfo`, {...userData,emp_id:userDetails.employee_id}),
@@ -222,11 +222,11 @@ function PersonalInfo(props) {
                             <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, sm: 1, md: 2, lg: 2 }}   >
                                 <FormControl fullWidth variant="outlined">
                                     <InputLabel size="small" required >First Name</InputLabel>
-                                    <OutlinedInput size="small" name="first_name" value={userData.first_name} onChange={handleUserDataChange}  required={true} type={"text"} label="First Name" placeholder="enter first name" />
+                                    <OutlinedInput size="small" disabled name="first_name" value={userData.first_name} onChange={handleUserDataChange}  required={true} type={"text"} label="First Name" placeholder="enter first name" />
                                 </FormControl>
                                 <FormControl fullWidth variant="outlined">
                                     <InputLabel size="small" required >Last Name</InputLabel>
-                                    <OutlinedInput size="small" name="last_name" value={userData.last_name} onChange={handleUserDataChange} required={true} type={"text"} label="Last Name" placeholder="enter last name" />
+                                    <OutlinedInput size="small" disabled name="last_name" value={userData.last_name} onChange={handleUserDataChange} required={true} type={"text"} label="Last Name" placeholder="enter last name" />
                                 </FormControl>
                             </Stack>
                             <FormControl fullWidth variant="outlined">
@@ -268,7 +268,7 @@ function PersonalInfo(props) {
                             <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 2, sm: 1, md: 2, lg: 2 }}  >
                                 <FormControl fullWidth variant="outlined">
                                     <InputLabel size="small" required >Gender</InputLabel>
-                                    <Select name="gender" size="small" value={userData.gender} onChange={handleUserDataChange} required label="Gender">
+                                    <Select disabled name="gender" size="small" value={userData.gender} onChange={handleUserDataChange} required label="Gender">
                                         <MenuItem value='male'>Male</MenuItem>
                                         <MenuItem value='female'>Female</MenuItem>
                                     </Select>
@@ -281,7 +281,7 @@ function PersonalInfo(props) {
                             </Stack>
                             <FormControl fullWidth variant="outlined">
                                 <InputLabel sx={{ mt: 1 }} size="small" required >Country</InputLabel>
-                                <Select sx={{ mt: 1, }} value={userData.country} name='country' onChange={handleUserDataChange} required size="small" label="Country" placeholder="select country">
+                                <Select disabled sx={{ mt: 1, }} value={userData.country} name='country' onChange={handleUserDataChange} required size="small" label="Country" placeholder="select country">
                                     {
                                         countries.map((name, index) => <MenuItem key={index} value={name}>{name}</MenuItem>)
                                     }

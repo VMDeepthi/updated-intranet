@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import UserContext from '../../context/UserContext'
 import AdminNavBar from '../NavBar/AdminNavBar'
 import UserNavBar from '../NavBar/UserNavBar'
-
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
@@ -60,7 +59,8 @@ function ApplyLeave() {
                     })
 
                 }
-                catch {
+                catch (err){
+                    toast.error(err.response.data)
 
                 }
 
@@ -73,7 +73,7 @@ function ApplyLeave() {
 
     const LeavesTypes = {
         Casual: ['NA'],
-        Special: ['Marriage', 'Death', 'Paternity', 'Sick']
+        Special: ['Marriage', 'Death', 'Paternity',]
     }
 
     const getDateRange = (startDate, endDate) => {
@@ -95,10 +95,10 @@ function ApplyLeave() {
     const handleDateChange = (e) => {
 
         const { name, value } = e.target
-        console.log(name, value)
+        //console.log(name, value)
 
         if (name === 'from_date' && value !== '' && applicationForm.to_date !== '') {
-            console.log('selected', applicationForm.selected_dates)
+            //console.log('selected', applicationForm.selected_dates)
             const st_date = new Date(value)
             const end_date = new Date(applicationForm.to_date)
             const dateRange = getDateRange(st_date, end_date)
@@ -114,7 +114,7 @@ function ApplyLeave() {
                 }
 
             });
-            console.log('selected', selected)
+            //console.log('selected', selected)
             setApplicationForm({ ...applicationForm, [name]: value, selected_dates: selected, total_leaves: selected.length + (applicationForm.half_day === '' ? 0 : 0.5) })
             setSelectedRangeOfDates(dateRange)
 
@@ -136,7 +136,7 @@ function ApplyLeave() {
                 }
 
             });
-            console.log('selected', selected)
+            //console.log('selected', selected)
             setApplicationForm({ ...applicationForm, [name]: value, selected_dates: selected, total_leaves: selected.length + (applicationForm.half_day === '' ? 0 : 0.5) })
             setSelectedRangeOfDates(dateRange)
 
@@ -146,16 +146,14 @@ function ApplyLeave() {
             setSelectedRangeOfDates({})
         }
 
-
-
     }
 
     const handleDateSelection = (e) => {
-        console.log(applicationForm.selected_dates)
+        //console.log(applicationForm.selected_dates)
         const selected = []
         Object.keys(selectedRangeOfDates).forEach(date => {
 
-            console.log('check', date, e.target.name === date, selectedRangeOfDates[e.target.name])
+            //console.log('check', date, e.target.name === date, selectedRangeOfDates[e.target.name])
             if (e.target.name === date && !selectedRangeOfDates[e.target.name]) {
 
                 selected.push(date)
@@ -165,12 +163,12 @@ function ApplyLeave() {
                 selected.push(date)
             }
 
-            console.log(date)
+            //console.log(date)
 
 
 
         });
-        console.log('selected', selected)
+        //console.log('selected', selected)
         //setCheckedDates(selected)
         setSelectedRangeOfDates({ ...selectedRangeOfDates, [e.target.name]: !selectedRangeOfDates[e.target.name] })
         setApplicationForm({ ...applicationForm, selected_dates: selected, total_leaves: selected.length + (applicationForm.half_day === '' ? 0 : 0.5) })
@@ -179,10 +177,10 @@ function ApplyLeave() {
     const handleHalfDayChange = (e) => {
         if (e.target.value !== '' && e.target.value.length === 10) {
             const selected = []
-            console.log(selectedRangeOfDates)
+            //console.log(selectedRangeOfDates)
             Object.keys(selectedRangeOfDates).forEach(date => {
 
-                console.log('check', date, e.target.value === date)
+                //console.log('check', date, e.target.value === date)
 
                 if (e.target.value !== date && selectedRangeOfDates[date]) {
                     selected.push(date)
@@ -193,7 +191,7 @@ function ApplyLeave() {
 
 
             });
-            console.log('selected', selected)
+            //console.log('selected', selected)
             if (applicationForm.from_date !== '' && applicationForm.to_date !== '') {
                 setSelectedRangeOfDates({ ...selectedRangeOfDates, [e.target.value]: false })
 
@@ -213,7 +211,7 @@ function ApplyLeave() {
 
     const handleApplicationSubmit = (e) => {
         e.preventDefault()
-        console.log(applicationForm)
+        //console.log(applicationForm)
         if (applicationForm.total_leaves === 0) {
             toast.warning('select the dates for fullday or half day leave')
         }
@@ -367,18 +365,12 @@ function ApplyLeave() {
                                             </Container>
 
                                             <Container >
-
                                                 <Stack spacing={1.5}>
-
-
-
                                                     <Stack direction={{ xs: 'column', sm: 'column', md: 'row', lg: 'row' }} spacing={2}>
-
                                                         <FormControl fullWidth variant="outlined">
                                                             <TextField
                                                                 type='date'
                                                                 size='small'
-
                                                                 label='From Date'
                                                                 inputProps={{ max: applicationForm.to_date, }}
                                                                 InputLabelProps={{ shrink: true, required: true }}
@@ -387,10 +379,6 @@ function ApplyLeave() {
                                                                 onChange={handleDateChange}
 
                                                             />
-
-
-
-
                                                         </FormControl>
 
                                                         <FormControl fullWidth variant="outlined">
@@ -405,15 +393,8 @@ function ApplyLeave() {
                                                                 onChange={handleDateChange}
 
                                                             />
-
                                                         </FormControl>
-
                                                     </Stack>
-
-
-
-
-
                                                     <Box sx={{ height: '80px', border: '1px solid gray', borderRadius: '10px' }}>
                                                         <Typography variant='p' fontSize={9.5} component={'h5'} color={'red'} textAlign={'center'}  >(De-Select weekly offs / Holidays. Leaves would be applied for the checked dates)</Typography>
                                                         <Box sx={{ overflow: 'auto', height: '65%' }}>
@@ -431,55 +412,33 @@ function ApplyLeave() {
                                                                         :
                                                                         <Typography >No dates selected</Typography>
                                                                 }
-
-
-
                                                             </Grid>
-
-
                                                         </Box>
                                                     </Box>
-
                                                     <Stack direction={{ xs: 'column', sm: 'column', md: 'row', lg: 'row' }} spacing={2}>
                                                         <FormControl fullWidth variant="outlined">
-
-
                                                             <TextField
                                                                 type='date'
                                                                 size='small'
                                                                 label='And / Or Half day'
-
                                                                 InputLabelProps={{ shrink: true, required: true, }}
                                                                 name='half_day'
                                                                 value={applicationForm.half_day}
                                                                 onChange={handleHalfDayChange}
 
                                                             />
-
-
-
-
                                                         </FormControl>
                                                         <FormControl fullWidth variant="outlined">
                                                             <InputLabel size="small"  >Total leaves applied now</InputLabel>
                                                             <OutlinedInput size="small" name="applied_leaves" value={applicationForm.total_leaves} disabled type={"number"} label="Total leaves applied now" />
                                                         </FormControl>
                                                     </Stack>
-
-
                                                     <FormControl fullWidth variant="outlined">
                                                         <InputLabel size="small" required  >Reason</InputLabel>
                                                         <OutlinedInput size="small" name="reason" value={applicationForm.reason} inputProps={{ maxLength: 300 }} onChange={e => setApplicationForm({ ...applicationForm, reason: e.target.value })} multiline minRows={3} maxRows={3} required type={"text"} label="Reason" placeholder="enter your leave application reason in (max:300 characters)" />
                                                     </FormControl>
-
-
-
                                                 </Stack>
-
                                             </Container >
-
-
-
                                         </Container>
                                         <Stack direction="row" sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 0.2 }}>
                                             <Button sx={{ mb: 2 }} size='small' disabled={(applicationForm.mail_approved_by !== undefined && applicationForm.mail_approved_by !== '' ? false : true)} variant="contained" color="success" type="submit">
@@ -488,13 +447,7 @@ function ApplyLeave() {
 
                                         </Stack>
                                     </form>
-
-
-
-
                                 </Paper>
-
-
                             </Grid>
                         </Grid>
                     </div>

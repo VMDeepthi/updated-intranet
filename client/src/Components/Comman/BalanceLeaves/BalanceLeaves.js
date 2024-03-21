@@ -11,58 +11,6 @@ import { Column } from 'primereact/column'
 import { toast } from 'react-toastify'
 
 
-
-
-
-// const options = {
-
-//     chart: {
-//     type: 'donut',
-//   },
-
-// const areaSeries = [{
-//     name: 'series1',
-//     data: [31, 40, 28, 51, 42, 109, 100]
-// }]
-
-
-// const areaOptions = {
-//     chart: {
-//         type: 'area',
-//         height: 350,
-//         zoom: {
-//             enabled: false
-//         }
-//     },
-//     dataLabels: {
-//         enabled: false
-//     },
-//     stroke: {
-//         curve: 'straight'
-//     },
-
-//     title: {
-//         text: 'Fundamental Analysis of Stocks',
-//         align: 'left'
-//     },
-
-//     labels: ["2018-09-19", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"],
-//     xaxis: {
-//         type: 'date',
-//     },
-//     yaxis: {
-//         opposite: true
-//     },
-//     legend: {
-//         horizontalAlign: 'left'
-//     }
-// }
-
-
-
-
-
-
 function BalanceLeaves() {
     const { userDetails } = useContext(UserContext)
     //const endRef = useRef(null);
@@ -87,9 +35,6 @@ function BalanceLeaves() {
     })
     const [loader, setLoader] = useState(true)
     const [displayData, setDisplayData] = useState(false)
-
-
-    //window.scrollTo(1, document.body.scrollHeight);
 
     const options = {
         chart: {
@@ -223,7 +168,7 @@ function BalanceLeaves() {
         const { month, year } = searchSelection
         const today = new Date()
         //today<new Date(year,month,26)
-        console.log(month,year)
+        //console.log(month,year)
         if (today<new Date(year,month,26)) {
             
             setDisplayData(true)
@@ -249,16 +194,16 @@ function BalanceLeaves() {
                 totalDays = totalDays + 1
 
             }
-            console.log("total days", totalDays)
-            console.log('sat:', sat.length, sat);
-            console.log('sun:', sun.length, sun);
-            console.log(from_date, to_date)
-            console.log('dates',  from_date.toLocaleString('en-CA').slice(0,10), to_date.toLocaleString('en-CA').slice(0,10))
+            // console.log("total days", totalDays)
+            // console.log('sat:', sat.length, sat);
+            // console.log('sun:', sun.length, sun);
+            // console.log(from_date, to_date)
+            // console.log('dates',  from_date.toLocaleString('en-CA').slice(0,10), to_date.toLocaleString('en-CA').slice(0,10))
             
 
             axios.post('/api/monthattendance', { emp_id: userDetails.employee_id, from_date: from_date.toLocaleString('en-CA').slice(0,10), to_date: to_date.toLocaleString('en-CA').slice(0,10) })
                 .then(res => {
-                    console.log(res)
+                    //console.log(res)
                     setDisplayData(true)
                     if (res.data.length === totalDays) {
                         setAttendanceData(res.data)
@@ -295,7 +240,7 @@ function BalanceLeaves() {
                     }
 
                 })
-                .catch(() => toast.error('unable to fetch Data'))
+                .catch((err) => toast.error(err.response.data))
                 axios.post('/api/monthbalance', { emp_id: userDetails.employee_id,  from_date: from_date.toLocaleString('en-CA').slice(0,10), to_date: to_date.toLocaleString('en-CA').slice(0,10) })
                 .then(res => {
                     const balanceData = res.data

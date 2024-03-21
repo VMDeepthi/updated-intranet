@@ -125,7 +125,8 @@ const ViewCompany = () => {
 				setLoader(false)
 			})
 			.catch(err => {
-				console.log(err)
+				//console.log(err)
+				toast.error(err.response.data)
 				setLoader(false)
 			})
 	}, [updates])
@@ -315,7 +316,7 @@ const ViewCompany = () => {
 
 	//edit button
 	const handleEditButton = (row) => {
-		console.log(row)
+		//console.log(row)
 		setEditDialogOpen(true)
 		setEditCompData(row)
 		setPrevData(row)
@@ -377,13 +378,13 @@ const ViewCompany = () => {
 		const handleCapture = async (e) => {
 			setLogo(e.target.files[0])
 			const url = await convertBase64(e.target.files[0])
-			console.log(e.target.files[0])
+			//console.log(e.target.files[0])
 			setEditCompData({ ...editCompData, company_logo: url })
 		}
 
 		const handleEdit = async (e) => {
 			e.preventDefault()
-			console.log(editCompData)
+			//console.log(editCompData)
 			if (!noError && JSON.stringify(prevData) !== JSON.stringify(editCompData)) {
 				const formData = new FormData()
 				formData.append('file', logo)

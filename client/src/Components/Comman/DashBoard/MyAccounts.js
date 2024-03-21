@@ -21,7 +21,7 @@ function MyAccounts() {
         }
 
         //setVisible({...visible,acctype:!visible[acctype]})
-        console.log(visible)
+        //console.log(visible)
 
 
     }

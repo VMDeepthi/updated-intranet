@@ -13,7 +13,7 @@ function Address(props) {
                     <Business sx={{ fontSize: 80, mt: 1, mb: 0 }} />
                     {pageDetails.pageData[0]['company_logo'] ?
                         
-                        <img src={process.env.REACT_APP_BACKEND_SERVER + pageDetails.pageData[0]['company_logo']} alt='logo' style={{ maxWidth: '200px', height: '60px', backgroundColor:'#E0E0E0'}} />
+                        <img src={process.env.REACT_APP_BACKEND_SERVER + pageDetails.pageData[0]['company_logo']} alt='logo' style={{ maxWidth: '200px', height: '60px',marginTop:'8px'}} />
                         :
                         null
                     }

@@ -12,88 +12,89 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';   // theme
 import 'primereact/resources/primereact.css';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { toast } from 'react-toastify'
 
 
 
 function DirectorySearch() {
     const [companyNames, setCompanyNames] = useState([])
     const [searchData, setSearchData] = useState({
-        first_name:"",
+        first_name: "",
         last_name: '',
         email: '',
-        company_name : ''
+        company_name: ''
     })
-    const [loader, setLoader]= useState(false)
-    const [userData, setUserData] = useState([])    
+    const [loader, setLoader] = useState(false)
+    const [userData, setUserData] = useState([])
     const [selectedLetter, setSelectedLetter] = useState('');
 
     const { userDetails } = useContext(UserContext)
     const navigate = useNavigate()
 
-    useEffect(()=>{
-        const getCompanyNames = async()=>{
-            try{
+    useEffect(() => {
+        const getCompanyNames = async () => {
+            try {
                 const names = await axios.get('/api/companynames')
                 setCompanyNames(names.data)
             }
-            catch{
+            catch {
 
             }
-        
+
         }
         getCompanyNames()
-    },[])
+    }, [])
 
-    const handleSearchDataChange = (e)=>{
-        const {name,value} = e.target
-        setSearchData({...searchData, [name]:value})
+    const handleSearchDataChange = (e) => {
+        const { name, value } = e.target
+        setSearchData({ ...searchData, [name]: value })
     }
 
-    const handleSearch = async(type,data)=>{
-        if(type==='alphabet-search'){
+    const handleSearch = async (type, data) => {
+        if (type === 'alphabet-search') {
             setSelectedLetter(data)
         }
-        try{
+        try {
             setLoader(true)
-            const result = await axios.post('/api/searchuser',{searchType:type,data:data})
+            const result = await axios.post('/api/searchuser', { searchType: type, data: data })
             setUserData(result.data)
             setLoader(false)
 
         }
-        catch{
+        catch {
             setLoader(false)
         }
 
     }
 
 
-   
+
 
 
 
 
     const handleSearchData = async (e) => {
         e.preventDefault()
-        console.log(searchData)
-        try{
+        //console.log(searchData)
+        try {
             setLoader(true)
-            const result = await axios.post('/api/searchuser',{searchType:'search-fileds',data:searchData})
+            const result = await axios.post('/api/searchuser', { searchType: 'search-fileds', data: searchData })
             setUserData(result.data)
             setLoader(false)
 
         }
-        catch{
-
+        catch (err) {
             setLoader(false)
+            toast.error(err.response.data)
         }
-        
+
     };
 
-    
+
     const alphabet = Array.from({ length: 26 }, (_, index) => String.fromCharCode('A'.charCodeAt(0) + index));
     return (
-        <Box sx={{ display: 'flex', backgroundColor: '#F5F5F5', height:'100vh', overflow:'hidden' }}>
-            {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+        <Box sx={{ display: 'flex', backgroundColor: '#F5F5F5', height: '100vh', overflow: 'hidden' }}>
+            {userDetails.user_type === 'admin' && userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
             <Box component='main' sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', p: 3, height: '90vh', mt: 6 }}>
                 <Typography variant="h4" align="center" gutterBottom>
                     Directory Search
@@ -121,11 +122,11 @@ function DirectorySearch() {
                                                     textDecoration: 'none',
                                                     border: '1px solid gray',
                                                     //color: selectedLetter === letter ? 'white' : 'black', // Example styling for selected state
-                                                    backgroundImage:selectedLetter === letter? 'linear-gradient(135deg, #abecd6 10%, #fbed96 100%)':'none',
+                                                    backgroundImage: selectedLetter === letter ? 'linear-gradient(135deg, #abecd6 10%, #fbed96 100%)' : 'none',
                                                     backgroundColor: selectedLetter === letter ? 'none' : 'transparent', // Example styling for selected state
                                                     borderRadius: '4px', // Example border radius
                                                 }}
-                                                onClick={() => handleSearch('alphabet-search',letter)}
+                                                onClick={() => handleSearch('alphabet-search', letter)}
 
                                             >
                                                 {letter}
@@ -134,7 +135,7 @@ function DirectorySearch() {
                                     ))}
                                 </Grid>
                             </Box>
-                            <Box  sx={{ display: "flex", justifyContent: 'flex-end', mb: 0.5 }}>
+                            <Box sx={{ display: "flex", justifyContent: 'flex-end', mb: 0.5 }}>
                                 <button
                                     style={{
                                         border: 'none',
@@ -146,7 +147,7 @@ function DirectorySearch() {
                                         textDecoration: 'none',
 
                                     }}
-                                    onClick={()=>handleSearch('view-all')}
+                                    onClick={() => handleSearch('view-all')}
 
                                 >VIEW ALL
                                 </button>
@@ -197,24 +198,17 @@ function DirectorySearch() {
                                             onChange={handleSearchDataChange}
                                         >
                                             {
-                                                companyNames.map((data,index)=>(
+                                                companyNames.map((data, index) => (
                                                     <MenuItem key={index} value={data.company_name}>{data.company_name}</MenuItem>
                                                 ))
                                             }
-                                            
+
                                         </Select>
                                     </FormControl>
                                     <Button variant="contained" color="info" type='submit' >
                                         Search
                                     </Button>
-
-
                                 </Stack>
-
-
-
-
-
                             </Container>
                         </Paper>
 
@@ -226,13 +220,13 @@ function DirectorySearch() {
                             </Typography>
                             <Box height={'100%'} p={1}>
 
-                                <DataTable size='small' resizableColumns scrollable loading={loader}  scrollHeight='350px' showGridlines value={userData} selectionMode="single" onSelectionChange={(e) => {
-                                    console.log(e.value)
-                                    userDetails.employee_id===e.value.employee_id?navigate('/myprofile'):
-                                navigate(`/viewuserprofile/${e.value.employee_id}/info`,{relative:true})
-                                    
+                                <DataTable size='small' resizableColumns scrollable loading={loader} scrollHeight='350px' showGridlines value={userData} selectionMode="single" onSelectionChange={(e) => {
+                                    //console.log(e.value)
+                                    userDetails.employee_id === e.value.employee_id ? navigate('/myprofile') :
+                                        navigate(`/viewuserprofile/${e.value.employee_id}/info`, { relative: true })
+
                                 }}
-                                    dataKey="employee_id" tableStyle={{ minWidth: 'auto', fontSize:"12px" }}>
+                                    dataKey="employee_id" tableStyle={{ minWidth: 'auto', fontSize: "12px" }}>
                                     <Column sortable field="fullname" header="Name"></Column>
                                     <Column field="email" header="Email"></Column>
                                     <Column field="company_name" header="Company Name"></Column>

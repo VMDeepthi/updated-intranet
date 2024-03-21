@@ -137,9 +137,9 @@ const PaySlips = () => {
       setLoader(false)
     }
     catch(err){
-      console.log(err)
+      //console.log(err)
       setLoader(false)
-      toast.error("unable to fetch data");
+      toast.error(err.response.data);
 
     }
 

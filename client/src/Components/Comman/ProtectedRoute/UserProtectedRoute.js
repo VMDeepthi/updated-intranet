@@ -8,7 +8,7 @@ function UserProtectedRoute(props) {
   const {component} = props
   const{userDetails} = useContext(UserContext)
   const {authorized, setAuthorized} = useState(false)
-  console.log('component',userDetails.access)
+  //console.log('component',userDetails.access)
 
   useEffect(()=>{
     const IsAuth=async()=>{
@@ -27,7 +27,7 @@ function UserProtectedRoute(props) {
     }
     IsAuth()
   })
-    console.log('component',userDetails.access)
+    //console.log('component',userDetails.access)
     if(Cookies.get('USERAUTHID') === undefined&&authorized){
         return <Navigate to='/login' />
       }

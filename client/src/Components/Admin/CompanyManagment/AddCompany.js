@@ -1,4 +1,4 @@
-import { Container, Avatar, Box, Button, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Paper, Select, Stack, TextField, Typography, IconButton } from '@mui/material'
+import { Container, Box, Button, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Paper, Select, Stack, TextField, Typography, IconButton } from '@mui/material'
 import React, { useState } from 'react'
 import NavBar from '../../Comman/NavBar/AdminNavBar';
 import axios from 'axios'
@@ -30,15 +30,15 @@ function AddComapny() {
     companyContactNo: '',
     companyStatus: ''
   })
-  const [logo, setLogo] = useState([])
+  const [logo, setLogo] = useState('')
   const [companyLogoUrl, setCompanyLogoUrl] = useState('')
 
   const handleAddFormData = (e) => {
-    console.log(e.target.name)
+    //console.log(e.target.name)
     setAddCompData({ ...addCompData, [e.target.name]: e.target.value })
   }
   const handleResetCompForm = () => {
-    console.log(addCompData)
+    //console.log(addCompData)
     setAddCompData({
       companyName: '',
       companyEmail: '',
@@ -69,16 +69,19 @@ function AddComapny() {
   };
 
   const handleCapture = async(e) => {
-    setLogo(e.target.files[0])
+    if(e.target.files.length!==0){
+      setLogo(e.target.files[0])
     const url = await convertBase64(e.target.files[0])
     setCompanyLogoUrl(url)
+    }
+    
   }
 
   const handleSubmitCompForm =  (e) => {
 
     e.preventDefault()
 
-     if (!noError) {
+     if (!noError&& logo.length!==0) {
       const formData = new FormData()
       formData.append('file',logo)
       formData.append('addComData', JSON.stringify(addCompData))
@@ -109,6 +112,9 @@ function AddComapny() {
       )
   
     }
+    else{
+      toast.warning('Choose image to upload!')
+    }
 
 
   }
@@ -133,7 +139,7 @@ function AddComapny() {
                         <Business sx={{ fontSize: '60px', mt: 1, mb: 0 }} />
                       }
                       <Stack direction={'row'} spacing={0.1}>
-                    <Button type="file" size="small" component="label"  > Upload Logo <VisuallyHiddenInput required type="file" onInput={handleCapture} accept="image/png, image/jpeg" /> </Button>
+                    <Button type="file" size="small" component="label"  > Upload Logo <VisuallyHiddenInput required type="file"  onInput={handleCapture} accept="image/png, image/jpeg"  max={1}/> </Button>
                         {
                              companyLogoUrl?
                              <IconButton size='small' color='error' onClick={()=>{
@@ -224,9 +230,9 @@ function AddComapny() {
                                 label="Company Contact No"
                                 placeholder='enter comapany contact no'
                                 onChange={e => {
-                                  //console.log(e.target.value)
+                                  ////console.log(e.target.value)
                                   const val = e.target.value
-                                  //console.log(phone(val).isValid)
+                                  ////console.log(phone(val).isValid)
                                   setAddCompData({ ...addCompData, companyContactNo: val })
                                   // if (phone(val).isValid || val === '') {
                                   //   setNoError(false)

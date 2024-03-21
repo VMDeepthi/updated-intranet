@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { Add, CheckBox, CheckBoxOutlineBlank, Delete, Save } from '@mui/icons-material';
-//import { convertDateFormat } from '../../utils';
 import DataTable from 'react-data-table-component';
 import ChartUpload from './ChartsUpload';
 
@@ -214,7 +213,7 @@ function AddCompanyPages() {
       ////console.log('from delete')
 
       const index = addHolidays.holiday_date.indexOf(row.date)
-      ////console.log('h,i',addHolidays,index)
+      //console.log('h,i',addHolidays,index)
       addHolidays.holiday_title.splice(index, 1)
       addHolidays.holiday_date.splice(index, 1)
       addHolidays.holiday_day.splice(index, 1)
@@ -297,24 +296,14 @@ function AddCompanyPages() {
         holiday_date: [],
         holiday_day: []
       })
-      // toast.warning('Holiday List Deleted!', {
-      //   position: "top-right",
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      // });
-
+      
     }
 
     //submiting total holiday list
 
     const handleHolidayListSubmit = (e) => {
       e.preventDefault()
-      console.log({...addHolidays,department:addHolidays.department.map(dep=>dep.value)})
+      //console.log({...addHolidays,department:addHolidays.department.map(dep=>dep.value)})
 
       if (companyPageData.company_name !== '' && companyPageData.company_pagename && companyPageData.company_pagetype !== '' && companyPageData.company_pagestatus !== '' && addHolidays.holidaylist_title !== '' && addHolidays.holiday_date.length !== 0) {
        toast.promise(

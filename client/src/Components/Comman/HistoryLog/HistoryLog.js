@@ -12,17 +12,10 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 
 
-
-//import {Tooltip} from '@mui/material';
-
 const PatchTooltip = ({ children, ...props }) =>
     <Tooltip {...props}>
         <span>{children}</span>
     </Tooltip>
-
-
-
-
 
 function HistoryLog() {
     const { userDetails } = useContext(UserContext)
@@ -35,8 +28,6 @@ function HistoryLog() {
     const [dateError, setDateError] = useState(false)
     const [historyLogData, setHistoryLogData] = useState([])
     const [showRecord, setShowRecord] = useState(false)
-
-
 
 
     const columns = [
@@ -130,12 +121,12 @@ function HistoryLog() {
                     }
                 }
                 else if (row.total_leaves > 0.5 && row.status !== 'denied' && row.status !== 'cancelled') {
-                    console.log(row.total_leaves, row.from_date)
+                    //console.log(row.total_leaves, row.from_date)
                     const day = new Date(row.from_date)
                     const today = new Date()
                     if (day.getDate() > 26) {
                         const expiry = new Date(day.getFullYear(), day.getMonth() + 1, 25)
-                        console.log('check cl', today < expiry)
+                        //console.log('check cl', today < expiry)
                         if (today < expiry) {
                             isDisable = false
                         }
@@ -146,7 +137,7 @@ function HistoryLog() {
                     }
                     else {
                         const expiry = new Date(day.getFullYear(), day.getMonth(), 25)
-                        console.log('check1 cl', today < expiry)
+                        //console.log('check1 cl', today < expiry)
                         if (today < expiry) {
                             isDisable = false
                         }
@@ -156,7 +147,7 @@ function HistoryLog() {
 
                     }
 
-                    console.log(day.getDate(), day.getMonth(), today.getDate(), today.getMonth())
+                    //console.log(day.getDate(), day.getMonth(), today.getDate(), today.getMonth())
                 }
                 return (
                     <Stack display={'flex'} spacing={1} direction={'row'} height={25} width={'80%'} >
@@ -173,7 +164,7 @@ function HistoryLog() {
         },
     ];
 
-    const updateSearch = () =>{
+    const updateSearch = () => {
         if (historyLogSearch.fromDate === null || historyLogSearch === null) {
             setDateError(true)
         }
@@ -181,45 +172,45 @@ function HistoryLog() {
             setDateError(false)
             axios.post('/api/historylogapplication', { ...historyLogSearch, emp_id: userDetails.employee_id })
                 .then((result) => {
-                    console.log(result.data)
+                    //console.log(result.data)
                     setShowRecord(true)
                     setHistoryLogData(result.data)
                 })
-                .catch(() => toast.error('unable to fetch logs'))
+                .catch((err) => toast.error(err.response.data))
         }
 
     }
 
     const handleHistoryLogSearch = (e) => {
         e.preventDefault()
-        console.log(historyLogSearch)
+        //console.log(historyLogSearch)
         updateSearch()
 
-        
+
     }
     const handleCancelletion = (disabled, row) => {
-        console.log(disabled, row)
+        //console.log(disabled, row)
         if (!disabled) {
-            toast.promise(axios.post('/api/cancelapplication', row ),
-            {
-                pending: {
-                    render() {
-                        return ('Cancelling Application request')
+            toast.promise(axios.post('/api/cancelapplication', row),
+                {
+                    pending: {
+                        render() {
+                            return ('Cancelling Application request')
+                        }
+                    },
+                    success: {
+                        render(res) {
+                            updateSearch()
+                            return (`${res.data.data} `)
+                        }
+                    },
+                    error: {
+                        render(err) {
+                            //console.log(err)
+                            return (`${err.data.response.data}`)
+                        }
                     }
-                },
-                success: {
-                    render(res) {
-                        updateSearch()
-                        return (`${res.data.data} `)
-                    }
-                },
-                error: {
-                    render(err) {
-                        //console.log(err)
-                        return (`${err.data.response.data}`)
-                    }
-                }
-            })
+                })
 
         }
     }
@@ -228,7 +219,7 @@ function HistoryLog() {
     return (
         <>
             <Box sx={{ height: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+                {userDetails.user_type === 'admin' && userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, height: 'auto', backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{
@@ -334,16 +325,8 @@ function HistoryLog() {
                                                             fixedHeaderScrollHeight='160px'
                                                             columns={columns}
                                                             data={historyLogData}
-                                                            // selectableRows
-                                                            // contextActions={contextActions}
-                                                            // onSelectedRowsChange={handleRowSelected}
-                                                            // clearSelectedRows={toggleCleared}
                                                             pagination
                                                             dense
-
-
-                                                        // subHeaderComponent={subHeaderViewannouncementMemo}
-                                                        //customStyles={customStyles}
                                                         />
                                                     </Card>
                                                     : null

@@ -52,7 +52,8 @@ const compensation = async (date, emp_id) => {
 
             //const abbsent = attendance.filter(att=>)
             const totalHalfDayPresent = ((totalhrHalfDayShift * 60) + totalminHalfDayShift) - totalHalfDayShift
-            //console.log('half',totalHalfDayShift,halfDayShift,totalhrHalfDayShift,totalminHalfDayShift)
+            console.log('half',totalHalfDayShift,halfDayShift,totalhrHalfDayShift,totalminHalfDayShift)
+            console.log('full',totalhr, totalmin, totalShift)
             //console.log('half',totalHalfDayPresent)
             //const totalNonWorked = (hr_list.filter(hr => hr === 0).length) * shift * 60 //
             const totalWorked = ((totalhr * 60) + totalmin + totalHalfDayPresent) - totalShift //(totalShift - totalNonWorked)

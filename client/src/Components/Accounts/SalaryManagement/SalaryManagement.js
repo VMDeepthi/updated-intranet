@@ -225,7 +225,7 @@ function SalaryManagement() {
                         prepareFile(e.target.result)
                     };
                 } else {
-                    console.log("Please select your file");
+                    //console.log("Please select your file");
                 }
             },
         });
@@ -275,7 +275,7 @@ function SalaryManagement() {
                 toast.warning('Choosen file not containing any data! ')
             }
             else {
-                console.log(excelData, uploadFileFields, type)
+                //console.log(excelData, uploadFileFields, type)
                 toast.promise(axios.post('/api/uploadsalarydata', { ...uploadFileFields, type: type, excelData: excelData }), {
                     pending: {
                         render() {
@@ -345,7 +345,7 @@ function SalaryManagement() {
         const handleSearch = (e) => {
             if (filteredSalaryDetails !== null && salaryDetails !== null) {
                 const filteredData = salaryDetails.filter(d => String(d.empid).includes(e.target.value))
-                console.log(filteredData, e.target.value, salaryDetails)
+                //console.log(filteredData, e.target.value, salaryDetails)
                 setFilteredSalaryDetails(filteredData)
             }
         }
@@ -521,7 +521,7 @@ function SalaryManagement() {
                                                                     endIcon={<CloudSync />}
                                                                     onClick={() => handlePayslipsUpload('re-upload')}
                                                                 >
-                                                                    Delate & Re-Upload
+                                                                    Delete & Re-Upload
                                                                 </Button>
 
                                                             </Stack>

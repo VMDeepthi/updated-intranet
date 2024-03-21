@@ -28,7 +28,7 @@ function ReportingStructure() {
         { value: 'Employee', label: 'Employee' },
     ]
     const handleSearchBy = (e) => {
-        console.log(e.value)
+        //console.log(e.value)
         const selected_option = e.value
         setSearchLoading(true)
         setSelectedOption(e)
@@ -40,13 +40,14 @@ function ReportingStructure() {
                 setUsers(result.data)
                 setSearchLoading(false)
             })
-            .catch(() => {
+            .catch((err) => {
                 setUsers([{ value: '', label: '' }])
                 setSearchLoading(false)
+                toast.error(err.response.data)
             })
     }
     const handleUserSelection = (e) => {
-        console.log(e, selectedOption)
+        //console.log(e, selectedOption)
         setSelectedUser(e)
         setLoadingData(true)
         axios.post('/api/getreportingstructuredata', { option: selectedOption.value, emp_id: e.value.employee_id })
@@ -67,8 +68,7 @@ function ReportingStructure() {
             .catch(() => {
                 setLoadingData(false)
                 toast.error('unable fetch data')
-                // setUsers([{value:'',label:''}])
-                // setSearchLoading(false)
+
             })
 
 

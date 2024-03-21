@@ -150,6 +150,7 @@ function ViewCompanyPages() {
 			})
 			.catch(err => {
 				//console.log(err)
+				toast.error(err.response.data)
 				setLoader(false)
 			})
 	}, [updated])
@@ -522,7 +523,7 @@ function ViewCompanyPages() {
 
 	const chartOption = useMemo(() => {
 		const handleChartImage = (img) => {
-			console.log('img', img)
+			//console.log('img', img)
 			setChartImage(img)
 		}
 		return (
@@ -629,9 +630,9 @@ function ViewCompanyPages() {
 		//deleting holiday list row
 
 		const handleDeleteHoliday = (row) => {
-			//console.log('from delete')
+			//console.log('from delete',row,addHolidays)
 
-			const index = addHolidays.holiday_date.indexOf(row.date)
+			const index = addHolidays.holiday_date.indexOf(row.holiday_date)
 			//console.log('h,i',addHolidays,index)
 			addHolidays.holiday_title.splice(index, 1)
 			addHolidays.holiday_date.splice(index, 1)
@@ -891,7 +892,7 @@ function ViewCompanyPages() {
 		else if (row.company_pagetype === 'Chart') {
 			axios.post('/api/getcompanypagedata', row)
 				.then(res => {
-					console.log(res.data)
+					//console.log(res.data)
 
 					setEditCompanyPageData({ companyPageDetails: row, companyPageData: res.data[0] })
 					setChartImage(res.data[0].chart_image)
@@ -926,7 +927,7 @@ function ViewCompanyPages() {
 			}
 		}
 		const handleEditDialogClose = () => {
-			console.log('dilog clicked')
+			//console.log('dilog clicked')
 			setEditDialogOpen(false)
 
 		}
@@ -949,7 +950,7 @@ function ViewCompanyPages() {
 			else if (compDetails.company_pagetype === 'Chart') {
 				method = axios.put('/api/updatecompanypagechart', { compDetails, image: { prevImg: editCompanyPageData.companyPageData.chart_image, newImg: chartImage } })
 
-				console.log(chartImage)
+				//console.log(chartImage)
 			}
 			
 

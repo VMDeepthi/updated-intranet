@@ -121,6 +121,7 @@ export const updateannouncement = (req, res) => {
                             const update_query = `update announcement set company_name=?, department=?, title=?, description=?, from_date=?, to_date=?, notify=?, companyId=? where id=?`
                             const update_value = [company_name, department.join(','), title, description, from_date, to_date, notify, companyId, id]
                             try {
+                                console.log('users', selectResult)
                                 await db.promise().query(update_query, update_value)
                                 if (selectResult.length !== 0 && notify === 'yes') {
                                     const emails = selectResult.map(user => user.email)
@@ -132,17 +133,17 @@ export const updateannouncement = (req, res) => {
 
 
                                     }
-                                    // basictransporter.sendMail(mailDetails, (err, info) => {
-                                    //     if (err) {
-                                    //         console.log(err)
-                                    //         return res.status(500).json('Announcement updated but mail service not working contact admin!')
-                                    //     }
-                                    //     else {
-                                    //         console.log(info)
-                                    //         return res.status(200).json('Mail sended & Announcement updated successfully')
-                                    //     }
+                                    basictransporter.sendMail(mailDetails, (err, info) => {
+                                        if (err) {
+                                            console.log(err)
+                                            return res.status(500).json('Announcement updated but mail service not working contact admin!')
+                                        }
+                                        else {
+                                            console.log(info)
+                                            return res.status(200).json('Mail sended & Announcement updated successfully')
+                                        }
 
-                                    // })
+                                    })
 
                                 }
                                 else {
@@ -196,12 +197,12 @@ export const deleteannouncement = async (req, res) => {
 //Notice
 
 export const notice = (req, res) => {
-    console.log(req.body)
+    console.log('body',req.body)
     if (req.checkAuth.isAuth) {
-        const q = `select * from announcement where company_name =? and department=? and to_date>=? order by to_date`
+        const q = `select * from announcement where company_name =? and department rlike ? and to_date>=? order by to_date`
         const values = [req.body.company_name, req.body.department, req.body.date]
         db.query(q, values, (err, result) => {
-            console.log(err)
+            //console.log(err)
             console.log('ann', result)
             if (err) res.status(500).json('error occured!')
             else {

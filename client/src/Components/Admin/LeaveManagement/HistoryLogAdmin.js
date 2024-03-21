@@ -118,7 +118,7 @@ function HistoryLogAdmin() {
             setDateError(false)
             axios.post('/api/historylogapplication',historyLogSearch)
                 .then((result) => {
-                    console.log(result.data)
+                    //console.log(result.data)
                     setShowRecord(true)
                     setHistoryLogData(result.data)
                 })
@@ -129,7 +129,7 @@ function HistoryLogAdmin() {
 
     const handleHistoryLogSearch = (e) => {
         e.preventDefault()
-        console.log(historyLogSearch)
+        //console.log(historyLogSearch)
         updateSearch()
 
         
@@ -138,11 +138,11 @@ function HistoryLogAdmin() {
         e.preventDefault()
         axios.post('/api/searchapplication',{applicationId:applicationId})
                 .then((result) => {
-                    console.log(result.data)
+                    //console.log(result.data)
                     setShowRecord(true)
                     setHistoryLogData(result.data)
                 })
-                .catch(() => toast.error('unable to fetch logs'))
+                .catch((err) => toast.error(err.response.data))
         }
     
     
@@ -170,7 +170,7 @@ function HistoryLogAdmin() {
                                             <FormControl fullWidth  variant="outlined">
                                             <TextField
                                             type='text'
-                                            label='Appllication Id'
+                                            label='Application Id'
                                             size='small'
                                             required
                                             value={applicationId}
@@ -282,16 +282,7 @@ function HistoryLogAdmin() {
                                                             fixedHeaderScrollHeight='160px'
                                                             columns={columns}
                                                             data={historyLogData}
-                                                            // selectableRows
-                                                            // contextActions={contextActions}
-                                                            // onSelectedRowsChange={handleRowSelected}
-                                                            // clearSelectedRows={toggleCleared}
-                                                            pagination
                                                             dense
-
-
-                                                        // subHeaderComponent={subHeaderViewannouncementMemo}
-                                                        //customStyles={customStyles}
                                                         />
                                                     </Card>
                                                     : null

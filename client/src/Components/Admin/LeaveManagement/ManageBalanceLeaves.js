@@ -144,7 +144,7 @@ function ManageBalanceLeaves() {
             try {
 
                 const userData = await axios.get('/api/getemployeedata')
-                console.log(userData)
+                //console.log(userData)
                 setUsers(userData.data)
                 axios.get('/api/companynames')
                     .then(res => {
@@ -153,22 +153,21 @@ function ManageBalanceLeaves() {
                     })
                 setLoader(false)
             }
-            catch {
-              
-                toast.error('not able to fetch data!')
+            catch(err) {
+                toast.error(err.response.data)
             }
         }
         fetchUserData()
     }, [])
 
     const handleUserSelection = (_, newValue) => {
-        console.log(newValue)
+        //console.log(newValue)
         if (newValue !== null) {
             const { value } = newValue
             setLoader(true)
             axios.post('/api/getbalanceleaves', { emp_id: value.employee_id })
                 .then(res => {
-                    console.log(res.data)
+                    //console.log(res.data)
                     setLoader(false)
                     setCurrentBalance(res.data)
                     setSingleModeManageFields({ ...singleModeManageFields, selectedUser: newValue, emp_id: value.employee_id, totalLeaves: res.data.totalLeaves })
@@ -179,8 +178,9 @@ function ManageBalanceLeaves() {
                 })
         }
         else {
+           
             setCurrentBalance('')
-            setSingleModeManageFields({ ...singleModeManageFields, totalLeaves: [] })
+            setSingleModeManageFields({ ...singleModeManageFields, totalLeaves: [],selectedUser:null })
 
         }
 
@@ -234,7 +234,7 @@ function ManageBalanceLeaves() {
 
     const handleMultipleModeSubmit = (e) => {
         e.preventDefault()
-        console.log(multipleModeManageFields)
+        //console.log(multipleModeManageFields)
         if (multipleModeManageFields.auto && multipleModeManageFields.manage_type === 'debit') {
             toast.warning('Auto annual maintenance work with Manage Type credit only')
         }
@@ -350,11 +350,11 @@ function ManageBalanceLeaves() {
                                                                 isOptionEqualToValue={(option, value) => option.value === value.value}
 
                                                                 onChange={(_, newValue) => {
-                                                                    console.log(newValue);
+                                                                    //console.log(newValue);
                                                                     setMultipleModeManageFields({ ...multipleModeManageFields, departments: newValue })
                                                                 }}
                                                                 onInputChange={(_, newInputValue) => {
-                                                                    console.log(newInputValue)
+                                                                    //console.log(newInputValue)
                                                                     setInputValue(newInputValue)
                                                                 }}
 
@@ -429,7 +429,7 @@ function ManageBalanceLeaves() {
                                                                 <TextField
                                                                     type='number'
                                                                     size='small'
-                                                                    inputProps={{ min: 0, step: 0.5 }}
+                                                                    inputProps={{ min: 0, step: 0.5, max:60 }}
                                                                     required
                                                                     value={multipleModeManageFields.carrie_forward_leaves}
                                                                     onChange={e => setMultipleModeManageFields({ ...multipleModeManageFields, carrie_forward_leaves: e.target.value })}
@@ -494,7 +494,7 @@ function ManageBalanceLeaves() {
                                                                 <TextField
                                                                     type='number'
                                                                     size='small'
-                                                                    inputProps={{ min: 0, step: 0.5 }}
+                                                                    inputProps={{ min: 0, step: 0.5,max:60 }}
                                                                     required
                                                                     value={singleModeManageFields.no_of_leaves}
                                                                     onChange={e => setSingleModeManageFields({ ...singleModeManageFields, no_of_leaves: e.target.value })}

@@ -40,7 +40,7 @@ function AddAnnouncement() {
 
     const handleAddFormData = (e) => {
         const { name, value } = e.target;
-        console.log(name,value)
+        //console.log(name,value)
         setAddAnnouncement({ ...addAnnouncement, [name]: value });
     };
 
@@ -62,7 +62,7 @@ function AddAnnouncement() {
 
     const handleSubmitAnnouncementForm = async (e) => {
         e.preventDefault();
-        console.log(addAnnouncement)
+        //console.log(addAnnouncement)
         if (addAnnouncement.from_date ===null || addAnnouncement.to_date===null) {
             setDateError(true)
         }
@@ -167,11 +167,11 @@ function AddAnnouncement() {
                                                 value={addAnnouncement.department}
                                                 isOptionEqualToValue={(option,value) => option.value===value.value}
                                                 onChange={(_, newValue) => {
-                                                    console.log(newValue);
+                                                    //console.log(newValue);
                                                     setAddAnnouncement({...addAnnouncement,department:newValue})
                                                   }}
                                                   onInputChange={(_, newInputValue) => {
-                                                    console.log(newInputValue)
+                                                    //console.log(newInputValue)
                                                     setInputValue(newInputValue)
                                                   }}
                                             
@@ -263,7 +263,7 @@ function AddAnnouncement() {
 
                                             </FormControl>
                                             <Stack direction={'row'} display={'flex'} justifyContent={'flex-start'} alignItems={'center'} spacing={3}>
-                                                <FormLabel  required>Do you to Notify through mail?</FormLabel>
+                                                <FormLabel  required>Do you like to Notify through mail?</FormLabel>
                                                 <FormControl>
 
                                                     <RadioGroup

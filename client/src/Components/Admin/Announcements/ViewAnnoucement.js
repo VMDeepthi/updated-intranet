@@ -152,7 +152,7 @@ const ViewAnnouncements = () => {
 
     // Details view
     const announcementDetailView = useMemo(() => {
-        console.log(viewAnnouncement)
+        //console.log(viewAnnouncement)
         const handleViewButtonDrawerToggleClosing = () => {
             setViewDrawerOpen(!viewDrawerOpen);
             setViewAnnouncement({});
@@ -471,11 +471,11 @@ const ViewAnnouncements = () => {
                                                 value={editAnnouncement.department}
                                                 isOptionEqualToValue={(option,value) => option.value===value.value}
                                                 onChange={(_, newValue) => {
-                                                    console.log(newValue);
+                                                    //console.log(newValue);
                                                     setEditAnnouncement({...editAnnouncement,department:newValue})
                                                   }}
                                                   onInputChange={(_, newInputValue) => {
-                                                    console.log(newInputValue)
+                                                    //console.log(newInputValue)
                                                     setInputValue(newInputValue)
                                                   }}
                                             
@@ -564,7 +564,7 @@ const ViewAnnouncements = () => {
 
                                         </FormControl>
                                         <Stack direction={'row'} display={'flex'} justifyContent={'flex-start'} alignItems={'center'} spacing={3}>
-                                                <FormLabel  required>Do you to Notify through mail?</FormLabel>
+                                                <FormLabel  required>Do you like to Notify through mail?</FormLabel>
                                                 <FormControl>
 
                                                     <RadioGroup

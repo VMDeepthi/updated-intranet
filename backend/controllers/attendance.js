@@ -219,6 +219,7 @@ export const UploadFile = async (req, res) => {
                                                 updated_status = 'WH'
                                             }
                                             else if(office_holidays.includes(punchDate.toLocaleString('en-CA').slice(0,10))){
+                                                Status = 'HH'
                                                 updated_status = 'HH'
                                             }
                                             if(full_day_leave){

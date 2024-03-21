@@ -227,9 +227,14 @@ function AddUser() {
         e.preventDefault()
         //console.log(addUserData)
 
+
         if (!addUserData.dob) {
             //console.log(addUserData.dob)
             setError(true)
+        }
+        else if(addUserData.firstName===addUserData.lastName){
+            toast.warning('First name and Last name cant be same')
+
         }
         else {
             //console.log('hey')
@@ -414,7 +419,7 @@ function AddUser() {
                                                         <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, sm: 1, md: 2, lg: 2 }}   >
                                                             <FormControl fullWidth sx={{ mb: 2 }} variant="outlined">
                                                                 <InputLabel size="small" required >Employee ID</InputLabel>
-                                                                <OutlinedInput startAdornment={<InputAdornment position="start">bcg/</InputAdornment>} name='employeeId' value={addUserData.employeeId} onChange={handleUserDataChange} size="small" required={true} type={"text"} label="Employee ID" />
+                                                                <OutlinedInput  startAdornment={<InputAdornment position="start">bcg/</InputAdornment>} name='employeeId' value={addUserData.employeeId} onChange={handleUserDataChange} size="small" required={true} type={"text"} label="Employee ID" />
                                                             </FormControl>
                                                             <FormControl fullWidth variant="outlined">
                                                                 <MobileDatePicker

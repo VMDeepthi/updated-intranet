@@ -57,7 +57,7 @@ function UploadAttendance() {
 		  maxFiles:1,
 	
     onDrop: (acceptedFiles) => {
-		console.log(acceptedFiles)
+		//console.log(acceptedFiles)
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
@@ -84,7 +84,7 @@ function UploadAttendance() {
 
   // handling uploading files
   const handleUploadFile = async()=>{
-	console.log(files)
+	//console.log(files)
 	if (files.length===0){
 		toast.warning('Select file to upload!');
 	}
@@ -111,7 +111,7 @@ function UploadAttendance() {
           }
           },
         success:  { render(){
-			//setFiles([])
+			setFiles([])
           return(`${msg} `)
         }
         },
@@ -122,7 +122,7 @@ function UploadAttendance() {
         }
       })
 	  msg=(result.data)
-	  console.log(result)
+	  //console.log(result)
 	  
 	}
    catch (err){
@@ -137,6 +137,7 @@ function UploadAttendance() {
 	<AdminNavBar />
 	<Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 8 } }}>
 		<div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+		<Typography variant='h5' component={'h5'} m={1} textAlign={'center'} >Upload Attendance</Typography>
 			<Container sx={{  width: '100%' }}>
 				<Card sx={{p:2,height:{xs:400,md:350}}}>
 					

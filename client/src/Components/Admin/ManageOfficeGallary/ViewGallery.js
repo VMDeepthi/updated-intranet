@@ -125,7 +125,7 @@ function ViewGallery() {
 
 
             })
-            console.log(acceptedFiles)
+            //console.log(acceptedFiles)
 
             setFiles([...files, ...acceptedFiles])
             //setFiles(acceptedFiles)
@@ -166,13 +166,13 @@ function ViewGallery() {
         const fetchData = async () => {
             try {
                 const res = await axios.get('/api/viewgallery')
-                console.log(res.data)
+                //console.log(res.data)
                 setGallaryData(res.data)
                 setFilteredGallery(res.data)
                 setLoader(false)
             }
-            catch {
-                toast.error('unable fetch data')
+            catch(err) {
+                toast.error(err.response.data)
                 setLoader(false)
 
 
@@ -244,7 +244,7 @@ function ViewGallery() {
             const res = await axios.post('/api/getgalleryimages', row)
             setEditGallery({ ...row, event_date: new Date(row.event_date).toLocaleString('en-CA').slice(0, 10) })
 
-            console.log(res.data)
+            //console.log(res.data)
 
             //console.log(res.data.map(f=>({preview:process.env.REACT_APP_BACKEND_SERVER.slice(0,-1)+(f.image).replace(`\\`,'/')})))
             setFiles(res.data.map(f => ({ preview: (f.image) })))
@@ -438,7 +438,7 @@ function ViewGallery() {
                                                                 <IconButton
                                                                     onClick={() => {
                                                                         const newFiles = [...files];
-                                                                        console.log(files, index)
+                                                                        //console.log(files, index)
                                                                         newFiles.splice(index, 1);
                                                                         setFiles(newFiles);
                                                                     }}
@@ -536,7 +536,7 @@ function ViewGallery() {
 
     // Details view
     const gallarytDetailView = useMemo(() => {
-        console.log(viewDrawerOpen)
+        //console.log(viewDrawerOpen)
         const handleViewButtonDrawerToggleClosing = () => {
             setViewDrawerOpen(!viewDrawerOpen);
             setViewGallery({});

@@ -18,7 +18,6 @@ import CommanProtectedRoute from './Components/Comman/ProtectedRoute/CommanProte
 import { UserProvider } from './Components/context/UserProvider'
 import Cookies from 'js-cookie'
 import ForgotPassword from './Components/Comman/ForgotPassword/ForgotPassword'
-import TimeZone from './Components/Comman/TimeZone/TimeZone'
 import AddAnnouncement from './Components/Admin/Announcements/AddAnnouncement'
 import ViewAnnouncements from './Components/Admin/Announcements/ViewAnnoucement'
 import UploadAttendance from './Components/Admin/LeaveManagement/UploadAttendance'
@@ -62,7 +61,6 @@ export default function App() {
               <Route path='/forgotpassword' Component={ForgotPassword} />
               {Cookies.get('USERAUTHID') === undefined ? <Route path='*' element={<Navigate to='/login' replace />} /> : <Route path='*' element={<Navigate replace to='/' />} />}
               <Route path='/' element={<CommanProtectedRoute component={<Dashboard />} />} />
-              <Route path='/timezones' element={<CommanProtectedRoute component={<TimeZone />} />} />
               <Route path='/attendance' element={<CommanProtectedRoute component={<Attendance />} />} />
               <Route path='/changepassword' element={<CommanProtectedRoute component={<ChangePassword />} />} />
               <Route path='/myprofile' element={<CommanProtectedRoute component={<ProfileSection />} />} />

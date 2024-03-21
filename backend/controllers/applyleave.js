@@ -239,7 +239,7 @@ export const reportingheadlogin = (req, res) => {
                                                     // console.log(date)
                                                     if (date !== '') {
                                                         update_balance_query_params.push('(?)')
-                                                        if (dates[dates.length - 1] === date) {
+                                                        if (dates[dates.length - 1] === date && half_day !== "") {
                                                             total = total - 0.5
                                                             update_balance_values.push([emp_id, 0, 0.5, date, total, id])
                                                         }
@@ -280,7 +280,7 @@ export const reportingheadlogin = (req, res) => {
                                                     // console.log(date)
                                                     if (date !== '') {
                                                         update_balance_query_params.push('(?)')
-                                                        if (dates[dates.length - 1] === date) {
+                                                        if (dates[dates.length - 1] === date && half_day !== "") {
                                                             total = total + 0.5
                                                             update_balance_values.push([emp_id, 0.5, 0, date, total, id])
                                                         }
@@ -297,11 +297,19 @@ export const reportingheadlogin = (req, res) => {
                                                 // console.log('query:', update_balance_query)
                                                 // console.log('values:', update_balance_values)
 
-                                                const update_attendance_query = `update attendance set updated_status='XA' where pdate in (?) and emp_id=?`
+                                                const find_holidays_query = `select holiday_date from officeholidays inner join companypagesmanagement on pageId = id inner join usermanagement on usermanagement.company_name = companypagesmanagement.company_name where employee_id=? and officeholidays.department rlike usermanagement.department ;`
+                                                const find_holidays_values = [emp_id]
+            
+                                                const holidays_result = await db.promise().query(find_holidays_query, find_holidays_values)
+                                                const office_holidays = holidays_result[0].map(date => date.holiday_date.toLocaleString('en-CA').slice(0, 10))
+            
+            
+                                                const update_attendance_query = `update attendance set updated_status = case when totalhrs<4 then 'AA' when totalhrs>=4 and totalhrs<9 then 'XA' when totalhrs>=9 then 'XX' when pdate in(?) then 'HH' else 'AA' end  where pdate in (?) and emp_id=?`
                                                 //const dateRanges = [...selected_dates.split(','), half_day].filter(date => date !== '')
-                                                const update_attendance_values = [dates, emp_id]
+                                                const update_attendance_values = [office_holidays, dates, emp_id]
                                                 await db.promise().query(update_balance_query, update_balance_values)
                                                 await db.promise().query(update_attendance_query, update_attendance_values)
+
 
 
                                             }
@@ -310,8 +318,8 @@ export const reportingheadlogin = (req, res) => {
                                                 console.log(i, new Date(dates[i]))
                                                 try {
 
-                                                   await compensation(new Date(dates[i]), emp_id)
-                                                   
+                                                    await compensation(new Date(dates[i]), emp_id)
+
 
                                                 }
                                                 catch (err) {
@@ -465,7 +473,7 @@ export const checkapplicationerequest = (req, res) => {
                                         // console.log(date)
                                         if (date !== '') {
                                             update_balance_query_params.push('(?)')
-                                            if (dates[dates.length - 1] === date) {
+                                            if (dates[dates.length - 1] === date && half_day !== "") {
                                                 total = total - 0.5
                                                 update_balance_values.push([emp_id, 0, 0.5, date, total, id])
                                             }
@@ -506,7 +514,7 @@ export const checkapplicationerequest = (req, res) => {
                                         // console.log(date)
                                         if (date !== '') {
                                             update_balance_query_params.push('(?)')
-                                            if (dates[dates.length - 1] === date) {
+                                            if (dates[dates.length - 1] === date && half_day !== "") {
                                                 total = total + 0.5
                                                 update_balance_values.push([emp_id, 0.5, 0, date, total, id])
                                             }
@@ -523,9 +531,16 @@ export const checkapplicationerequest = (req, res) => {
                                     // console.log('query:', update_balance_query)
                                     // console.log('values:', update_balance_values)
 
-                                    const update_attendance_query = `update attendance set updated_status='XA' where pdate in (?) and emp_id=?`
+                                    const find_holidays_query = `select holiday_date from officeholidays inner join companypagesmanagement on pageId = id inner join usermanagement on usermanagement.company_name = companypagesmanagement.company_name where employee_id=? and officeholidays.department rlike usermanagement.department ;`
+                                    const find_holidays_values = [emp_id]
+
+                                    const holidays_result = await db.promise().query(find_holidays_query, find_holidays_values)
+                                    const office_holidays = holidays_result[0].map(date => date.holiday_date.toLocaleString('en-CA').slice(0, 10))
+
+
+                                    const update_attendance_query = `update attendance set updated_status = case when totalhrs<4 then 'AA' when totalhrs>=4 and totalhrs<9 then 'XA' when totalhrs>=9 then 'XX' when pdate in(?) then 'HH' else 'AA' end  where pdate in (?) and emp_id=?`
                                     //const dateRanges = [...selected_dates.split(','), half_day].filter(date => date !== '')
-                                    const update_attendance_values = [dates, emp_id]
+                                    const update_attendance_values = [office_holidays, dates, emp_id]
                                     await db.promise().query(update_balance_query, update_balance_values)
                                     await db.promise().query(update_attendance_query, update_attendance_values)
 

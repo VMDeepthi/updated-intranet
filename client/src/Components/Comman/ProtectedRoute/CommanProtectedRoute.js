@@ -17,7 +17,7 @@ function CommanProtectedRoute(props) {
 
 
     const path = location.pathname.replace('/', '').toLowerCase()
-    console.log(path, pages)
+    //console.log(path, pages)
 
     if (Cookies.get('USERAUTHID') === undefined) {
         return <Navigate to='/login' />

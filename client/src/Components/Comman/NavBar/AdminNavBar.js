@@ -31,15 +31,15 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 //import CssBaseline from '@mui/material/CssBaseline';
 import BusinessIcon from '@mui/icons-material/Business';
-import { AccountBalance, AccountBalanceWallet, AccountBox, AddAPhoto, AddAlert, AddPhotoAlternate, AdsClick, Announcement, BadgeRounded, Balance, BrowseGallery, Campaign, CardTravel, CreditScore, Description, EventAvailable, ExpandLess, ExpandMore, ForwardToInbox, GroupAdd, Insights, Key, LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, MoreTime, NoteAdd, Paid, Payments, PersonAdd, RequestQuote, Send, Settings, SupervisedUserCircle, TrendingUp, UploadFile, WorkHistory, WorkOff, Wysiwyg } from '@mui/icons-material';
+import { AccountBalanceWallet, AccountBox, AddAPhoto, AddAlert, AddPhotoAlternate, AdsClick, Announcement, BadgeRounded, Balance, BrowseGallery, Campaign, CardTravel, CreditScore, Description, EventAvailable, ExpandLess, ExpandMore, ForwardToInbox, GroupAdd, Insights, Key, LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, MoreTime, NoteAdd, Paid, Payments, PersonAdd, RequestQuote, Send, Settings, SupervisedUserCircle, TrendingUp, UploadFile, WorkHistory, WorkOff, Wysiwyg } from '@mui/icons-material';
 
 
 import { CgListTree } from 'react-icons/cg'
-import { Collapse, Container, Stack } from '@mui/material';
+import { Collapse,  Stack } from '@mui/material';
 
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import StoreIcon from '@mui/icons-material/Store';
-import { useContext, useEffect, useState } from 'react';
+import { useContext,  useState } from 'react';
 import { Avatar } from '@mui/material';
 import UserContext from '../../context/UserContext';
 //import Cookies from 'js-cookie';
@@ -128,60 +128,60 @@ export default function AdminNavBar(props) {
       navigate('/login', { replace: true })
     }
     catch (err) {
-      console.log(err)
-      toast.error('error occured!')
+      //console.log(err)
+      toast.error(err.response.data)
 
     }
 
   }
-  const [currentTime, setCurrentTime] = useState(new Date());
+  // const [currentTime, setCurrentTime] = useState(new Date());
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setCurrentTime(new Date());
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
 
-  function dateFormat(date) {
-    const options = {
+  // function dateFormat(date) {
+  //   const options = {
 
-      day: 'numeric',
-      year: 'numeric',
-      month: 'long',
-      weekday: 'long',
+  //     day: 'numeric',
+  //     year: 'numeric',
+  //     month: 'long',
+  //     weekday: 'long',
 
-    };
-    const formate = date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== "")
-    //console.log(formate,date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== ""))
-    const day = formate[2]
-    let formated_day;
-    switch (day) {
-      case '1':
-        formated_day = '1st'
-        break
-      case '2':
-        formated_day = '2nd'
-        break
-      case '3':
-        formated_day = '3rd'
-        break
-      default:
-        formated_day = `${day}th`
-        break
+  //   };
+  //   const formate = date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== "")
+  //   //console.log(formate,date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== ""))
+  //   const day = formate[2]
+  //   let formated_day;
+  //   switch (day) {
+  //     case '1':
+  //       formated_day = '1st'
+  //       break
+  //     case '2':
+  //       formated_day = '2nd'
+  //       break
+  //     case '3':
+  //       formated_day = '3rd'
+  //       break
+  //     default:
+  //       formated_day = `${day}th`
+  //       break
 
-    }
-    formate[2] = formated_day
+  //   }
+  //   formate[2] = formated_day
 
-    //console.log(formated_day)
-    return `${formate[0]} ${formate[2]} ${formate[1]}, ${formate[3]}`
+  //   //console.log(formated_day)
+  //   return `${formate[0]} ${formate[2]} ${formate[1]}, ${formate[3]}`
 
-  }
+  // }
 
-  const time = currentTime.toLocaleTimeString(undefined, { hour12: true });
-  const day = dateFormat(currentTime)
+  // const time = currentTime.toLocaleTimeString(undefined, { hour12: true });
+  // const day = dateFormat(currentTime)
 
   //console.log("running")
 
@@ -212,7 +212,7 @@ export default function AdminNavBar(props) {
             display: 'block',
             position: 'absolute',
             top: 0,
-            right: 14,
+            right: 10,
             width: 10,
             height: 10,
             bgcolor: 'background.paper',
@@ -293,6 +293,8 @@ export default function AdminNavBar(props) {
   const { userDetails } = useContext(UserContext)
 
 
+
+
   return (
     <>
       <AppBar position="fixed" sx={{ backgroundColor: 'white' }}>
@@ -312,7 +314,7 @@ export default function AdminNavBar(props) {
             sx={{ display: { xs: 'block', sm: 'block' } }}
           >
             <Link href="/" underline="none">
-              <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '80%', height: '40px' }} />
+            <img src='https://i.ibb.co/c2BRVFz/2-0.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '90%', height: '50px' }} />
             </Link>
           </Typography>
 
@@ -332,14 +334,24 @@ export default function AdminNavBar(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
-            <Stack spacing={-0.5}>
+            {/* <Stack spacing={-0.5}>
               <Typography variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center', color: 'gray', fontSize: '20px' }}>
                 {time}
               </Typography>
               <Typography variant='subtitle2' color={'ButtonText'} sx={{ color: 'gray' }}>{day} </Typography>
 
-            </Stack>
-            <IconButton
+            </Stack> */}
+            <Stack spacing={-0.5} m={1}>
+                <Typography  variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center', color: 'black', fontSize: '22px', paddingTop:'4px' }}>
+                
+               Hi {`${userDetails.first_name}!  `}
+                </Typography>
+                {/* <Typography variant='subtitle2' color={'ButtonText'} sx={{ color: 'gray',alignItems:'center' }}>
+                  {userDetails.designation}
+                </Typography> */}
+                </Stack>
+
+                <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
@@ -349,7 +361,7 @@ export default function AdminNavBar(props) {
               color="black"
               className='account-menu'
             >
-              {userDetails.profile_pic === '' ? <AccountCircle /> : <Avatar sx={{ width: 24, height: 24 }} src={userDetails.profile_pic} />}
+              {userDetails.profile_pic === '' ? <AccountCircle /> : <Avatar sx={{ width: 35, height: 35 }} src={userDetails.profile_pic} />}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

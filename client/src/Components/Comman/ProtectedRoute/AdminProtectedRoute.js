@@ -29,7 +29,7 @@ function AdminProtectedRoute(props) {
 
 
   // const verify = jwt_decode(token, process.env.REACT_APP_JWT_SECRET)
-  console.log('pageAccess', pages.includes(path),userDetails.employee_id,pagesToBeNotAccessed)
+  //console.log('pageAccess', pages.includes(path),userDetails.employee_id,pagesToBeNotAccessed)
 
 
 

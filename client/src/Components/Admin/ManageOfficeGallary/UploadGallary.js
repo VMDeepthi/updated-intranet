@@ -82,7 +82,7 @@ function UploadGallary() {
 
 
             })
-            console.log(acceptedFiles)
+            //console.log(acceptedFiles)
 
             setFiles([...files, ...acceptedFiles])
             setTimeout(fix, 1000)
@@ -125,7 +125,7 @@ function UploadGallary() {
             toast.warning('Select file(s) to upload!');
         }
         else {
-            console.log(files)
+            //console.log(files)
             const form = new FormData();
             form.append("eventTitle", eventData.title)
             form.append("eventDate", eventData.date)
@@ -259,7 +259,7 @@ function UploadGallary() {
                                                                     <IconButton
                                                                         onClick={() => {
                                                                             const newFiles = [...files];
-                                                                            console.log(files, index)
+                                                                            //console.log(files, index)
                                                                             newFiles.splice(index, 1);
                                                                             setFiles(newFiles);
                                                                         }}

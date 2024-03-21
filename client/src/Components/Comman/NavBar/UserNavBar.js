@@ -30,7 +30,7 @@ import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 //import CssBaseline from '@mui/material/CssBaseline';
-import { useContext, useEffect, useState } from 'react';
+import { useContext,  useState } from 'react';
 import { Avatar, Collapse, Stack } from '@mui/material';
 //import CompanyManagementPages from '../CompanyPagesManagement/AddCompanyManagementPages';
 
@@ -123,65 +123,61 @@ export default function UserNavBar(props) {
       toast.success(res.data)
       navigate('/login', { replace: true })
     }
-    catch {
-      toast.error('error occured!')
+    catch (err){
+      toast.error(err.response.data)
 
     }
 
   }
 
-  const [currentTime, setCurrentTime] = useState(new Date());
+  // const [currentTime, setCurrentTime] = useState(new Date());
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setCurrentTime(new Date());
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
 
-  function dateFormat(date) {
-    const options = {
+  // function dateFormat(date) {
+  //   const options = {
       
-      day: 'numeric',
-      year: 'numeric',
-      month: 'long',
-      weekday: 'long',
+  //     day: 'numeric',
+  //     year: 'numeric',
+  //     month: 'long',
+  //     weekday: 'long',
       
-    };
-    const formate = date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== "")
-    //console.log(formate,date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== ""))
-    const day = formate[2]
-    let formated_day;
-    switch (day) {
-      case '1':
-        formated_day = '1st'
-        break
-      case '2':
-        formated_day = '2nd'
-        break
-      case '3':
-        formated_day = '3rd'
-        break
-      default:
-        formated_day = `${day}th`
-        break
+  //   };
+  //   const formate = date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== "")
+  //   //console.log(formate,date.toLocaleDateString('en-CA', options).replace(/ /g, ',').split(',').filter(x => x !== ""))
+  //   const day = formate[2]
+  //   let formated_day;
+  //   switch (day) {
+  //     case '1':
+  //       formated_day = '1st'
+  //       break
+  //     case '2':
+  //       formated_day = '2nd'
+  //       break
+  //     case '3':
+  //       formated_day = '3rd'
+  //       break
+  //     default:
+  //       formated_day = `${day}th`
+  //       break
 
-    }
-    formate[2] = formated_day
+  //   }
+  //   formate[2] = formated_day
 
-    //console.log(formated_day)
-    return `${formate[0]} ${formate[2]} ${formate[1]}, ${formate[3]}`
+  //   //console.log(formated_day)
+  //   return `${formate[0]} ${formate[2]} ${formate[1]}, ${formate[3]}`
 
-  }
+  // }
 
-  const time = currentTime.toLocaleTimeString(undefined, { hour12: true });
-  // const day = currentTime.toLocaleString('default', { weekday: 'long' });
-  // var dd = String(currentTime.getDate()).padStart(2, '0');
-  // var mm = String(currentTime.getMonth() + 1).padStart(2, '0'); //January is 0!
-  // var yyyy = currentTime.getFullYear();
-  const day= dateFormat(currentTime)
+  // const time = currentTime.toLocaleTimeString(undefined, { hour12: true });
+  // const day= dateFormat(currentTime)
 
 
 
@@ -313,7 +309,7 @@ export default function UserNavBar(props) {
   return (
     <>
       <AppBar position="fixed" sx={{ backgroundColor: 'white' }}>
-        <Toolbar>
+      <Toolbar>
           <IconButton
             color="black"
             aria-label="open drawer"
@@ -329,7 +325,7 @@ export default function UserNavBar(props) {
             sx={{ display: { xs: 'block', sm: 'block' } }}
           >
             <Link href="/" underline="none">
-              <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '50%' }} />
+            <img src='https://i.ibb.co/c2BRVFz/2-0.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '90%', height: '50px' }} />
             </Link>
           </Typography>
 
@@ -349,14 +345,24 @@ export default function UserNavBar(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
-            <Stack spacing={-0.5}>
-            <Typography variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center' ,color:'gray', fontSize:'20px'}}>
+            {/* <Stack spacing={-0.5}>
+              <Typography variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center', color: 'gray', fontSize: '20px' }}>
                 {time}
               </Typography>
-              <Typography variant='subtitle2' color={'ButtonText'} sx={{color:'gray'}}>{day} </Typography>
-              
-            </Stack>
-            <IconButton
+              <Typography variant='subtitle2' color={'ButtonText'} sx={{ color: 'gray' }}>{day} </Typography>
+
+            </Stack> */}
+            <Stack spacing={-0.5} m={1}>
+                <Typography  variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center', color: 'black', fontSize: '22px', paddingTop:'4px' }}>
+                
+               Dear {`${userDetails.first_name}  `}
+                </Typography>
+                {/* <Typography variant='subtitle2' color={'ButtonText'} sx={{ color: 'gray',alignItems:'center' }}>
+                  {userDetails.designation}
+                </Typography> */}
+                </Stack>
+
+                <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
@@ -366,7 +372,7 @@ export default function UserNavBar(props) {
               color="black"
               className='account-menu'
             >
-              {userDetails.profile_pic === '' ? <AccountCircle /> : <Avatar sx={{ width: 24, height: 24 }} src={userDetails.profile_pic} />}
+              {userDetails.profile_pic === '' ? <AccountCircle /> : <Avatar sx={{ width: 35, height: 35 }} src={userDetails.profile_pic} />}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

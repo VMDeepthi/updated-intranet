@@ -10,7 +10,7 @@ function Notice(props) {
         <>
         {notice.length !==0?
         <>
-        <Box sx={{ color: 'red', }}>Annoucement*</Box>
+        <Box sx={{ color: 'red', }}>Announcement*</Box>
         
         <Card className="notice" sx={{width:'100%'}}>
             <Marquee style={{ display:'flex'}}>

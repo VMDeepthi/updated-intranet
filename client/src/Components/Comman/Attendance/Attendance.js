@@ -56,7 +56,7 @@ const columns = [
     },
     {
         name: 'Status',
-        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.status === 'XX' ? '#037700' : row.status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status === 'HH') ? '#9777A5' : '#FF6868', color: 'white' }} size='small' label={row.status} />,
+        selector: row => <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.status === 'XX' ? '#037700' : row.status === 'XA' ? '#FF9D36' : (row.status === 'WH' || row.status === 'HH') ? '#9777A5' : '#FF6868', color: 'white' }} size='small' label={row.status} />,
         center: 'true',
     },
     {
@@ -80,7 +80,7 @@ const Attendance = () => {
     const [loader, setLoader] = useState(true);
 
     const { userDetails } = useContext(UserContext)
-    console.log(userDetails)
+    //console.log(userDetails)
 
     useEffect(() => {
         if (userDetails.employee_id !== undefined) {
@@ -97,10 +97,11 @@ const Attendance = () => {
                     const data = res.data.map(d => ({ ...d, pdate: join(new Date(d.pdate), options, '-') }))
                     setLoader(false)
                     setData(data)
-                    console.log(res.data)
+                    //console.log(res.data)
                 })
                 .catch((err) => {
-                    console.log(err)
+                    //console.log(err)
+                    toast.error(err.response.data)
                     setLoader(false)
 
                 })
@@ -111,7 +112,7 @@ const Attendance = () => {
     const subHeaderViewCompanyMemo = React.useMemo(() => {
         const handleFilterAttendace = (e) => {
             e.preventDefault()
-            console.log(date)
+            //console.log(date)
 
             setLoader(true)
             axios.post(`/api/filteruserattendance`, { ...date, emp_id: userDetails.employee_id })
@@ -125,7 +126,7 @@ const Attendance = () => {
                         return options.map(format).join(separator);
                     }
                     const data = res.data.map(d => ({ ...d, pdate: join(new Date(d.pdate), options, '-') }))
-                    console.log(data)
+                    ///(data)
                     setLoader(false)
                     setData(data)
                     //console.log(res.data)
@@ -138,7 +139,7 @@ const Attendance = () => {
 
         }
         const downloadAttendance = () => {
-            console.log(data)
+            //console.log(data)
             const doc = new jsPDF({ orientation: "vertical" });
 
             doc.addImage("https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png", "JPEG", 150, 5, 50, 10,);
@@ -274,13 +275,3 @@ const Attendance = () => {
 
 export default Attendance;
 
-
-//---------------payslip----------------
-// var doc = new jsPDF();
-// doc.addImage("https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png", "JPEG", 5, 5, 80, 20, );
-// doc.setFont("times", "normal");
-// doc.setFontSize(16);
-// doc.text('Brightcomgroup India', 125, 8, null, null, "justify");
-// doc.setFontSize(12);
-// doc.text('Floor : 5, Fairfield By Marriott Road No. 2 ,', 155, 15, null, null, "center");
-// doc.text('Nanakramguda, Gachibowli, Hyderabad, Telangana 500032', 100, 20, null, null, "justify");

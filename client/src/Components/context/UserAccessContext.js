@@ -16,7 +16,7 @@ function UserAccessProvider(props) {
         const fetchUserAccess = () =>{
             axios.post('/api/getaccessdata', { emp_id:userDetails.employee_id })
                 .then(res => {
-                    console.log('data',res.data,userDetails.employee_id )
+                    //console.log('data',res.data,userDetails.employee_id )
                     if(res.data.length===0){
                         setPagesToBeNotAccessed([])
                     }

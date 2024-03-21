@@ -183,7 +183,7 @@ export const getcompanypagedata = (req, res) => {
         let values
         switch (req.body.company_pagetype) {
             case 'Holidays':
-                q = 'select * from officeholidays where pageId=?'
+                q = 'select * from officeholidays where pageId=? order by holiday_date '
                 values = [req.body.id]
                 break
             case 'Address':
@@ -391,13 +391,14 @@ export const showcompanypages = (req, res) => {
 
 export const showcompanypagedata = (req, res) => {
     const { id, companyId, company_pagetype } = req.body
+    
 
     console.log(req.body)
     let q;
     let values
     switch (company_pagetype) {
         case 'Holidays':
-            q = 'select * from officeholidays where pageId in (?)'
+            q = 'select * from officeholidays where pageId in (?) order by holiday_date'
             values = [id]
             break
         case 'Address':

@@ -51,7 +51,7 @@ function ReportingHeadLogin() {
 
         }
         catch (err) {
-          console.log(err)
+          //console.log(err)
           setLoader(false)
           if(err.response.data==='Unauthorized Application'){
             toast.error(err.response.data)
@@ -85,20 +85,6 @@ function ReportingHeadLogin() {
 
   }
 
-
-
-
-
-
-
-
-  //   if (Cookies.get('USERAUTHID') !== undefined) {
-  //     //console.log('present')
-  //     return <Navigate to='/' replace={true} />
-  //   }
-  ////console.log(Cookies.get('HAEDAUTHID'))
-
-
   const Login = () => {
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
     const handleLogin = (e) => {
@@ -111,7 +97,7 @@ function ReportingHeadLogin() {
         .then(res => {
           //console.log(res)
 
-          console.log(res.data)
+          //console.log(res.data)
           setStep(1)
           setApplicationStatus(res.data)
           setLoadLogin(false)
@@ -218,8 +204,6 @@ function ReportingHeadLogin() {
 
                 </Box >
               </Grid>
-
-
               {/* <Grid item xs={0} lg={4}>
                 <Container sx={{ display: 'flex', justifyContent: 'center', height: '400px', alignItems: 'center', width: { xs: '0ch', lg: '400px' } }}>
                   <img src='https://res.cloudinary.com/dozj3jkhe/image/upload/v1703591743/intranet/x8lfsmdftq6uo01qdmhk.png' alt='robo' style={{ maxWidth: '100%', maxHeight: '70%' }} />
@@ -227,13 +211,6 @@ function ReportingHeadLogin() {
 
               </Grid> */}
             </Grid>
-
-
-
-
-
-
-
           </Grid>
 
         </Container>
@@ -296,10 +273,6 @@ function ReportingHeadLogin() {
       </div>
     )
   }
-
-
-
-
 
   return (
 

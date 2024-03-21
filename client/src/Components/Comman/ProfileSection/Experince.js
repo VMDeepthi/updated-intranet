@@ -24,7 +24,7 @@ function Experience(props) {
                                                 fontSize={12}
                                                 mr={0.5}
                                             >
-                                                Roles & Resposibilty:
+                                                Roles & Responsibilities:
                                             </Typography>
                                             <span style={{ fontSize: '12px', color: 'gray' }}>{exp.roles_and_responsibility}</span>
                                         </StepContent>

@@ -35,7 +35,7 @@ import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
 import { toast } from 'react-toastify';
 
-import { Steps} from 'intro.js-react';
+import { Steps } from 'intro.js-react';
 import "intro.js/introjs.css";
 import { UserAccessContext } from '../../context/UserAccessContext';
 
@@ -59,91 +59,91 @@ const Dashboard = () => {
         {
             element: '.notice',
             intro: 'All announcements will be displayed here',
-            restrict:null
+            restrict: null
         },
         {
             element: ".profile-section",
             intro: "In this section your profile image with your name, emp id and designation will display",
             position: 'right',
-            restrict:null
+            restrict: null
         },
         {
             element: ".teams",
             intro: "In teams section as per company names their corresponding company pages will display ",
-            restrict:null
+            restrict: null
         },
         {
             element: '.directory-search',
             intro: 'In directory search section you can search employees based on various filters',
-            restrict:null
+            restrict: null
         },
         {
             element: '.cross-road',
             intro: 'In this section you can see Birthday calender and Timezone',
-            restrict:null
+            restrict: null
         },
         {
             element: '.personal-section',
             intro: 'In this section you can view my attendance,my pays and my accounts',
             position: 'right',
-            restrict:'PersonalSection'
+            restrict: 'PersonalSection'
         },
         {
             element: '.my-attendance',
             intro: 'In this section your 10 days attendance will be displayed in graph also you can check your balance hours as well',
-            restrict:'PersonalSection'
+            restrict: 'PersonalSection'
         },
-        
+
         {
             element: '.my-pays',
             intro: 'In this section your last 3 months transaction will display ',
-            restrict:'PersonalSection'
+            restrict: 'PersonalSection'
         },
         {
             element: '.my-accounts',
-            intro: 'In this section your account numbers like UAN, Insurance Police, Salary Account number will display',
-            restrict:'PersonalSection'
+            intro: 'In this section your account numbers like UAN, Health Policy, Salary Account number will display',
+            restrict: 'PersonalSection'
         },
-        
+
         {
             element: '.birthday-list',
             intro: 'Here current month employees birthday will display',
             position: 'left',
-            restrict:'BirthdayList'
+            restrict: 'BirthdayList'
         },
         {
             element: '.view-link-birthdays',
             intro: 'Here all/filtered employees birthday list will display ',
-            restrict:'BirthdayList'
+            restrict: 'BirthdayList'
 
         },
         {
             element: '.office-calender',
             intro: 'Here you will find a calender having holidays',
-            restrict:'OfficeCalender'
+            restrict: 'OfficeCalender'
         },
-       
+
         {
             element: '.view-link-calender',
-            intro: 'from here ypu can explore the various company pages like holidays list',
-            restrict:'OfficeCalender'
+            intro: 'from here you can explore the various company pages like holidays list',
+            restrict: 'OfficeCalender'
         },
-        
+
         {
             element: '.account-menu',
             intro: 'In this section you can view profile, change password and logout',
-            restrict:null
+            restrict: null
         },
         {
             element: '.navigation-menu',
             intro: 'This is the navigation menu',
-            restrict:null
+            restrict: null
         },
         {
 
             title: '<img style="max-width:200px;height:50px" src="https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png" alt="img" />',
             intro: '<h2 >Welcome To Brightcom Group</h2>',
-            restrict:null
+            restrict: null
 
         }
 
@@ -161,6 +161,7 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 const ann = await axios.post('/api/notice', { company_name: userDetails.company_name, department: userDetails.department, date: new Date().toLocaleDateString('en-CA').slice(0, 10) })
+                //console.log('ann', ann)
                 setNotice(ann.data)
                 const res = await axios.post('/api/attendancegraphdata', { emp_id: userDetails.employee_id })
                 let options = [{ day: 'numeric' }, { month: 'short' }];
@@ -177,7 +178,7 @@ const Dashboard = () => {
                 const totalhrsData = totalhrs.reverse().slice(0, 10).reverse()
                 const bal_hr = res.data.balance
                 setGraphData({ date: dateData, totalhrs: totalhrsData, bal_hr: bal_hr })
-                const salary = await axios.post('/api/lastsalarythreerecoreds',{emp_id:userDetails.employee_id})
+                const salary = await axios.post('/api/lastsalarythreerecoreds', { emp_id: userDetails.employee_id })
                 setSalaryData(salary.data)
                 const holidays = await axios.post('/api/holidaylist', { department: userDetails.department })
                 setCalenderData(holidays.data)
@@ -217,44 +218,12 @@ const Dashboard = () => {
             setLoader(false)
         }
 
+
     }, [userDetails])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    //const yesterday = new Date().getDate()-1
-
-
-    // const [open, setOpen] = useState(false);
-    // const handleClose = () => {
-    //   setOpen(false);
-    // };
-    // const handleOpen = () => {
-    //   setOpen(true);
-    // };
-
-
-
-    // const myPays = () => {
-
-
-    //     return (
-    //         <div>
-    //              <Button onClick={handleOpen}>Show backdrop</Button>
-    //   <Backdrop
-    //     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-    //     open={open}
-    //     onClick={handleClose}
-    //   >
-    //                 <img src='loader.gif' alt='loader' style={{ mixBlendMode: 'lighten' }} />
-    //             </Backdrop>
-
-    //         </div>
-    //     );
-
-
-
-    // }
 
     const userIntroTour = () => {
         setStepsEnabled(true)
@@ -271,10 +240,6 @@ const Dashboard = () => {
     }
 
 
-
-
-
-
     const personalSetion = (
         <Card className='personal-section' sx={{ height: 390, p: 1 }}>
             <Typography variant="p" component="div" sx={{ display: 'flex', justifyContent: 'center', fontSize: 20, alignItems: 'center' }}>
@@ -284,7 +249,7 @@ const Dashboard = () => {
 
             <Box sx={{ display: 'flex', flexDirection: 'column', maxHeight: 295 }}>
                 <Tabs value={value} onChange={handleChange} variant='fullWidth' centered  >
-                    <Tab className='my-attendance' label="My Attendace" />
+                    <Tab className='my-attendance' label="My Attendance" />
                     <Tab className='my-pays' label="My Pays" />
                     <Tab className='my-accounts' label="My Accounts" />
                 </Tabs>
@@ -406,29 +371,29 @@ const Dashboard = () => {
                             </Card>
                         </Grid>
 
-                        {pagesToBeNotAccessed === null ? null : !pagesToBeNotAccessed.includes('PersonalSection')  ?
+                        {pagesToBeNotAccessed === null ? null : !pagesToBeNotAccessed.includes('PersonalSection') ?
                             <Grid item xs={12} sm={6} md={4}>
                                 {personalSetion}
                             </Grid>
 
-                            : null}
+                            : null
+                        }
 
                         {pagesToBeNotAccessed === null ? null : !pagesToBeNotAccessed.includes('BirthdayList') ?
                             <Grid item xs={12} sm={6} md={4}>
                                 <BirthDayList birthdayData={birthdayData} />
                             </Grid>
 
-                            : null}
+                            : null
+                        }
 
-                        {pagesToBeNotAccessed === null ? null : !pagesToBeNotAccessed.includes('OfficeCalender')  ?
+                        {pagesToBeNotAccessed === null ? null : !pagesToBeNotAccessed.includes('OfficeCalender') ?
                             <Grid item xs={12} sm={6} md={4}>
                                 <OfficeCalender data={calenderData} />
                             </Grid>
 
-                            : null}
-
-
-
+                            : null
+                        }
                     </Grid>
 
                 </Box>
@@ -441,7 +406,7 @@ const Dashboard = () => {
             />
             <Steps
                 enabled={stepsEnabled}
-                steps={steps.filter(st=>!pagesToBeNotAccessed.includes(st.restrict))}
+                steps={steps.filter(st => !pagesToBeNotAccessed.includes(st.restrict))}
                 initialStep={notice.length === 0 ? 1 : 0}
                 onExit={onExit}
                 options={{ doneLabel: 'Done', exitOnOverlayClick: false, exitOnEsc: false }}

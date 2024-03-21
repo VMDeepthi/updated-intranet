@@ -18,7 +18,7 @@ function UserProvider(props) {
     if (Cookies.get('USERAUTHID') !== undefined) {
       axios.get('/api/checkuser')
         .then(res => {
-          console.log('checking User')
+          //console.log('checking User')
           setUserDetails(res.data)
         })
         .catch(err => {
@@ -41,7 +41,7 @@ function UserProvider(props) {
 
   if (unAuth) {
     setUnAuth(false)
-    console.log('coming')
+    //console.log('coming')
 
     return navigate('/login', { replace: true })
   }
