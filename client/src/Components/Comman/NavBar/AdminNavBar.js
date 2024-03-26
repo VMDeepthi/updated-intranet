@@ -212,7 +212,7 @@ export default function AdminNavBar(props) {
             display: 'block',
             position: 'absolute',
             top: 0,
-            right: 10,
+            right: 20,
             width: 10,
             height: 10,
             bgcolor: 'background.paper',

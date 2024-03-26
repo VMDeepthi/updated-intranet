@@ -155,14 +155,14 @@ export const lastsalarythreerecoreds = (req, res) => {
 }
 
 
-export const companydetails = (req,res) =>{
+export const companydetails = (req, res) => {
     if (req.checkAuth.isAuth) {
-        const {emp_id} = req.body
+        const { emp_id } = req.body
         const get_company_data_query = `select company_logo, company_address from companymanagement inner join usermanagement on companymanagement.company_name = usermanagement.company_name where employee_id = ?`
         const get_company_data_values = [emp_id]
-        db.query(get_company_data_query, get_company_data_values,(err,result)=>{
-            if(err) return res.status(500).json('error occured!')
-            else{
+        db.query(get_company_data_query, get_company_data_values, (err, result) => {
+            if (err) return res.status(500).json('error occured!')
+            else {
                 return res.status(200).json(result)
             }
         })
@@ -172,5 +172,24 @@ export const companydetails = (req,res) =>{
     }
 
 
+}
+
+export const deletesalartdetails = async (req, res) => {
+    if (req.checkAuth.isAuth) {
+        const {year, month} = req.body
+        const delete_salary_data_query = `delete from salarymanagement where uploaded_year =? and uploaded_month=?`
+        const delete_salary_data_values = [year, month]
+        try{
+            await db.promise().query(delete_salary_data_query, delete_salary_data_values)
+            return res.status(200).json('Record Deleted Successfully')
+        }
+        catch{
+            return res.status(500).json('error occured!')
+        }
+       
+    }
+    else {
+        return res.status(401).json(`Unauthorized User can't perform action!`)
+    }
 }
 

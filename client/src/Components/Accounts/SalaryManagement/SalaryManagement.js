@@ -3,13 +3,14 @@ import React, { useContext, useMemo, useState } from 'react'
 import UserContext from '../../context/UserContext'
 import AdminNavBar from '../../Comman/NavBar/AdminNavBar'
 import UserNavBar from '../../Comman/NavBar/UserNavBar'
-import { CloudSync, CloudUpload, FileDownload, FileUpload, Search } from '@mui/icons-material'
+import { CloudSync, CloudUpload, Delete, FileDownload, FileUpload, Search } from '@mui/icons-material'
 import { useDropzone } from 'react-dropzone'
 import DataTable, { defaultThemes } from 'react-data-table-component'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import * as XLSX from "xlsx";
 import Loader from '../../Comman/Loader'
+import swal from 'sweetalert'
 
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -364,20 +365,56 @@ function SalaryManagement() {
                 link.click();
             }
         }
+        const handleDeleteFile = () => {
+            swal({
+                title: "Do you want to Delete File?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        toast.promise(axios.post('/api/deletesalartdetails', viewDetailsFields), {
+                            pending: {
+                                render() {
+                                    return 'Deleting Salary Details'
+                                }
+                            },
+                            success: {
+                                render(res) {
+                                    handleViewSalaryModeClear()
+                                    return res.data.data
+                                }
+                            },
+                            error: {
+                                render(err) {
+                                    return (err.data.response.data)
+                                }
+                            }
+                        })
+                    }
+                });
+
+        }
 
         return (
             <Box>
                 <Stack spacing={1} direction={'row'}>
                     <TextField variant='outlined' type='number' size='small' placeholder='search employee id' onInput={handleSearch} InputProps={{ endAdornment: <Search /> }} />
                     <Fade in={filteredSalaryDetails !== null && filteredSalaryDetails.length !== 0} timeout={1000} >
-                        <IconButton title='Download File' color="info" onClick={handleDownloadFile}> <FileDownload /> </IconButton>
+                        <Stack direction={'row'} spacing={0.2}>
+                            <IconButton title='Delete File' color="error" onClick={handleDeleteFile}> <Delete /> </IconButton>
+                            <IconButton title='Download File' color="info" onClick={handleDownloadFile}> <FileDownload /> </IconButton>
+
+                        </Stack>
                     </Fade>
                 </Stack>
 
             </Box>
 
         );
-    }, [salaryDetails, filteredSalaryDetails]);
+    }, [salaryDetails, filteredSalaryDetails, viewDetailsFields]);
 
     return (
         <>

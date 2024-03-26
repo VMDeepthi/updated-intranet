@@ -1,5 +1,5 @@
 import expres from 'express'
-import { companydetails, lastsalarythreerecoreds, uploadsalarydata, viewsalarydata, viewusermonthsalarydata } from '../controllers/salarymanagement.js'
+import { companydetails, deletesalartdetails, lastsalarythreerecoreds, uploadsalarydata, viewsalarydata, viewusermonthsalarydata } from '../controllers/salarymanagement.js'
 
 
 
@@ -10,6 +10,7 @@ route.post('/uploadsalarydata',uploadsalarydata)
 route.post('/viewsalarydata', viewsalarydata)
 route.post('/viewusermonthsalarydata', viewusermonthsalarydata)
 route.post('/lastsalarythreerecoreds',lastsalarythreerecoreds)
+route.post('/deletesalartdetails',deletesalartdetails)
 
 route.post('/companydetails', companydetails)
 

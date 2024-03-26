@@ -39,27 +39,32 @@ function ApplyLeave() {
                     const head = await axios.post('/api/getreportinghead', { emp_id: userDetails.employee_id })
                     const pending = await axios.post('/api/pendingleaves', { emp_id: userDetails.employee_id })
                     const balance = await axios.post('/api/getbalanceleaves', { emp_id: userDetails.employee_id })
-                    setApplicationForm({
-                        reporting_head_name: head.data[0].name,
-                        mail_approved_by: head.data[0].email,
-                        balance_leaves: balance.data.totalLeaves,
-                        to_be_approved_leaves: pending.data[0].pending_leaves,
-                        cc_mail: '',
-                        leave_type: '',
-                        leave_options: '',
-                        from_date: '',
-                        to_date: '',
-                        selected_dates: [],
-                        half_day: '',
-                        total_leaves: 0,
-                        reason: '',
-                        applicant_emp_id: '',
-                        applicant_name: '',
-                        applicant_email: ''
-                    })
+                    //console.log(head, pending, balance)
+                    if(head.data.length!==0 && pending.data.length !==0 && balance.data.length !==0){
+                        setApplicationForm({
+                            reporting_head_name: head.data[0].name,
+                            mail_approved_by: head.data[0].email,
+                            balance_leaves: balance.data.totalLeaves,
+                            to_be_approved_leaves: pending.data[0].pending_leaves,
+                            cc_mail: '',
+                            leave_type: '',
+                            leave_options: '',
+                            from_date: '',
+                            to_date: '',
+                            selected_dates: [],
+                            half_day: '',
+                            total_leaves: 0,
+                            reason: '',
+                            applicant_emp_id: '',
+                            applicant_name: '',
+                            applicant_email: ''
+                        })
+                    }
+                    
 
                 }
                 catch (err) {
+                    //console.log(err)
                     toast.error(err.response.data)
 
                 }

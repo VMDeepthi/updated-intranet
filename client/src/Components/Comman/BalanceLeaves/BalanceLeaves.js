@@ -324,7 +324,7 @@ function BalanceLeaves() {
 
                                         </Select>
                                     </FormControl>
-                                    <Box sx={{ display: "flex", justifyContent: 'center', alignItems: "center", height: '100%' }} >
+                                    <Box sx={{ display: "flex", justifyContent: 'center', alignItems: "center",}} >
                                         <Button type='submit' size='small' color='success' variant='contained'>submit</Button>
                                     </Box>
                                 </Stack>
