@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import NavBar from '../../Comman/NavBar/AdminNavBar';
 import { Button, Box, Card, Divider, Stack, TextField, Typography, Paper, Drawer, Container, Avatar, ListItem, ListItemText, DialogActions, FormControl, InputLabel, OutlinedInput, IconButton, InputAdornment, MenuItem, Select, DialogContent, DialogTitle, Dialog, List, } from '@mui/material'
 import DataTable, { defaultThemes } from 'react-data-table-component'
 import axios from 'axios';
@@ -13,6 +12,7 @@ import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import Loader from '../../Comman/Loader';
 import { Link } from 'react-router-dom';
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar';
 
 
 
@@ -1062,7 +1062,7 @@ function ViewUser() {
     }, [userData]);
     return (
         <>
-            <NavBar />
+            <AccessNavBar />
             <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 8 } }}>
                 <div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography variant='h5' component={'h5'} m={2} textAlign={'center'} >View Users</Typography>

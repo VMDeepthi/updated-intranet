@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Loader from '../Loader'
 import { Box, Collapse, Grid, IconButton, List, ListItem, ListItemButton, ListItemText, Paper, Typography } from '@mui/material'
-import AdminNavBar from '../NavBar/AdminNavBar'
-import UserNavBar from '../NavBar/UserNavBar'
-import UserContext from '../../context/UserContext'
+
 import { Add, Remove } from '@mui/icons-material'
 import axios from 'axios'
 import Address from './Address'
@@ -11,9 +9,10 @@ import Charts from './Charts'
 import Holidays from './Holidays'
 import Welcome from './Welcome'
 import { toast } from 'react-toastify'
+import AccessNavBar from '../NavBar/AccessNavBar'
 
 function TeamsSection() {
-  const { userDetails } = useContext(UserContext)
+
   const [expandedCompany, setExpandedCompany] = useState('');
   const [loader, setLoader] = useState(true)
   const [companyPages, setCompanyPages] = useState([])
@@ -85,7 +84,7 @@ function TeamsSection() {
   return (
     <>
       <Box sx={{ height: '100vh', width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-        {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+        <AccessNavBar />
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}>
           <div
             style={{

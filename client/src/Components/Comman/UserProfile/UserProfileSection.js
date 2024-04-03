@@ -2,8 +2,6 @@ import { Avatar, Box, Card, Container, Grid, Paper, Tab, Tabs, Typography } from
 import React, { useContext, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import UserContext from '../../context/UserContext'
-import AdminNavBar from '../NavBar/AdminNavBar'
-import UserNavBar from '../NavBar/UserNavBar'
 import axios from 'axios'
 
 import './UserProfileSection.css'
@@ -16,6 +14,7 @@ import UserFamilyInfo from './UserFamilyInfo'
 import SendBirthDayWishes from './SendBirthDayWishes'
 import UserExperience from './UserExperience'
 import { toast } from 'react-toastify'
+import AccessNavBar from '../NavBar/AccessNavBar'
 
 
 function UserProfileSection() {
@@ -150,7 +149,7 @@ function UserProfileSection() {
     return (
         <>
             <Box sx={{ height: '100vh', width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                {userDetails.user_type === 'admin' && userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+                <AccessNavBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{

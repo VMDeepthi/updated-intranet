@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import { defaultThemes } from 'react-data-table-component';
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -17,6 +16,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import Loader from '../../Comman/Loader';
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar';
 
 
 const customStyles = {
@@ -660,7 +660,7 @@ const ViewAnnouncements = () => {
 
     return (
         <>
-            <AdminNavBar />
+           <AccessNavBar />
             <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 8 } }}>
                 <div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography variant='h5' component={'h5'} m={2} textAlign={'center'}>

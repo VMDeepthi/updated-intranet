@@ -1,8 +1,6 @@
 import { React, useEffect, useMemo, useState } from 'react'
 
 import { Box, Container, IconButton, Typography, ImageList, ImageListItem, Grid, Card, Stack, Button, Divider, TextField, Paper, List, ListItem, ListItemText, Drawer, DialogActions, Dialog, DialogTitle, DialogContent, FormControl, OutlinedInput, InputLabel } from '@mui/material'
-
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar';
 import axios from 'axios';
 import DataTable, { defaultThemes } from 'react-data-table-component';
 import { Cancel, CloudUpload, Delete, Search } from '@mui/icons-material';
@@ -10,6 +8,7 @@ import { toast } from 'react-toastify';
 import Loader from '../../Comman/Loader';
 import { useDropzone } from 'react-dropzone';
 import ClipLoader from "react-spinners/ClipLoader";
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar';
 
 
 
@@ -632,7 +631,7 @@ function ViewGallery() {
     return (
         <>
             <Box sx={{ height: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                <AdminNavBar />
+               <AccessNavBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, height: 'auto', backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{

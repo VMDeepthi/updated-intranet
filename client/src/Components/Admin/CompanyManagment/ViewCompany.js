@@ -4,7 +4,7 @@ import { Avatar, Box, Button, Card, Container, Dialog, DialogActions, DialogCont
 import React, { useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import { defaultThemes } from 'react-data-table-component';
-import NavBar from '../../Comman/NavBar/AdminNavBar';
+
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 import { useState } from 'react';
@@ -13,6 +13,7 @@ import { Business, Delete } from '@mui/icons-material';
 import { useMemo } from 'react';
 import phone from 'phone';
 import Loader from '../../Comman/Loader';
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar';
 
 
 
@@ -659,7 +660,7 @@ const ViewCompany = () => {
 
 	return (
 		<>
-			<NavBar />
+			<AccessNavBar />
 			<Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 8 } }}>
 				<div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
 					<Typography variant='h5' component={'h5'} m={2} textAlign={'center'} >View Company</Typography>

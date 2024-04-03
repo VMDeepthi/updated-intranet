@@ -1,12 +1,13 @@
 import { Container, Box, Button, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Paper, Select, Stack, TextField, Typography, IconButton } from '@mui/material'
 import React, { useState } from 'react'
-import NavBar from '../../Comman/NavBar/AdminNavBar';
+
 import axios from 'axios'
 import { toast } from 'react-toastify';
 //import { phone } from 'phone';
 import styled from "styled-components";
 
 import { Business, Delete } from '@mui/icons-material';
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -123,7 +124,7 @@ function AddComapny() {
     <>
 
       <Box sx={{ height: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-        <NavBar />
+        <AccessNavBar />
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, height: 'auto', backgroundColor: '#F5F5F5' }}>
           <div style={{ height: 'auto', width: '100%', }} >
             <Typography variant='h5' component={'h5'} m={1} textAlign={'center'} >Add Company</Typography>

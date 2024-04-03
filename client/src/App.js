@@ -48,6 +48,7 @@ import UserAccessManagement from './Components/Admin/UserManagement/UserAccessMa
 import { UserAccessProvider } from './Components/context/UserAccessContext'
 import SalaryManagement from './Components/Accounts/SalaryManagement/SalaryManagement'
 
+
 export default function App() {
   //console.log(useContext(UserContext))
   return (
@@ -95,7 +96,7 @@ export default function App() {
               <Route path='/view-gallery' element={<AdminProtectedRoute component={<ViewGallery />} />} />
               <Route path='/salary-management' element={<AdminProtectedRoute component={<SalaryManagement />} />} />
 
-
+              
             </Routes>
 
 

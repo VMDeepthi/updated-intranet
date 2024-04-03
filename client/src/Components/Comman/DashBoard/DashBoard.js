@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import AdminNavBar from '../NavBar/AdminNavBar';
 //import NavBar from '../sidenav/navbar';
 import Box from '@mui/material/Box';
 import { Container, Grid, } from '@mui/material';
@@ -22,7 +21,7 @@ import Tab from '@mui/material/Tab';
 import PersonIcon from '@mui/icons-material/Person';
 
 import UserContext from '../../context/UserContext';
-import UserNavBar from '../NavBar/UserNavBar';
+
 import AttendanceGraph from './AttendanceGraph';
 import MyPays from './MyPays';
 import MyAccounts from './MyAccounts';
@@ -38,6 +37,7 @@ import { toast } from 'react-toastify';
 import { Steps } from 'intro.js-react';
 import "intro.js/introjs.css";
 import { UserAccessContext } from '../../context/UserAccessContext';
+import AccessNavBar from '../NavBar/AccessNavBar';
 
 
 
@@ -284,8 +284,7 @@ const Dashboard = () => {
     return (
         <>
             <Box sx={{ display: 'flex', }}>
-
-                {userDetails.user_type === 'admin' && userDetails.department === 'management' ? <AdminNavBar userIntroTour={userIntroTour} /> : <UserNavBar userIntroTour={userIntroTour} />}
+                <AccessNavBar userIntroTour={userIntroTour}/>
                 <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 6, }}>
 
                     <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex', }}>

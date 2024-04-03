@@ -5,8 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar';
-import UserNavBar from '../NavBar/UserNavBar';
+
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import UserContext from '../../context/UserContext';
@@ -14,6 +13,7 @@ import Loader from '../Loader';
 import jsPDF from 'jspdf';
 import "jspdf-autotable";
 import { Download } from '@mui/icons-material';
+import AccessNavBar from '../NavBar/AccessNavBar';
 
 const customStyles = {
     rows: {
@@ -245,7 +245,7 @@ const Attendance = () => {
         <>
 
             <Container sx={{ height: 'auto', width: '100%' }}>
-                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+                <AccessNavBar />
                 <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 8 }, }}>
 
                     <Paper elevation={10} sx={{ height: 'auto' }} >

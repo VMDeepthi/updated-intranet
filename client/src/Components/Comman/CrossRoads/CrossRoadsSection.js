@@ -1,21 +1,21 @@
-import React, { useContext, useState } from 'react'
-import UserContext from '../../context/UserContext'
+import React, { useState } from 'react'
+
 import { Box, Grid, Paper, Tab, Tabs, } from '@mui/material'
-import AdminNavBar from '../NavBar/AdminNavBar'
-import UserNavBar from '../NavBar/UserNavBar'
+
 import TimeZone from './TimeZone'
 import BirthDayCalender from './BirthDayCalender'
 import OfficeGallery from './OfficeGallery'
+import AccessNavBar from '../NavBar/AccessNavBar'
 
 
 function CrossRoadsSection() {
-    const { userDetails } = useContext(UserContext)
+    
     const [section, setSection] = useState(0)
 
     return (
         <>
             <Box sx={{ minHeight: '100vh', width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+                <AccessNavBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{

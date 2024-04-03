@@ -30,7 +30,7 @@ export const login = (req, res) => {
 }
 
 export const checkuser = async (req, res) => {
-    console.log(req.cookies)
+    //console.log(req.cookies)
     const {isAuth,employee_id, email, user_type, department} = req.checkAuth
     try {
         if (isAuth) {

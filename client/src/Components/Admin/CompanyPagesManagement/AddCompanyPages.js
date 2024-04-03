@@ -1,4 +1,3 @@
-import NavBar from '../../Comman/NavBar/AdminNavBar';
 import { Autocomplete, Box, Button, Checkbox, Collapse, Container, FormControl, Grid, IconButton, InputLabel, MenuItem, OutlinedInput, Paper, Select, Stack, TextField, Typography } from '@mui/material'
 import React, { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
@@ -6,6 +5,7 @@ import { toast } from 'react-toastify';
 import { Add, CheckBox, CheckBoxOutlineBlank, Delete, Save } from '@mui/icons-material';
 import DataTable from 'react-data-table-component';
 import ChartUpload from './ChartsUpload';
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar';
 
 
 function AddCompanyPages() {
@@ -559,7 +559,7 @@ function AddCompanyPages() {
   return (
     <>
       <Box sx={{ display: 'flex' }}>
-        <NavBar />
+        <AccessNavBar />
         <Box component='main' sx={{ flexGrow: 1, p: 3, mt: { xs: 6, md: 8, lg: 6 } }}>
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             <Grid container spacing={{ xs: 2, md: 2, lg: 2 }} m={1} style={{ display: 'flex' }}>

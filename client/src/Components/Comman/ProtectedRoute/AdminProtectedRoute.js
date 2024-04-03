@@ -12,6 +12,12 @@ function AdminProtectedRoute(props) {
   const location = useLocation();
   const { pagesToBeNotAccessed } = useContext(UserAccessContext)
 
+
+  const departmentAccess = {
+    accounts:['salarymanagement'],
+    it:['uploadattendance','viewattendance']
+  }
+
   let pages = []
 
   if(pagesToBeNotAccessed!==null){
@@ -46,6 +52,15 @@ function AdminProtectedRoute(props) {
     return <Navigate to='/' />
 
   }
+  else if (!pages.includes(path)&&userDetails.user_type === 'admin' && userDetails.department === 'accounts' && departmentAccess.accounts.includes(path)) {
+    //console.log('com', component)
+    return component
+  }
+  else if (!pages.includes(path)&&userDetails.user_type === 'admin' && userDetails.department === 'it' && departmentAccess.it.includes(path)) {
+    //console.log('com', component)
+    return component
+  }
+
   else if (!pages.includes(path)&&userDetails.user_type === 'admin' && userDetails.department === 'management') {
     //console.log('com', component)
     return component

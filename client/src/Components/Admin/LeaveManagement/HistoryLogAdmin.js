@@ -1,7 +1,5 @@
-import React, { useContext, useState } from 'react'
-import UserContext from '../../context/UserContext'
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar'
-import UserNavBar from '../../Comman/NavBar/UserNavBar'
+import React, {  useState } from 'react'
+
 import { Box, Button, Card, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, TextField, Tooltip, Typography, Zoom } from '@mui/material'
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -10,6 +8,7 @@ import dayjs from 'dayjs'
 
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar'
 
 
 
@@ -25,7 +24,7 @@ const PatchTooltip = ({ children, ...props }) =>
 
 
 function HistoryLogAdmin() {
-    const { userDetails } = useContext(UserContext)
+    
 
     const [historyLogSearch, setHistoryLogSearch] = useState({
         applicationType: '',
@@ -151,7 +150,7 @@ function HistoryLogAdmin() {
     return (
         <>
             <Box sx={{ height: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+                <AccessNavBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, height: 'auto', backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{

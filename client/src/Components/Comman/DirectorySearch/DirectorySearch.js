@@ -2,8 +2,6 @@ import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Paper,
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import UserContext from '../../context/UserContext'
-import AdminNavBar from '../NavBar/AdminNavBar'
-import UserNavBar from '../NavBar/UserNavBar'
 import axios from 'axios'
 import { BadgeSharp, PersonSearch } from '@mui/icons-material'
 
@@ -13,6 +11,7 @@ import 'primereact/resources/primereact.css';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { toast } from 'react-toastify'
+import AccessNavBar from '../NavBar/AccessNavBar'
 
 
 
@@ -94,7 +93,7 @@ function DirectorySearch() {
     const alphabet = Array.from({ length: 26 }, (_, index) => String.fromCharCode('A'.charCodeAt(0) + index));
     return (
         <Box sx={{ display: 'flex', backgroundColor: '#F5F5F5', height: '100vh', overflow: 'hidden' }}>
-            {userDetails.user_type === 'admin' && userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+            <AccessNavBar />
             <Box component='main' sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', p: 3, height: '90vh', mt: 6 }}>
                 <Typography variant="h4" align="center" gutterBottom>
                     Directory Search

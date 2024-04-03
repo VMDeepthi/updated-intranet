@@ -1,6 +1,4 @@
-
 import React, { useEffect, useState } from "react";
-
 import { Avatar, Box, Button, Container, FormControl, Grid, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Paper, Select, Stack, Typography } from "@mui/material";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -13,7 +11,8 @@ import { MobileDatePicker } from "@mui/x-date-pickers";
 import styled from "styled-components";
 import axios from "axios";
 import { toast } from "react-toastify";
-import AdminNavBar from "../../Comman/NavBar/AdminNavBar";
+
+import AccessNavBar from "../../Comman/NavBar/AccessNavBar";
 //import 'react-toastify/dist/ReactToastify.min.css' 
 
 
@@ -277,7 +276,7 @@ function AddUser() {
         <>
 
             <Box sx={{ height: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                <AdminNavBar />
+               <AccessNavBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, height: 'auto', backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{

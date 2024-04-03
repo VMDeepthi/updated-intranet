@@ -5,10 +5,10 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import Loader from '../../Comman/Loader';
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar';
 
 const customStyles = {
     rows: {
@@ -184,7 +184,7 @@ const ViewAttendance = () => {
 
     return (
         <>
-            <AdminNavBar />
+           <AccessNavBar />
             <Container>
                 <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 8 } }}>
 

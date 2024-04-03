@@ -1,12 +1,12 @@
 import { Avatar, Box, Button, Card,  Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControl,  IconButton, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
 import React, { useEffect, useMemo, useState } from 'react'
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar'
 import axios from 'axios'
 import DataTable, { defaultThemes } from 'react-data-table-component'
 import { Delete, Search, South } from '@mui/icons-material'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { toast } from 'react-toastify'
 import Loader from '../../Comman/Loader'
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar'
 
 const customStyles = {
     header: {
@@ -646,7 +646,7 @@ function ViewReportingStructure() {
 
 
             <Box sx={{ display: 'flex' }}>
-                <AdminNavBar />
+               <AccessNavBar />
                 <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8, }}>
                     <div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Typography variant='h5' component={'h5'} m={2} textAlign={'center'} >View Reporting Structure</Typography>

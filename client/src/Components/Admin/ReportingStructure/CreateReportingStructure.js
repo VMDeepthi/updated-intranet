@@ -1,10 +1,10 @@
 import { Avatar, Box, Button, Card, Container, FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Delete } from '@mui/icons-material';
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar';
 
 function CreateReportingStructure() {
     const [selectedRepordingHead, setSelectedRepordingHead] = useState([])
@@ -143,7 +143,7 @@ function CreateReportingStructure() {
 
     return (
         <>
-            <AdminNavBar />
+           <AccessNavBar />
             <Box component='main' sx={{ flexGrow: 1, p: 3, ml: { xs: 8 }, mt: { xs: 20, md: 6, lg: 8 } }}>
                 <div style={{ height: '80vh', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <Grid container sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>

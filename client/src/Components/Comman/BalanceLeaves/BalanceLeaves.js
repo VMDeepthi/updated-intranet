@@ -1,7 +1,6 @@
 import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material'
 import React, { useContext, useState } from 'react'
-import AdminNavBar from '../NavBar/AdminNavBar'
-import UserNavBar from '../NavBar/UserNavBar'
+
 import UserContext from '../../context/UserContext'
 
 import Chart from 'react-apexcharts'
@@ -9,6 +8,7 @@ import axios from 'axios'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { toast } from 'react-toastify'
+import AccessNavBar from '../NavBar/AccessNavBar'
 
 
 function BalanceLeaves() {
@@ -272,7 +272,7 @@ function BalanceLeaves() {
     return (
         <>
             <Box sx={{ height: { xs: 'auto', lg: '100%' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}  >
-                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+                <AccessNavBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}  >
                     <div
 

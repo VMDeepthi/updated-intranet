@@ -2,10 +2,10 @@ import { Autocomplete, Button, Box, Grid, Paper, TextField, Typography, Containe
 import axios from 'axios'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar'
 import { Add, Close, Edit, TrendingUp } from '@mui/icons-material'
 import swal from 'sweetalert'
 import Loader from '../../Comman/Loader'
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar'
 
 //import { makeStyles } from '@material-ui/styles';
 
@@ -17,7 +17,7 @@ function Experience() {
   const [users, setUsers] = useState([])
   const [newPromotionData, setNewPromotionData] = useState({ emp_id: '', prev_promotion_title: '', prev_promotion_date: '', promotion_title: '', promotion_date: '', roles_and_responsibility: '' })
   const [promotionDialog, setPromotionDialog] = useState(false)
-  const [modifyPromotionData, setModifyPromotionData] = useState({ emp_id: '', promotion_id: '', promotion_title: '', promotion_date: '', roles_and_responsibility: '' })
+  const [modifyPromotionData, setModifyPromotionData] = useState({ emp_id: '', promotion_id: '', promotion_title: '', promotion_date: '', roles_and_responsibility: '' ,date_of_joining:'', prev_promotion_date:''})
   const [modifyPromotionDialog, setModifyPromotionDialog] = useState(false)
   const [activateModify, setActivateModify] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
@@ -60,7 +60,7 @@ function Experience() {
 
         })).reverse()
         setExperienceData(data)
-        ////console.log('data', data)
+        //console.log('data', res.data)
 
       })
       .catch((err) => {
@@ -98,11 +98,12 @@ function Experience() {
     setActivateModify(prev => !prev)
   }
 
-  const handleModifyPromotion = (exp) => {
+  const handleModifyPromotion = (exp,index) => {
     //console.log(new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10))
     setModifyPromotionDialog(true)
-    setModifyPromotionData({ ...exp, promotion_date: new Date(exp.promotion_date).toLocaleString('en-CA').slice(0, 10),date_of_joining: new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10) })
-    setPrevModificationData(({ ...exp, promotion_date: new Date(exp.promotion_date).toLocaleString('en-CA').slice(0, 10),date_of_joining:new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10) }))
+    setModifyPromotionData({ ...exp, promotion_date: new Date(exp.promotion_date).toLocaleString('en-CA').slice(0, 10),date_of_joining: new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10), prev_promotion_date: experienceData[index+1]===undefined?new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10): new Date(experienceData[index+1].promotion_date).toLocaleString('en-CA').slice(0, 10) })
+    setPrevModificationData({ ...exp, promotion_date: new Date(exp.promotion_date).toLocaleString('en-CA').slice(0, 10),date_of_joining: new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10), prev_promotion_date: experienceData[index+1]===undefined?new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10): new Date(experienceData[index+1].promotion_date).toLocaleString('en-CA').slice(0, 10) })
+    //console.log(index,experienceData[index+1],{ ...exp, promotion_date: new Date(exp.promotion_date).toLocaleString('en-CA').slice(0, 10),date_of_joining: new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10), prev_promotion_date: experienceData[index+1]===undefined?new Date(selectedUser.value.date_of_joining).toLocaleString('en-CA').slice(0, 10): new Date(experienceData[index+1].promotion_date).toLocaleString('en-CA').slice(0, 10) })
   }
 
 
@@ -110,35 +111,43 @@ function Experience() {
   const modifyPromotion = useMemo(() => {
 
     const handleModifyPromotionClose = () => {
-      setModifyPromotionData({ emp_id: '', promotion_id: '', promotion_title: '', promotion_date: '', roles_and_responsibility: '' ,date_of_joining:''})
-      setPrevModificationData({ emp_id: '', promotion_id: '', promotion_title: '', promotion_date: '', roles_and_responsibility: '',date_of_joining:'' })
+      setModifyPromotionData({ emp_id: '', promotion_id: '', promotion_title: '', promotion_date: '', roles_and_responsibility: '' ,date_of_joining:'', prev_promotion_date:''})
+      setPrevModificationData({ emp_id: '', promotion_id: '', promotion_title: '', promotion_date: '', roles_and_responsibility: '',date_of_joining:'', prev_promotion_date:'' })
       setModifyPromotionDialog(false)
 
     }
     const handleModifyPromotionSubmit = (e) => {
       e.preventDefault()
       ////console.log('submit', newPromotionData)
+      
       if (JSON.stringify(prevModificationData) !== JSON.stringify(modifyPromotionData)) {
-        toast.promise(axios.post('/api/modifypromotion', modifyPromotionData), {
-          pending: {
-            render() {
-              return 'Modifying Promotion'
+        if(new Date(modifyPromotionData.date_of_joining)> new Date(modifyPromotionData.promotion_date)){
+          toast.warning('Promotion Date Should not less than joining date')
+        }
+        else{
+          toast.promise(axios.post('/api/modifypromotion', modifyPromotionData), {
+            pending: {
+              render() {
+                return 'Modifying Promotion'
+              }
+            },
+            success: {
+              render(res) {
+                getUserExperinceData(modifyPromotionData.emp_id)
+                handleModifyPromotionClose()
+                return res.data.data
+              }
+            },
+            error: {
+              render(err) {
+                return (err.data.response.data)
+              }
             }
-          },
-          success: {
-            render(res) {
-              getUserExperinceData(modifyPromotionData.emp_id)
-              handleModifyPromotionClose()
-              return res.data.data
-            }
-          },
-          error: {
-            render(err) {
-              return (err.data.response.data)
-            }
-          }
-        })
-      }
+          })
+        }
+          
+        }
+        
 
 
     }
@@ -215,7 +224,7 @@ function Experience() {
                           InputLabelProps={{ shrink: true }}
                           size='small'
                           required
-                          inputProps={{min:newPromotionData.date_of_joining, max:new Date().toLocaleString('en-CA').slice(0,10)}}
+                          inputProps={{min:modifyPromotionData.prev_promotion_date, max:new Date().toLocaleString('en-CA').slice(0,10)}}
                           value={modifyPromotionData.promotion_date}
                           onChange={e => setModifyPromotionData({ ...modifyPromotionData, promotion_date: e.target.value })}
                         />
@@ -252,7 +261,7 @@ function Experience() {
       </>
     )
 
-  }, [modifyPromotionData, modifyPromotionDialog, prevModificationData,newPromotionData.date_of_joining])
+  }, [modifyPromotionData, modifyPromotionDialog, prevModificationData])
 
 
   const addPromotion = useMemo(() => {
@@ -264,25 +273,32 @@ function Experience() {
     const handleAddNewPromotion = (e) => {
       e.preventDefault()
       //console.log('submit', newPromotionData)
-      toast.promise(axios.post('/api/addnewpromotion', newPromotionData), {
-        pending: {
-          render() {
-            return 'Adding New Promotion'
+      if(new Date(newPromotionData.date_of_joining)> new Date(newPromotionData.promotion_date)){
+        toast.warning('Promotion Date Should not less than joining date')
+      }
+      else{
+        toast.promise(axios.post('/api/addnewpromotion', newPromotionData), {
+          pending: {
+            render() {
+              return 'Adding New Promotion'
+            }
+          },
+          success: {
+            render(res) {
+              getUserExperinceData(newPromotionData.emp_id)
+              handleAddPromotionClose()
+              return res.data.data
+            }
+          },
+          error: {
+            render(err) {
+              return err.data.response.data
+            }
           }
-        },
-        success: {
-          render(res) {
-            getUserExperinceData(newPromotionData.emp_id)
-            handleAddPromotionClose()
-            return res.data.data
-          }
-        },
-        error: {
-          render(err) {
-            return err.data.response.data
-          }
-        }
-      })
+        })
+
+      }
+      
     }
     return (
       <>
@@ -347,7 +363,7 @@ function Experience() {
                               label='Promotion Date'
                               type='date'
                               InputLabelProps={{ shrink: true }}
-                              inputProps={{min:newPromotionData.date_of_joining, max:new Date().toLocaleString('en-CA').slice(0,10)}}
+                              inputProps={{min:newPromotionData.prev_promotion_date, max:new Date().toLocaleString('en-CA').slice(0,10)}}
                               size='small'
                               required
                               value={newPromotionData.promotion_date}
@@ -388,7 +404,7 @@ function Experience() {
   return (
     <>
       <Box sx={{ minHeight: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-        <AdminNavBar />
+       <AccessNavBar />
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, height: 'auto', backgroundColor: '#F5F5F5' }}>
           <div
             style={{
@@ -456,7 +472,7 @@ function Experience() {
                                       activateModify ?
                                         <Fade in={activateModify} unmountOnExit>
                                           <Box sx={{ mt: 1 }}>
-                                            <Button sx={{ maxHeight: 25 }} onClick={() => handleModifyPromotion(exp)} variant='outlined' color='info' size='small'>Edit</Button>
+                                            <Button sx={{ maxHeight: 25 }} onClick={() => handleModifyPromotion(exp,index)} variant='outlined' color='info' size='small'>Edit</Button>
                                           </Box>
                                         </Fade>
 

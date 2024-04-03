@@ -1,8 +1,6 @@
 import { Box, Button, Chip, Collapse, Container, Fade, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, Switch, TextField, Typography, styled } from '@mui/material'
-import React, { useContext, useMemo, useState } from 'react'
-import UserContext from '../../context/UserContext'
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar'
-import UserNavBar from '../../Comman/NavBar/UserNavBar'
+import React, {useMemo, useState } from 'react'
+
 import { CloudSync, CloudUpload, Delete, FileDownload, FileUpload, Search } from '@mui/icons-material'
 import { useDropzone } from 'react-dropzone'
 import DataTable, { defaultThemes } from 'react-data-table-component'
@@ -11,6 +9,7 @@ import { toast } from 'react-toastify'
 import * as XLSX from "xlsx";
 import Loader from '../../Comman/Loader'
 import swal from 'sweetalert'
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar'
 
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -151,7 +150,7 @@ const customStyles = {
 
 
 function SalaryManagement() {
-    const { userDetails } = useContext(UserContext)
+
     const [files, setFiles] = useState([]);
     const [excelData, setExcelData] = useState([]);
     const [uploadFileFields, setUploadFileFields] = useState({ year: '', month: '' })
@@ -419,7 +418,7 @@ function SalaryManagement() {
     return (
         <>
             <Box sx={{ minHeight: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}  >
-                {userDetails.user_type === 'admin' && userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+                <AccessNavBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}  >
                     <div
 

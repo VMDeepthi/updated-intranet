@@ -1,10 +1,10 @@
 import {FormLabel, Autocomplete, Box, Button, Checkbox, Collapse, Container, FormControl, FormControlLabel, FormGroup, Grid, Paper, Stack, TextField, Typography, } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import AdminNavBar from '../../Comman/NavBar/AdminNavBar'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { RestartAlt, Update } from '@mui/icons-material'
 import Loader from '../../Comman/Loader'
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar'
 
 function UserAccessManagement() {
     const [loader, setLoader] = useState(true)
@@ -23,7 +23,8 @@ function UserAccessManagement() {
 
                 setLoader(false)
             }
-            catch {
+            catch(err) {
+                //console.log(err)
 
                 toast.error('not able to fetch data!')
             }
@@ -80,9 +81,63 @@ function UserAccessManagement() {
                 ManageBalanceLeaves: true
 
             },
-            'Accounts':{
+            'Accounts Access':{
                 SalaryManagement:true
             }
+        },
+        accounts :{
+            'Common Access': {
+                PersonalSection: true,
+                BirthdayList: true,
+                OfficeCalender: true,
+                Payslips:true,
+                Attendance: true,
+                ApplyLeave: true,
+                BalanceLeaves: true,
+                HistoryLog: true,
+                ReportingStructure: true
+
+            },
+            'Accounts Access':{
+                SalaryManagement:true
+            }
+            
+            
+
+        },
+        it:{
+            'Common Access': {
+                PersonalSection: true,
+                BirthdayList: true,
+                OfficeCalender: true,
+                Payslips:true,
+                Attendance: true,
+                ApplyLeave: true,
+                BalanceLeaves: true,
+                HistoryLog: true,
+                ReportingStructure: true
+
+            },
+            'IT Access':{
+                UploadAttendance: true,
+                ViewAttendance: true,
+            }
+
+        },
+        hr:{
+            'Common Access': {
+                PersonalSection: true,
+                BirthdayList: true,
+                OfficeCalender: true,
+                Payslips:true,
+                Attendance: true,
+                ApplyLeave: true,
+                BalanceLeaves: true,
+                HistoryLog: true,
+                ReportingStructure: true
+
+            },
+
         }
 
     }
@@ -103,6 +158,16 @@ function UserAccessManagement() {
                             //console.log(acceessType.admin)
                             setAccessData(acceessType['admin'])
                         }
+                        else if(value.user_type === 'admin' && value.department === 'accounts'){
+                            setAccessData(acceessType['accounts'])
+                        }
+                        else if(value.user_type === 'admin' && value.department === 'it'){
+                            setAccessData(acceessType['it'])
+                        }
+                        else if(value.user_type === 'admin' && value.department === 'hr'){
+                            setAccessData(acceessType['hr'])
+                        }
+                        
                         else {
                             setAccessData(acceessType['user'])
                         }
@@ -114,6 +179,15 @@ function UserAccessManagement() {
 
                         if (value.user_type === 'admin' && value.department === 'management') {
                             selectedAccessType = acceessType['admin']
+                        }
+                        else if(value.user_type === 'admin' && value.department === 'accounts'){
+                            selectedAccessType = acceessType['accounts']
+                        }
+                        else if(value.user_type === 'admin' && value.department === 'it'){
+                            selectedAccessType = acceessType['it']
+                        }
+                        else if(value.user_type === 'admin' && value.department === 'hr'){
+                            selectedAccessType = acceessType['hr']
                         }
                         else {
                             selectedAccessType = acceessType['user']
@@ -134,7 +208,8 @@ function UserAccessManagement() {
                     }
 
                 })
-                .catch(() => {
+                .catch((err) => {
+                    //console.log(err)
                     setLoader(false)
                     toast.error('not able to fetch data!')
                 })
@@ -151,6 +226,15 @@ function UserAccessManagement() {
         if (userData.user_type === 'admin' && userData.department === 'management') {
             //console.log(acceessType.admin)
             setAccessData(acceessType['admin'])
+        }
+        else if(userData.user_type === 'admin' && userData.department === 'accounts'){
+            setAccessData(acceessType['accounts'])
+        }
+        else if(userData.user_type === 'admin' && userData.department === 'it'){
+            setAccessData(acceessType['it'])
+        }
+        else if(userData.user_type === 'admin' && userData.department === 'hr'){
+            setAccessData(acceessType['hr'])
         }
         else {
             setAccessData(acceessType['user'])
@@ -186,7 +270,7 @@ function UserAccessManagement() {
         <>
         
             <Box sx={{ minHeight: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}>
-                <AdminNavBar />
+               <AccessNavBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, height: 'auto', backgroundColor: '#F5F5F5' }}>
                     <div
                         style={{

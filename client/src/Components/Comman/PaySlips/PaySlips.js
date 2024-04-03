@@ -22,10 +22,9 @@ import {FileDownload,} from "@mui/icons-material";
 import { styled } from "@mui/system";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import AdminNavBar from "../NavBar/AdminNavBar";
 import { toast } from "react-toastify";
-import UserNavBar from "../../Comman/NavBar/UserNavBar";
 import Loader from "../Loader";
+import AccessNavBar from "../NavBar/AccessNavBar";
 
 
 function createData(
@@ -148,7 +147,7 @@ const PaySlips = () => {
   return (
     <>
       <Box sx={{ minHeight: { xs: 'auto', lg: '100vh' }, width: "auto", display: 'flex', backgroundColor: '#F5F5F5' }}  >
-        {userDetails.user_type === 'admin' && userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+        <AccessNavBar />
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 2 }, backgroundColor: '#F5F5F5' }}  >
           <div
 

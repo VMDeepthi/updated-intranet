@@ -1,7 +1,6 @@
 import { Box, Card, Grid, Paper, Tab, Tabs } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
-import AdminNavBar from '../NavBar/AdminNavBar'
-import UserNavBar from '../NavBar/UserNavBar'
+
 import UserContext from '../../context/UserContext'
 import PersonalInfo from './PersonalInfo'
 import ContactInfo from './ContactInfo'
@@ -11,6 +10,7 @@ import TimeZone from './TimezoneInfo'
 import axios from 'axios'
 import Loader from '../Loader'
 import Experience from './Experince'
+import AccessNavBar from '../NavBar/AccessNavBar'
 
 
 function ProfileSection() {
@@ -93,11 +93,11 @@ function ProfileSection() {
                         setContactInfo(contactData.data[0])
 
                     }
-                    const experienceData = await axios.post('/api/getuserexperience', { emp_id: userDetails.employee_id });
-                    if (experienceData.data.length !== 0) {
-                        const data = experienceData.data.map((exp, index) => ({
+                    const experienceInfo = await axios.post('/api/getuserexperience', { emp_id: userDetails.employee_id });
+                    if (experienceInfo.data.length !== 0) {
+                        const data = experienceInfo.data.map((exp, index) => ({
                             ...exp,
-                            timerange: `${new Date(exp.promotion_date).toLocaleString(undefined, { month: 'short', year: 'numeric' })} - ${experienceData.data[index + 1] === undefined ? 'Present' : new Date(experienceData.data[index + 1].promotion_date).toLocaleString(undefined, { month: 'short', year: 'numeric' })}`,
+                            timerange: `${new Date(exp.promotion_date).toLocaleString(undefined, { month: 'short', year: 'numeric' })} - ${experienceInfo.data[index + 1] === undefined ? 'Present' : new Date(experienceInfo.data[index + 1].promotion_date).toLocaleString(undefined, { month: 'short', year: 'numeric' })}`,
                             roles_and_responsibility: `${exp.roles_and_responsibility === '' ? 'Not Mentioned' : exp.roles_and_responsibility}`
                   
                           })).reverse()
@@ -137,7 +137,7 @@ function ProfileSection() {
         <>
             <Box sx={{ display: 'flex' }}>
 
-                {userDetails.user_type === 'admin'&& userDetails.department === 'management' ? <AdminNavBar /> : <UserNavBar />}
+                <AccessNavBar />
                 <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8, }}>
 
                     <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex' }}>

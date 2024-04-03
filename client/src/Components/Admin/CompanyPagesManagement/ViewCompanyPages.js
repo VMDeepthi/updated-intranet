@@ -1,5 +1,4 @@
 import React from 'react'
-import NavBar from '../../Comman/NavBar/AdminNavBar';
 import { Box, Card, Divider, Stack, Typography, Button, Drawer, Paper, List, ListItem, ListItemText, Container, DialogActions, Dialog, DialogTitle, DialogContent, FormControl, InputLabel, OutlinedInput, Select, MenuItem, IconButton, TextField, Autocomplete, Checkbox } from '@mui/material'
 import DataTable, { defaultThemes } from 'react-data-table-component';
 import { useState } from 'react';
@@ -10,6 +9,7 @@ import { Add, Business, CheckBox, CheckBoxOutlineBlank, Delete, Search } from '@
 import { toast } from 'react-toastify';
 import EditChartUpload from './EditChartUpload';
 import Loader from '../../Comman/Loader';
+import AccessNavBar from '../../Comman/NavBar/AccessNavBar';
 
 //table styling
 const customStyles = {
@@ -1165,7 +1165,7 @@ function ViewCompanyPages() {
 
 	return (
 		<>
-			<NavBar />
+			<AccessNavBar />
 			<Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8, ml: { xs: 8 } }}>
 				<div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
 					<Typography variant='h5' component={'h5'} m={2} textAlign={'center'} >View Company Pages</Typography>

@@ -35,7 +35,7 @@ import { AccountBalanceWallet, AccountBox, AddAPhoto, AddAlert, AddPhotoAlternat
 
 
 import { CgListTree } from 'react-icons/cg'
-import { Collapse,  Stack } from '@mui/material';
+import { Collapse,  Stack, colors } from '@mui/material';
 
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import StoreIcon from '@mui/icons-material/Store';
@@ -406,11 +406,13 @@ export default function AdminNavBar(props) {
               pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes(text) ?
                 <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
                   <ListItemButton
+                  
                     title={text}
                     sx={{
                       minHeight: 45,
                       justifyContent: 'center',
                       px: 1.5,
+
                     }}
                   >
                     <ListItemIcon
@@ -443,6 +445,7 @@ export default function AdminNavBar(props) {
                       minHeight: 45,
                       justifyContent: 'center',
                       px: 1.5,
+                      
                     }}
                   >
                     <ListItemIcon
