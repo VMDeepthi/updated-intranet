@@ -325,7 +325,8 @@ export default function ItAdminNavBar(props) {
             sx={{ display: { xs: 'block', sm: 'block' } }}
           >
             <Link href="/" underline="none">
-              <img src='https://i.ibb.co/c2BRVFz/2-0.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '90%', height: '50px' }} />
+              <img src={process.env.REACT_APP_BACKEND_SERVER+'/logo/BCGLOGO.png'} alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '90%', height: '50px' }} />
+
             </Link>
           </Typography>
 

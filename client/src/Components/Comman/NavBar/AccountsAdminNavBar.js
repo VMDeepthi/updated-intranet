@@ -325,7 +325,8 @@ export default function AccountsAdminNavBar(props) {
             sx={{ display: { xs: 'block', sm: 'block' } }}
           >
             <Link href="/" underline="none">
-              <img src='https://i.ibb.co/c2BRVFz/2-0.png' alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '90%', height: '50px' }} />
+              <img src={process.env.REACT_APP_BACKEND_SERVER+'/logo/BCGLOGO.png'} alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '90%', height: '50px' }} />
+
             </Link>
           </Typography>
 
@@ -541,16 +542,12 @@ export default function AccountsAdminNavBar(props) {
           }
 
           {/* ---------------------------------------------salary management--------------------------------------------------------- */}
-          {
-            pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('SalaryManagement') ?
-              <Divider sx={{ fontSize: 12, fontWeight: 'bold' }}>Accounts</Divider>
-              : null
-
-
-          }
+          
 
           {
             pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('SalaryManagement') ?
+            <>
+            <Divider sx={{ fontSize: 12, fontWeight: 'bold' }}>Accounts</Divider>
               <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/salary-management')}>
                 <ListItemButton
                   title={'Salary Management'}
@@ -575,6 +572,7 @@ export default function AccountsAdminNavBar(props) {
 
                 </ListItemButton>
               </ListItem>
+              </>
               :
               null
           }
@@ -771,18 +769,14 @@ export default function AccountsAdminNavBar(props) {
 
               : null
           }
-          {
-
-            pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('SalaryManagement') ?
-              <Divider  > Accounts Features </Divider>
-              : null
-
-
-          }
+         
           {/* ---------------------------------------------salary management--------------------------------------------------------- */}
 
           {
               pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('SalaryManagement') ?
+              <>
+              <Divider  > Accounts Features </Divider>
+              
                 <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/salary-management')} >
                   <ListItemButton
                     sx={{
@@ -803,6 +797,7 @@ export default function AccountsAdminNavBar(props) {
                     <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Salary Management</Typography>} />
                   </ListItemButton>
                 </ListItem>
+                </>
 
                 : null
             }

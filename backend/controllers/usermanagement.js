@@ -2,6 +2,7 @@ import db from '../config/connectiondb.js'
 import {transporter} from '../config/emailconfig.js';
 import cloudinary from '../config/cloudinaryconfig.js'
 import bcrypt from "bcrypt";
+import CryptoJS from"crypto-js"
 
 export const getemployeeid = (req, res) => {
     const q = 'select employee_id from usermanagement order by employee_id desc limit 1'
@@ -197,7 +198,9 @@ export const getaccessdata = (req,res) =>{
         db.query(fetch_user_access_data_query, [emp_id],(err, result) => {
             if (err) return res.status(500).json('error occured!')
             else {
-                return res.send(result)
+                const data = CryptoJS.AES.encrypt(JSON.stringify(result),process.env.DATA_ENCRYPTION_SECRETE).toString()
+                return res.status(200).send(data)
+
             }
         })
     }

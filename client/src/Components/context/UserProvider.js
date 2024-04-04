@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import UserContext from './UserContext';
-import { ToastContainer, toast } from 'react-toastify';
-
+import { toast } from 'react-toastify';
+import CryptoJS from 'crypto-js';
 
 
 function UserProvider(props) {
@@ -19,7 +19,8 @@ function UserProvider(props) {
       axios.get('/api/checkuser')
         .then(res => {
           //console.log('checking User')
-          setUserDetails(res.data)
+          const decrypted = JSON.parse(CryptoJS.AES.decrypt(res.data,process.env.REACT_APP_DATA_ENCRYPTION_SECRETE).toString(CryptoJS.enc.Utf8))
+          setUserDetails(decrypted)
         })
         .catch(err => {
 
@@ -55,7 +56,7 @@ function UserProvider(props) {
     <UserContext.Provider value={{ userDetails, handleUserDetails }}>
 
       {props.children}
-      <ToastContainer />
+      
     </UserContext.Provider>
 
   )

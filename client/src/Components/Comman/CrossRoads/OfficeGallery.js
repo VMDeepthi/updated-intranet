@@ -65,7 +65,7 @@ function OfficeGallery() {
             <Grid item xs={12} sm={12} lg={12}>
                 <Container sx={{ display: 'flex', justifyContent: 'flex-end', }}>
                     <FormControl >
-                        <InputLabel size='small'>Gallery Search</InputLabel>
+                        <InputLabel size='small'>Search Gallery </InputLabel>
                         <OutlinedInput
                             label={'Search Gallery'}
                             size='small'
@@ -159,11 +159,11 @@ function OfficeGallery() {
                         </Button>
                     </Box>
                     <Box >
-                        <Typography sx={{ fontSize: '18px', fontWeight: 'bold', backgroundImage: 'linear-gradient(135deg, #E8DBFC 10%, #F8F9D2 100%);', border: '1px solid black', p: 0.5 }}>Event: {eventTitle}</Typography>
+                        <Typography sx={{ fontSize: '18px', fontWeight: 'bold', p: 0.5,color:'#D4378B',borderBottom:'3px double' }}>{eventTitle}</Typography>
                     </Box>
 
                 </Container>
-                <Box sx={{ display: 'flex', width: '100%', height: 'auto', justifyContent: 'center', }}>
+                <Box sx={{ display: 'flex', width: '100%', height: 'auto', justifyContent: 'center',  }}>
                     <ImageList variant="masonry" cols={3} gap={8}>
                         {galleryImages.map((item) => (
                             <ImageListItem key={item.no}>

@@ -1,22 +1,25 @@
 import { ArrowBack, LockReset, Visibility, VisibilityOff } from '@mui/icons-material'
-import { Box, Button, Container, Fade, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, Container, Fade, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, Stack, Typography, } from '@mui/material'
 import axios from 'axios'
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import OtpInput from 'react-otp-input';
 import LoadingButton from '@mui/lab/LoadingButton'
+import CryptoJS from 'crypto-js';
+
 
 function ForgotPassword() {
 
   const [email, setEmail] = useState('')
   const [activeView, setActiveView] = useState(0)
-  const [otp, setOtp] = useState('')
+
   const [clientOtp, setClientOtp] = useState('')
   const [showPassword, setShowPassword] = useState({ newPass: false, confirmPass: false });
   const [password, setPassword] = useState({ newPass: '', confirmPass: '' })
   const [loadSubmit, setLoadSubmit] = useState(false)
   const [loadReset, setLoadReset] = useState(false)
+  const [otpRef, setOtpRef] = useState('')
 
   const navigate = useNavigate()
 
@@ -29,16 +32,29 @@ function ForgotPassword() {
       try {
         const result = await axios.post('/api/forgotpasword', { email: email })
         //console.log(result)
-        setActiveView(1)
-        setOtp(result.data.otp)
+        const decrypted = JSON.parse(CryptoJS.AES.decrypt(result.data,process.env.REACT_APP_DATA_ENCRYPTION_SECRETE).toString(CryptoJS.enc.Utf8))
+        //console.log(decrypted)
+
+       
+        if(decrypted!==''){
+          setActiveView(1)
+          //setOtp(result.data.otp)
+          setOtpRef(decrypted.ref)
+          toast.success(decrypted.msg)
+
+        }
+        else{
+          toast.error('invalid request')
+        }
+
         setLoadSubmit(false)
-        toast.success(result.data.msg)
+        
 
       }
       catch (err) {
         //console.log(err)
         setLoadSubmit(false)
-        toast.error(err.response.data)
+        //toast.error(err.response.data)
       }
     }
 
@@ -88,17 +104,30 @@ function ForgotPassword() {
 
 
   const OtpView = useMemo(() => {
-    const handleSubmitOTP = (e) => {
+    const handleSubmitOTP = async(e) => {
       e.preventDefault()
-      //console.log(clientOtp, otp)
-      if (clientOtp !== otp) {
-
-        toast.error('Invalid Otp!')
+      
+     
+        toast.promise(axios.post('/api/verifyotp', { email: email, ref:otpRef, clientOtp:clientOtp }), {
+          pending:{
+            render(){
+              return 'Verifing Your Validation Code'
+            }
+          },
+          success:{
+            render(res){
+              setActiveView(2)
+              return res.data.data
+            }
+          },
+          error:{
+            render(err){
+              return err.data.response.data
+            }
+          }
+        })
       }
-      else {
-        setActiveView(2)
-      }
-    }
+    
 
 
     return (
@@ -108,7 +137,7 @@ function ForgotPassword() {
           <IconButton onClick={() => {
             setActiveView(0)
             setClientOtp('')
-            setOtp('')
+            setOtpRef('')
           }} >
             <ArrowBack />
           </IconButton>
@@ -137,7 +166,7 @@ function ForgotPassword() {
 
     );
 
-  }, [clientOtp, otp])
+  }, [clientOtp, otpRef,email])
 
 
   const ResetView = () => {
@@ -155,11 +184,10 @@ function ForgotPassword() {
           const result = await axios.post('/api/resetpassword', { email: email, password: password.confirmPass })
           toast.success(result.data)
           setLoadReset(false)
-          
           setEmail('')
           setActiveView(0)
           setClientOtp('')
-          setOtp('')
+          setOtpRef('')
           setPassword('')
           setShowPassword('')
           navigate('/login')
@@ -183,7 +211,7 @@ function ForgotPassword() {
             <IconButton size='small' onClick={() => {
               setActiveView(0)
               setClientOtp('')
-              setOtp('')
+              setOtpRef('')
               setPassword({ newPass: '', confirmPass: '' })
               setShowPassword({ newPass: false, confirmPass: false });
             }} >

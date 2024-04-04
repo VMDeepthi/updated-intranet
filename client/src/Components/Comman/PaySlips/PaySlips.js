@@ -86,12 +86,7 @@ const PaySlips = () => {
 
   const exportPDF = async () => {
     const doc = new jsPDF({ orientation: "vertical" });
-    doc.autoTable({
-      html: "#payslip-table",
-      theme: "grid",
-      margin: { left: 30, right: 30, top: 80 },
-      // padding: {top: 40}
-    });
+    
     let imageHeader = new Image();
     imageHeader.src = `${companyDetails.company_logo === '' ? '' : process.env.REACT_APP_BACKEND_SERVER + companyDetails.company_logo}`;
     doc.addImage(
@@ -117,6 +112,18 @@ const PaySlips = () => {
       `\nName of the Employee: ${empName} \nEmployee Code: ${empCode} \nDesignation: ${desg} \nPF Number: null \nPAN Number: null \n\nPay slip for the month of ${monthYear}`,
       30,
       40
+    );
+    doc.autoTable({
+      html: "#payslip-table",
+      theme: "grid",
+      margin: { left: 30, right: 30, top: 80 },
+      // padding: {top: 40}
+    });
+    doc.text(
+      `This is system generated payslip, hence does not require signature.`,
+      50,
+    260,
+ 
     );
 
     doc.save(`${viewDetailsFields.month.slice(0, 3)}_${viewDetailsFields.year}_payslip`);

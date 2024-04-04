@@ -59,7 +59,7 @@ const Dashboard = () => {
         {
             element: '.notice',
             intro: 'All announcements will be displayed here',
-            restrict: null
+            restrict: notice.length===0?'no announcement':null
         },
         {
             element: ".profile-section",
@@ -226,14 +226,15 @@ const Dashboard = () => {
     };
 
     const userIntroTour = () => {
+        //console.log('its clicked')
         setStepsEnabled(true)
         setStartTour(true);
     };
 
     const onExit = async (stepIndex) => {
-        //console.log('onexit', stepIndex)
+        //console.log('onexit', stepIndex,startTour)
         setStepsEnabled(false);
-        if (!startTour) {
+        if (!startTour&&stepIndex!==-1) {
             await axios.post('/api/adduserintro', { employee_id: userDetails.employee_id })
         }
 
@@ -405,8 +406,8 @@ const Dashboard = () => {
             />
             <Steps
                 enabled={stepsEnabled}
-                steps={steps.filter(st => !pagesToBeNotAccessed.includes(st.restrict))}
-                initialStep={notice.length === 0 ? 1 : 0}
+                steps={steps.filter(st => (!pagesToBeNotAccessed.includes(st.restrict)&&st.restrict!=='no announcement'))}
+                initialStep={0}
                 onExit={onExit}
                 options={{ doneLabel: 'Done', exitOnOverlayClick: false, exitOnEsc: false }}
             />

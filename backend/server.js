@@ -1,9 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-
-
-
+import crypto from 'crypto'
 
 import db from './config/connectiondb.js'
 
@@ -72,6 +70,8 @@ app.use('/api/',manageOfficeGalleryRoute)
 
 app.use('/api/',userExperienceRoute)
 app.use('/api/',salaryManagementRoute)
+
+
 
 app.listen(8080,'192.168.30.93',()=>{
     console.log('Hii server is running at: http://localhost:8080/')

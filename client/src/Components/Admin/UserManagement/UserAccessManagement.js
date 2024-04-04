@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { RestartAlt, Update } from '@mui/icons-material'
 import Loader from '../../Comman/Loader'
 import AccessNavBar from '../../Comman/NavBar/AccessNavBar'
+import CryptoJS from 'crypto-js'
 
 function UserAccessManagement() {
     const [loader, setLoader] = useState(true)
@@ -152,8 +153,8 @@ function UserAccessManagement() {
                 .then(res => {
                     //console.log(res.data)
                     setLoader(false)
-
-                    if (res.data.length === 0) {
+                    const decrypted = JSON.parse(CryptoJS.AES.decrypt(res.data,process.env.REACT_APP_DATA_ENCRYPTION_SECRETE).toString(CryptoJS.enc.Utf8))
+                    if (decrypted.length === 0) {
                         if (value.user_type === 'admin' && value.department === 'management') {
                             //console.log(acceessType.admin)
                             setAccessData(acceessType['admin'])
@@ -173,7 +174,7 @@ function UserAccessManagement() {
                         }
                     }
                     else {
-                        const data = res.data[0]
+                        const data = decrypted[0]
                         const access_pages = data['restricted_pages'].split(',')
                         let selectedAccessType;
 
@@ -211,7 +212,7 @@ function UserAccessManagement() {
                 .catch((err) => {
                     //console.log(err)
                     setLoader(false)
-                    toast.error('not able to fetch data!')
+                    toast.error(err.response.data)
                 })
         }
         else {
