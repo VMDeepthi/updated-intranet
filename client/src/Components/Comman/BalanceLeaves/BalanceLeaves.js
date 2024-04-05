@@ -1,5 +1,5 @@
 import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import UserContext from '../../context/UserContext'
 
@@ -35,6 +35,120 @@ function BalanceLeaves() {
     })
     const [loader, setLoader] = useState(true)
     const [displayData, setDisplayData] = useState(false)
+
+    useEffect(()=>{
+        window.scrollTo(0, document.body.scrollHeight);
+        //endRef.current.scrollIntoView({ behavior: 'smooth' });
+
+
+        
+        const today = new Date()
+        const newDate = new Date(today.getFullYear(),today.getMonth()-1,26)
+        
+        
+        const month = newDate.getMonth()
+        const year = newDate.getFullYear()
+        setSearchSelection({month:month,year:year})
+        //today<new Date(year,month,26)
+        //console.log(month,year)
+       
+        if (today<new Date(year,month,26)) {
+            
+            setDisplayData(true)
+            setAttendanceData([])
+        }
+        else {
+            const sat = [];   //Saturdays
+            const sun = [];   //Sundays
+            const from_date = new Date(year, month - 1, 26)
+            const to_date = new Date(year, month, 25)
+           
+            let startDate = new Date(year, month - 1, 26)
+            let totalDays = 0
+            while (startDate <= to_date) {
+                if (startDate.getDay() === 0) { // if Sunday
+                    sun.push(startDate.toLocaleString('en-CA').slice(0, 10));
+                  }
+                  if (startDate.getDay() === 6) { // if Saturday
+                    sat.push(startDate.toLocaleString('en-CA').slice(0, 10));
+                  }
+            
+                  startDate.setDate(startDate.getDate() + 1);
+                totalDays = totalDays + 1
+
+            }
+            // console.log("total days", totalDays)
+            // console.log('sat:', sat.length, sat);
+            // console.log('sun:', sun.length, sun);
+            // console.log(from_date, to_date)
+            // console.log('dates',  from_date.toLocaleString('en-CA').slice(0,10), to_date.toLocaleString('en-CA').slice(0,10))
+            
+
+            axios.post('/api/monthattendance', { emp_id: userDetails.employee_id, from_date: from_date.toLocaleString('en-CA').slice(0,10), to_date: to_date.toLocaleString('en-CA').slice(0,10) })
+                .then(res => {
+                    //console.log(res)
+                    setDisplayData(true)
+                    if (res.data.length === totalDays) {
+                        setAttendanceData(res.data)
+                        const present = res.data.filter(data => data.totalhrs !== 0)
+                        const leaves = res.data.filter(data => (data.updated_status === 'EL' || data.updated_status === 'XL'))
+                        const abbsent = res.data.filter(data => (!sat.includes(data.pdate) && !sun.includes(data.pdate) && (( data.updated_status === 'AA'))))
+                        //const abbsent = res.data.filter(data => data.totalhrs === 0)
+                        //console.log(res.data.length, present.length, leaves, abbsent.length)
+                        setLoader(false)
+                       
+
+                       
+
+                        const attendanceData = res.data.filter(data=>data.updated_status!=='XL'&& data.updated_status!=='EL')
+                        const hr_list = attendanceData.map(a => a.totalhrs <= 4 ? 0 : a.totalhrs)
+                        //const hr_list = result.map(a => a.totalhrs <= 4 ? 0 :a.updated_status==='CL'?0:a.updated_status==='SL'?0: a.totalhrs)
+                        ////console.log('list',hr_list,attendanceData)
+                        const totalhr = hr_list.reduce((acc, curr_value) => acc + (Math.trunc(curr_value)), 0)
+                        const totalmin = hr_list.reduce((acc, curr_value) => acc + (curr_value % 1).toFixed(2) * 100, 0)
+                        
+                        const totalWorked = ((totalhr * 60) + totalmin)
+                        const hrs = (Math.trunc(totalWorked / 60) + (totalWorked % 60) / 100).toFixed(2)
+                        //console.log('hrs:', attendanceData, hr_list, totalhr, totalmin, totalWorked,hrs)
+                        setMonthStatistics({
+                            totalWorkingDays: totalDays - (sat.length + sun.length),
+                            presentDays: present.length,
+                            approvedLeaves: leaves.length,
+                            unapprovedLeaves: abbsent,
+                            workedHrs:hrs
+                        })
+                    }
+                    else {
+                        setAttendanceData([])
+                    }
+
+                })
+                .catch((err) => toast.error(err.response.data))
+                axios.post('/api/monthbalance', { emp_id: userDetails.employee_id,  from_date: from_date.toLocaleString('en-CA').slice(0,10), to_date: to_date.toLocaleString('en-CA').slice(0,10) })
+                .then(res => {
+                    const balanceData = res.data
+                    // console.log(balanceData)
+                    // const open_leaves = balanceData[0].total_leaves+balanceData[0].credit+balanceData[0].debit
+                    // const balace_leaves = balanceData[balanceData.length-1].total_leaves
+                    // //const new_added_leaves = balanceData.filter(leaves=>leaves.reference==='annual leaves' || leaves.reference==='admin adjustment').map(leave=>leave.credit).reduce((accumulator, currentValue)=>accumulator + currentValue,0)
+                    // const new_added_leaves = balanceData.map(leave=>leave.credit).reduce((accumulator, currentValue)=>accumulator + currentValue,0)
+                    // const adjusted_leaves =   balanceData.map(leave=>leave.debit).reduce((accumulator, currentValue)=>accumulator + currentValue,0)
+                    // console.log('open_leaves:',open_leaves)
+                    // console.log('balace_leaves:',balace_leaves)
+                    // console.log('new_added_leaves:',new_added_leaves)
+                    // console.log('adjusted_leaves:',adjusted_leaves, monthStatistics.approvedLeaves)
+                    setBalanceSenction({
+                        openLeaves:balanceData.open_leaves,
+                        newAddedLeaves:balanceData.new_added_leaves,
+                        adjustedLeaves:balanceData.adjusted_leaves,
+                        balanceLeaves:balanceData.balance_leaves
+                    })
+
+                })
+        }
+        
+
+    },[userDetails.employee_id])
 
     const options = {
         chart: {
@@ -158,6 +272,8 @@ function BalanceLeaves() {
 
     }
 
+    
+
     const handleSelectionSubmit = (e) => {
 
         e.preventDefault()
@@ -263,6 +379,7 @@ function BalanceLeaves() {
 
                 })
         }
+        
 
 
     }
