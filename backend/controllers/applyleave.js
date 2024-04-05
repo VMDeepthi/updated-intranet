@@ -302,9 +302,15 @@ export const reportingheadlogin = (req, res) => {
             
                                                 const holidays_result = await db.promise().query(find_holidays_query, find_holidays_values)
                                                 const office_holidays = holidays_result[0].map(date => date.holiday_date.toLocaleString('en-CA').slice(0, 10))
+
+                                                const find_user_shift_query = `select shift from usermanagement where employee_id = ?`
+                                                const find_user_shift_value = [emp_id]
+
+                                                const shift_result = await db.promise().query(find_user_shift_query, find_user_shift_value)
+                                                const shift = shift_result[0][0].shift
             
             
-                                                const update_attendance_query = `update attendance set updated_status = case when totalhrs<4 then 'AA' when totalhrs>=4 and totalhrs<9 then 'XA' when totalhrs>=9 then 'XX' when pdate in(?) then 'HH' else 'AA' end  where pdate in (?) and emp_id=?`
+                                                const update_attendance_query = `update attendance set updated_status = case when totalhrs<4 then 'AA' when totalhrs>=4 and totalhrs<${shift} then 'XA' when totalhrs>=${shift} then 'XX' when pdate in(?) then 'HH' else 'AA' end  where pdate in (?) and emp_id=?`
                                                 //const dateRanges = [...selected_dates.split(','), half_day].filter(date => date !== '')
                                                 const update_attendance_values = [office_holidays, dates, emp_id]
                                                 await db.promise().query(update_balance_query, update_balance_values)
@@ -537,8 +543,14 @@ export const checkapplicationerequest = (req, res) => {
                                     const holidays_result = await db.promise().query(find_holidays_query, find_holidays_values)
                                     const office_holidays = holidays_result[0].map(date => date.holiday_date.toLocaleString('en-CA').slice(0, 10))
 
+                                    const find_user_shift_query = `select shift from usermanagement where employee_id = ?`
+                                    const find_user_shift_value = [emp_id]
 
-                                    const update_attendance_query = `update attendance set updated_status = case when totalhrs<4 then 'AA' when totalhrs>=4 and totalhrs<9 then 'XA' when totalhrs>=9 then 'XX' when pdate in(?) then 'HH' else 'AA' end  where pdate in (?) and emp_id=?`
+                                    const shift_result = await db.promise().query(find_user_shift_query, find_user_shift_value)
+                                    const shift = shift_result[0][0].shift
+
+
+                                    const update_attendance_query = `update attendance set updated_status = case when totalhrs<4 then 'AA' when totalhrs>=4 and totalhrs<${shift} then 'XA' when totalhrs>=${shift} then 'XX' when pdate in(?) then 'HH' else 'AA' end  where pdate in (?) and emp_id=?`
                                     //const dateRanges = [...selected_dates.split(','), half_day].filter(date => date !== '')
                                     const update_attendance_values = [office_holidays, dates, emp_id]
                                     await db.promise().query(update_balance_query, update_balance_values)

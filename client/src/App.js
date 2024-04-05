@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom'
 import Login from './Components/Comman/Login/Login'
 import Dashboard from './Components/Comman/DashBoard/DashBoard'
-
+import { ToastContainer } from 'react-toastify'
 
 
 import AddCompany from './Components/Admin/CompanyManagment/AddCompany'
@@ -105,6 +105,7 @@ export default function App() {
 
 
       </BrowserRouter >
+      <ToastContainer />
     </>
   )
 }

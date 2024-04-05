@@ -154,6 +154,7 @@ export const verifyotp = (req,res) =>{
         if (err) return res.status(500).json('error occured!')
         else{
             if(result.length===0){
+                
                 return res.status(406).json('Invalid Validation Code')
             }
             else{
@@ -168,10 +169,13 @@ export const resetpassword = async (req, res) => {
     console.log(req.body)
     const pass = bcrypt.hashSync(req.body.password, 12)
     const q = `update usermanagement set password=? where email=?`
-    console.log(pass)
+    //console.log(pass)
+    const delete_prev_otp_query =  `delete from userotp where email=?`
+    const delete_prev_otp_values = [req.body.email]
     try {
         await db.promise().query(q, [pass, req.body.email])
-        console.log('inserted')
+        await db.promise().query(delete_prev_otp_query, delete_prev_otp_values)
+        //console.log('inserted')
         return res.status(200).json('Password reseted successfully')
     }
     catch(err) {
@@ -199,11 +203,10 @@ export const changepassword = (req, res) => {
                         const hash = bcrypt.hashSync(confirmNewPassword, 12)
                         const update_password_query = `update usermanagement set password = ? where email=?`
                         const update_password_values = [hash, email]
-                        const delete_prev_otp_query =  `delete from userotp where email=?`
-                        const delete_prev_otp_values = [email]
+                        
                         try {
                             await db.promise().query(update_password_query, update_password_values)
-                            await db.promise().query(delete_prev_otp_query, delete_prev_otp_values)
+                            
                             return res.status(200).json(`Password updated successfully`)
                         }
                         catch {

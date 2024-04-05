@@ -122,6 +122,7 @@ function ForgotPassword() {
           },
           error:{
             render(err){
+              console.log(err)
               return err.data.response.data
             }
           }

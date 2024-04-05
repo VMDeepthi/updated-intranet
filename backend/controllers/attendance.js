@@ -208,10 +208,10 @@ export const UploadFile = async (req, res) => {
                                             if (totlhrs < 4) {
                                                 updated_status = 'AA'
                                             }
-                                            else if (totlhrs >= 9) {
+                                            else if (totlhrs >= shift) {
                                                 updated_status = 'XX'
                                             }
-                                            else if (totlhrs >= 4 && totlhrs < 9) {
+                                            else if (totlhrs >= 4 && totlhrs < shift) {
                                                 updated_status = 'XA'
                                             }
                                             if (considered_weekoff.includes(punchDate.toLocaleString('en-CA').slice(0, 10))) {
