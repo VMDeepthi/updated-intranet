@@ -1093,7 +1093,7 @@ export default function AdminNavBar(props) {
             {/*-----------comapany pages Management-------------------*/}
 
             {
-              pagesToBeNotAccessed !== null && (!pagesToBeNotAccessed.includes('AddCompanyPages') || !pagesToBeNotAccessed.includes('AddCompanyPages')) ?
+              pagesToBeNotAccessed !== null && (!pagesToBeNotAccessed.includes('AddCompanyPages') || !pagesToBeNotAccessed.includes('ViewCompanyPages')) ?
                 <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('Company Page Management')} >
                   <ListItemButton
                     sx={{
@@ -1192,7 +1192,7 @@ export default function AdminNavBar(props) {
 
             {/*---------------user manegement-----------------------*/}
             {
-              pagesToBeNotAccessed !== null && (!pagesToBeNotAccessed.includes('AddUser') || !pagesToBeNotAccessed.includes('ViewUsers')) ?
+              pagesToBeNotAccessed !== null && (!pagesToBeNotAccessed.includes('AddUser') || !pagesToBeNotAccessed.includes('ViewUsers') || !pagesToBeNotAccessed.includes('UserAccessManagement') ||!pagesToBeNotAccessed.includes('Experience')) ?
 
                 <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('User Management')} >
                   <ListItemButton

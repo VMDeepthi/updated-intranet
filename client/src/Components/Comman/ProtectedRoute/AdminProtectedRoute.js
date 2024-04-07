@@ -15,7 +15,8 @@ function AdminProtectedRoute(props) {
 
   const departmentAccess = {
     accounts:['salarymanagement'],
-    it:['uploadattendance','viewattendance']
+    it:['uploadattendance','viewattendance'],
+    hr:['addcompanypages','viewcompanypages','adduser','viewusers','experience','addannouncement','viewannouncements','uploadgallery','viewgallery','uploadattendance','viewattendance','createreportingstructure','viewreportingstructure','historylogadmin','managebalanceleaves']
   }
 
   let pages = []
@@ -31,7 +32,7 @@ function AdminProtectedRoute(props) {
 
   //const pageAccessed = ['dashbord', 'addcompany',]
 
-  // console.log(location.pathname,path)
+  //console.log(location.pathname,path)
 
 
   // const verify = jwt_decode(token, process.env.REACT_APP_JWT_SECRET)
@@ -57,6 +58,10 @@ function AdminProtectedRoute(props) {
     return component
   }
   else if (!pages.includes(path)&&userDetails.user_type === 'admin' && userDetails.department === 'it' && departmentAccess.it.includes(path)) {
+    //console.log('com', component)
+    return component
+  }
+  else if (!pages.includes(path)&&userDetails.user_type === 'admin' && userDetails.department === 'hr' && departmentAccess.hr.includes(path)) {
     //console.log('com', component)
     return component
   }

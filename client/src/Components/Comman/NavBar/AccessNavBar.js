@@ -6,6 +6,7 @@ import AccountsAdminNavBar from "./AccountsAdminNavBar";
 import React, { useContext } from 'react'
 import UserContext from "../../context/UserContext";
 import ItAdminNavBar from "./ItAdminNavBar";
+import HrAdminNavBar from "./HrAdminNavBar";
 
 function AccessNavBar(props) {
     const {userIntroTour} = props
@@ -23,7 +24,7 @@ function AccessNavBar(props) {
             return <ItAdminNavBar userIntroTour={userIntroTour}/>
         }
         else if(department === 'hr'){
-            return <></>
+            return <HrAdminNavBar userIntroTour={userIntroTour}/>
         }
         else{
             return <UserNavBar userIntroTour={userIntroTour}/>

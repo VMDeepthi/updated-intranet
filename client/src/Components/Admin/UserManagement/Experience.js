@@ -455,7 +455,7 @@ function Experience() {
                             <Stepper orientation="vertical" sx={{ mb: 1, }}>
                               {experienceData.map((exp,index) => (
                                 <Step active key={exp.promotion_title}>
-                                  <StepLabel icon={<SvgIcon><svg fill="#AB7C94"  focusable="false" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"></circle><text x="12" y="12" fill="white" fontSize= "0.75rem" text-anchor="middle" dominant-baseline="central">{experienceData.length-index}</text></svg></SvgIcon>}  optional={<Typography variant="caption">{exp.timerange}</Typography>}><span style={{fontWeight:'bold'}}>{exp.promotion_title} </span> </StepLabel>
+                                  <StepLabel icon={<SvgIcon><svg fill="#AB7C94"  focusable="false" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"></circle><text x="12" y="12" fill="white" fontSize= "0.75rem" textAnchor="middle" dominantBaseline="central">{experienceData.length-index}</text></svg></SvgIcon>}  optional={<Typography variant="caption">{exp.timerange}</Typography>}><span style={{fontWeight:'bold'}}>{exp.promotion_title} </span> </StepLabel>
                                   <StepContent>
                                     <Typography
                                       sx={{ display: 'inline' }}
