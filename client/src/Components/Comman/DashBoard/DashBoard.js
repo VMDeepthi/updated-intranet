@@ -286,7 +286,7 @@ const Dashboard = () => {
         <>
             <Box sx={{ display: 'flex', }}>
                 <AccessNavBar userIntroTour={userIntroTour}/>
-                <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 6, }}>
+                <Box component='main' sx={{ flexGrow: 1, p: 2.5, mt: 6, }}>
 
                     <Grid container spacing={{ xs: 2, md: 2 }} style={{ display: 'flex', }}>
                         <Grid item xs={12} sm={12} md={12} lg={12} >

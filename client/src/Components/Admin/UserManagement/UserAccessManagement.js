@@ -138,6 +138,24 @@ function UserAccessManagement() {
                 ReportingStructure: true
 
             },
+            'HR Access':{
+                
+                AddCompanyPages: true,
+                ViewCompanyPages: true,
+                AddUser: true,
+                ViewUsers: true,
+                Experience: true,
+                AddAnnouncement: true,
+                ViewAnnouncements: true,
+                UploadGallery: true,
+                ViewGallery: true,
+                UploadAttendance: true,
+                ViewAttendance: true,
+                CreateReportingStructure: true,
+                ViewReportingStructure: true,
+                HistorylogAdmin: true,
+                ManageBalanceLeaves: true
+            }
 
         }
 

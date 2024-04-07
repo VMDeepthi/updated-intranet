@@ -419,7 +419,7 @@ export default function AdminNavBar(props) {
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
-                        mr: 3, ml: 0.5,
+                        mr: 2,
                         display: 'flex',
 
                         justifyContent: 'center',
@@ -452,17 +452,18 @@ export default function AdminNavBar(props) {
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
-                        mr: 'auto', ml: 'auto',
+                        ml: 1.2,
 
                         justifyContent: 'center',
 
                       }}
                     >
                       <WorkOff />
+                      {expandedPage === 'Leaves' ? <ExpandLess /> : <ExpandMore />}
+
 
                     </ListItemIcon>
-                    {expandedPage === 'Leaves' ? <ExpandLess /> : <ExpandMore />}
-
+                   
                   </ListItemButton>
                 </ListItem>
 
@@ -487,7 +488,7 @@ export default function AdminNavBar(props) {
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
-                        mr: 3, ml: 0.5,
+                        mr: 2,
                         justifyContent: 'center',
 
                       }}
@@ -519,7 +520,7 @@ export default function AdminNavBar(props) {
                       sx={{
                         minWidth: 0,
 
-                        mr: 3, ml: 0.5,
+                        mr: 2,
                         justifyContent: 'center',
                         alignItems: 'center'
 
@@ -554,15 +555,16 @@ export default function AdminNavBar(props) {
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
-                        mr: 'auto', ml: 'auto',
+                        ml:1.2,
                         justifyContent: 'center',
 
                       }}
 
                     >
                       <BusinessIcon />
+                      {expandedPage === 'Company Management' ? <ExpandLess /> : <ExpandMore />}
                     </ListItemIcon>
-                    {expandedPage === 'Company Management' ? <ExpandLess /> : <ExpandMore />}
+                   
 
                   </ListItemButton>
                   <Divider />
@@ -588,15 +590,16 @@ export default function AdminNavBar(props) {
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
-                        mr: 'auto', ml: 'auto',
+                        ml:1.2,
                         justifyContent: 'center',
 
                       }}
 
                     >
                       <LocalLibrary />
+                      {expandedPage === 'Company Page Management' ? <ExpandLess /> : <ExpandMore />}
                     </ListItemIcon>
-                    {expandedPage === 'Company Page Management' ? <ExpandLess /> : <ExpandMore />}
+                   
 
                   </ListItemButton>
                   <Divider />
@@ -623,16 +626,17 @@ export default function AdminNavBar(props) {
                       <ListItemIcon
                         sx={{
                           minWidth: 0,
-                          mr: 'auto', ml: 'auto',
+                          ml:1.2,
                           justifyContent: 'center',
 
                         }}
 
                       >
                         <SupervisedUserCircle />
-                      </ListItemIcon>
-                      {expandedPage === 'User Management' ? <ExpandLess /> : <ExpandMore />}
+                        {expandedPage === 'User Management' ? <ExpandLess /> : <ExpandMore />}
 
+                      </ListItemIcon>
+                     
                     </ListItemButton>
 
                   </ListItem>
@@ -659,15 +663,16 @@ export default function AdminNavBar(props) {
                       <ListItemIcon
                         sx={{
                           minWidth: 0,
-                          mr: 'auto', ml: 'auto',
+                          ml:1.2,
                           justifyContent: 'center',
 
                         }}
 
                       >
                         <Campaign />
+                        {expandedPage === 'Announcements' ? <ExpandLess /> : <ExpandMore />}
                       </ListItemIcon>
-                      {expandedPage === 'Announcements' ? <ExpandLess /> : <ExpandMore />}
+                      
 
                     </ListItemButton>
 
@@ -695,7 +700,7 @@ export default function AdminNavBar(props) {
                       <ListItemIcon
                         sx={{
                           minWidth: 0,
-                          mr: 'auto', ml: 'auto',
+                          ml:1.2,
 
                           justifyContent: 'center',
 
@@ -703,8 +708,9 @@ export default function AdminNavBar(props) {
 
                       >
                         <AddPhotoAlternate />
+                        {expandedPage === 'Manage Office Gallery' ? <ExpandLess /> : <ExpandMore />}
                       </ListItemIcon>
-                      {expandedPage === 'Manage Office Gallery' ? <ExpandLess /> : <ExpandMore />}
+                     
 
                     </ListItemButton>
 
@@ -732,15 +738,16 @@ export default function AdminNavBar(props) {
                       <ListItemIcon
                         sx={{
                           minWidth: 0,
-                          mr: 'auto', ml: 'auto',
+                          ml:1.2,
                           justifyContent: 'center',
 
                         }}
 
                       >
                         <ManageHistory />
+                        {expandedPage === 'Leave Management' ? <ExpandLess /> : <ExpandMore />}
                       </ListItemIcon>
-                      {expandedPage === 'Leave Management' ? <ExpandLess /> : <ExpandMore />}
+                      
 
                     </ListItemButton>
 
@@ -774,7 +781,7 @@ export default function AdminNavBar(props) {
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
-                        mr: 3, ml: 'auto',
+                        mr: 2,
                         justifyContent: 'center',
 
                       }}
