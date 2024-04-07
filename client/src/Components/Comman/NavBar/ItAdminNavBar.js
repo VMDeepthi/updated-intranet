@@ -50,7 +50,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 // drawer width
-const drawerWidth = 275;
+const drawerWidth = 280;
 
 
 
