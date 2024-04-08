@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Box, Chip, Container, Paper, Stack, FormControl, Button, Typography, Tooltip, IconButton } from '@mui/material'
+import { Box, Chip, Container, Paper, Stack, FormControl, Button, Typography, Tooltip, IconButton, Fade } from '@mui/material'
 import DataTable from 'react-data-table-component';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -142,7 +142,7 @@ const Attendance = () => {
             //console.log(data)
             const doc = new jsPDF({ orientation: "vertical" });
 
-            doc.addImage("https://res.cloudinary.com/dozj3jkhe/image/upload/v1701168256/intranet/gdyr4cwcrsn9z1ercoku.png", "JPEG", 150, 5, 50, 10,);
+            doc.addImage(`${process.env.REACT_APP_BACKEND_SERVER+`logo\\BCGLOGO.png`}`, "png", 150, 5, 50, 10,);
 
             doc.setFont("times", "normal");
             doc.setFontSize(12);
@@ -159,11 +159,11 @@ const Attendance = () => {
         }
         return (
             // <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: row.updated_status === 'XX' ? '#037700' : row.updated_status === 'XA' ? '#FF9D36' : (row.updated_status === 'WH' || row.updated_status ==='HH') ? '#9777A5' :(row.updated_status === 'CL' || row.updated_status ==='SL')?'#3FA8FC' :'#FF6868', color: 'white' }} size='small' label={row.updated_status} />
-            <Container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection:{xs:'column',sm:"column",md:"row",lg:'row'}}}>
 
 
 
-                <Stack spacing={1} display={'flex'} justifyContent={'center'} alignItems={'center'} direction={{ lg: 'row', xs: 'column' }} sx={{ p: 0.5, height: '100%' }} >
+                <Stack spacing={1} display={'flex'} justifyContent={'center'} alignItems={'center'} direction={'row'} sx={{ p: 0.5, height: '100%' }} >
                     <Typography component={'h5'} variant='p'>Color Codes:</Typography>
                     <Tooltip title='shift completed' arrow>
                         <Chip sx={{ fontSize: 12, p: 0.2, backgroundColor: '#037700', color: 'white', borderRadius: '50%' }} size='small' />
@@ -225,10 +225,14 @@ const Attendance = () => {
                             <Button type='submit' size='small' color='success' variant='contained'>submit</Button>
 
                         </Box>
-
-                        <IconButton title='download attendance' onClick={downloadAttendance} color="primary" aria-label="add to shopping cart">
+                        <Fade in={data.length!==0} timeout={1000} unmountOnExit >
+                            <IconButton title='download attendance' onClick={downloadAttendance} color="primary" aria-label="add to shopping cart">
                             <Download />
                         </IconButton>
+
+                        </Fade>
+
+                        
 
                     </Stack>
 
