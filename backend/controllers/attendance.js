@@ -491,148 +491,178 @@ export const UploadFile = async (req, res) => {
 }
 
 export const viewattendance = (req, res) => {
-    const q = `select * from attendance order by pdate desc`
-    db.query(q, (err, result) => {
-        if (err) return res.status(500).json('error occured!')
-        else {
-            return res.status(200).json(result)
-        }
-    })
+    if (req.checkAuth.isAuth) {
+        const q = `select * from attendance order by pdate desc limit 500`
+        db.query(q, (err, result) => {
+            if (err) return res.status(500).json('error occured!')
+            else {
+                return res.status(200).json(result)
+            }
+        })
+    }
+    else {
+        res.status(406).json('Unauthorized! not allowed to perform action.')
+    }
+
 }
 
 export const filterattendance = (req, res) => {
     //console.log(req.body)
-    const { fromDate, toDate, emp_id } = req.body
-    let q, v;
-    if (emp_id !== '') {
-        q = `select * from attendance where pdate >=? and pdate <=? and emp_id=? order by pdate`
-        v = [fromDate, toDate, emp_id]
-        ////console.log(emp_id)
+    if (req.checkAuth.isAuth) {
+        const { fromDate, toDate, emp_id } = req.body
+        let q, v;
+        if (emp_id !== '') {
+            q = `select * from attendance where pdate >=? and pdate <=? and emp_id=? order by pdate`
+            v = [fromDate, toDate, emp_id]
+            ////console.log(emp_id)
+        }
+        else {
+            q = `select * from attendance where pdate >=? and pdate <=?`
+            v = [fromDate, toDate]
+            ////console.log(emp_id)
+        }
+
+        db.query(q, v, (err, result) => {
+            if (err) return res.status(500).json('error occured!')
+            else {
+                if (result.length === 0) {
+                    return res.status(406).json('No record found!')
+                }
+                else {
+                    return res.status(200).json(result)
+                }
+            }
+        })
     }
     else {
-        q = `select * from attendance where pdate >=? and pdate <=?`
-        v = [fromDate, toDate]
-        ////console.log(emp_id)
+        res.status(406).json('Unauthorized! not allowed to perform action.')
     }
 
-    db.query(q, v, (err, result) => {
-        if (err) return res.status(500).json('error occured!')
-        else {
-            if (result.length === 0) {
-                return res.status(406).json('No record found!')
-            }
-            else {
-                return res.status(200).json(result)
-            }
-        }
-    })
 }
 
 export const attendance = (req, res) => {
     //console.log(req.body)
-    const current_date = new Date()
-    const current_year = current_date.getFullYear()
-    const current_month = current_date.getMonth()
-    let from_date, to_date;
-    //new Date(Date.UTC(current_year,current_month,25)).toLocaleString()===new Date(Date.UTC(current_year,current_month,current_date.getDate())).toLocaleString()
-    if (current_date.getDate() >= 26) {
-        from_date = new Date(Date.UTC(current_year, current_month, 26))
-        to_date = new Date(Date.UTC(current_year, current_month + 1, 25))
+    if (req.checkAuth.isAuth) {
+        const current_date = new Date()
+        const current_year = current_date.getFullYear()
+        const current_month = current_date.getMonth()
+        let from_date, to_date;
+        //new Date(Date.UTC(current_year,current_month,25)).toLocaleString()===new Date(Date.UTC(current_year,current_month,current_date.getDate())).toLocaleString()
+        if (current_date.getDate() >= 26) {
+            from_date = new Date(Date.UTC(current_year, current_month, 26))
+            to_date = new Date(Date.UTC(current_year, current_month + 1, 25))
+        }
+        else {
+            from_date = new Date(Date.UTC(current_year, current_month - 1, 26))
+            to_date = new Date(Date.UTC(current_year, current_month, 25))
+        }
+        const q = `select * from attendance where emp_id=? and pdate>=date(?) and pdate<=date(?)  order by pdate`
+        const { emp_id } = req.body
+        db.query(q, [emp_id, from_date, to_date], (err, result) => {
+            if (err) return res.status(500).json('error occured!')
+            else {
+
+                return res.status(200).json(result)
+            }
+        })
     }
     else {
-        from_date = new Date(Date.UTC(current_year, current_month - 1, 26))
-        to_date = new Date(Date.UTC(current_year, current_month, 25))
+        res.status(406).json('Unauthorized! not allowed to perform action.')
     }
-    const q = `select * from attendance where emp_id=? and pdate>=date(?) and pdate<=date(?)  order by pdate`
-    const { emp_id } = req.body
-    db.query(q, [emp_id, from_date, to_date], (err, result) => {
-        if (err) return res.status(500).json('error occured!')
-        else {
 
-            return res.status(200).json(result)
-        }
-    })
 
 }
 
 export const filteruserattendance = (req, res) => {
-    //console.log(req.body)
-    const { fromDate, toDate, emp_id } = req.body
-    const q = `select * from attendance where pdate >=? and pdate <=? and emp_id=? order by pdate`
-    db.query(q, [fromDate, toDate, emp_id], (err, result) => {
-        if (err) return res.status(500).json('error occured!')
-        else {
-            if (result.length === 0) {
-                return res.status(406).json('No record found!')
-            }
+    if (req.checkAuth.isAuth) {
+        //console.log(req.body)
+        const { fromDate, toDate, emp_id } = req.body
+        const q = `select * from attendance where pdate >=? and pdate <=? and emp_id=? order by pdate`
+        db.query(q, [fromDate, toDate, emp_id], (err, result) => {
+            if (err) return res.status(500).json('error occured!')
             else {
-                return res.status(200).json(result)
+                if (result.length === 0) {
+                    return res.status(406).json('No record found!')
+                }
+                else {
+                    return res.status(200).json(result)
+                }
             }
-        }
-    })
+        })
+    }
+    else {
+        res.status(406).json('Unauthorized! not allowed to perform action.')
+    }
+
 }
 
 export const attendancegraphdata = (req, res) => {
-    const { emp_id } = req.body
-    const current_date = new Date()
-    const current_year = current_date.getFullYear()
-    const current_month = current_date.getMonth()
-    let from_date, to_date;
-    //new Date(Date.UTC(current_year,current_month,25)).toLocaleString()===new Date(Date.UTC(current_year,current_month,current_date.getDate())).toLocaleString()
-    if (current_date.getDate() >= 26) {
-        from_date = new Date(Date.UTC(current_year, current_month, 26))
-        to_date = new Date(Date.UTC(current_year, current_month + 1, 25))
-    }
-    else {
-        from_date = new Date(Date.UTC(current_year, current_month - 1, 26))
-        to_date = new Date(Date.UTC(current_year, current_month, 25))
-    }
-    const q = `select pdate,totalhrs,updated_status from attendance where emp_id=? and pdate>=date(?) and pdate<=date(?) order by pdate`
-    db.query(q, [emp_id, from_date, to_date], async (err, result) => {
-        if (err) {
-            //console.log(err)
-            return res.status(500).json('error occured!')
+    if (req.checkAuth.isAuth) {
+        const { emp_id } = req.body
+        const current_date = new Date()
+        const current_year = current_date.getFullYear()
+        const current_month = current_date.getMonth()
+        let from_date, to_date;
+        //new Date(Date.UTC(current_year,current_month,25)).toLocaleString()===new Date(Date.UTC(current_year,current_month,current_date.getDate())).toLocaleString()
+        if (current_date.getDate() >= 26) {
+            from_date = new Date(Date.UTC(current_year, current_month, 26))
+            to_date = new Date(Date.UTC(current_year, current_month + 1, 25))
         }
         else {
-            const find_user_shift_query = `select shift from usermanagement where employee_id = ?`
-            const find_user_shift_value = [emp_id]
-
-            const shift_result = await db.promise().query(find_user_shift_query, find_user_shift_value)
-            const shift = shift_result[0][0].shift
-
-            const attendanceData = result.filter(data => data.updated_status !== 'CL' && data.updated_status !== 'SL')
-            // const hr_list = attendanceData.map(a => a.totalhrs <= 4 ? 0 : a.totalhrs)
-            // //const hr_list = result.map(a => a.totalhrs <= 4 ? 0 :a.updated_status==='CL'?0:a.updated_status==='SL'?0: a.totalhrs)
-            // console.log('list',hr_list,attendanceData)
-            // const totalhr = hr_list.reduce((acc, curr_value) => acc + (Math.trunc(curr_value)), 0)
-            // const totalmin = hr_list.reduce((acc, curr_value) => acc + (curr_value % 1).toFixed(2) * 100, 0)
-            // const totalShift = hr_list.length * 9 * 60 //in min
-            // const totalNonWorked = (hr_list.filter(hr => hr <= 4).length) * 9 * 60
-            // const totalWorked = ((totalhr * 60) + totalmin) - (totalShift - totalNonWorked)
-            // const hr_bal = (Math.trunc(totalWorked / 60) + (totalWorked % 60) / 100).toFixed(2)
-            //console.log('bal_hr', hr_bal)
-            //const data = result.reverse()
-            //console.log(result)
-            const hr_list = attendanceData.filter(data => data.updated_status === 'XX' || data.updated_status === 'XA').map(a => a.totalhrs)
-            console.log(hr_list)
-            const totalhr = hr_list.reduce((acc, curr_value) => acc + (Math.trunc(curr_value)), 0)
-            const totalmin = hr_list.reduce((acc, curr_value) => acc + (curr_value % 1).toFixed(2) * 100, 0)
-            const totalShift = hr_list.length * shift * 60 //in min
-            const halfDayShift = attendanceData.filter(data => data.updated_status === 'XL' && data.totalhrs >= 4).map(att => att.totalhrs)
-            const totalHalfDayShift = halfDayShift.length * 4 * 60
-            const totalhrHalfDayShift = halfDayShift.reduce((acc, curr_value) => acc + (Math.trunc(curr_value)), 0)
-            const totalminHalfDayShift = halfDayShift.reduce((acc, curr_value) => acc + (curr_value % 1).toFixed(2) * 100, 0)
-            //const halfDayShiftWorked = halfDayShift.length*4
-
-            //const abbsent = attendance.filter(att=>)
-            const totalHalfDayPresent = ((totalhrHalfDayShift * 60) + totalminHalfDayShift) - totalHalfDayShift
-            //console.log('half',totalHalfDayShift,halfDayShift,totalhrHalfDayShift,totalminHalfDayShift)
-            console.log('half', totalHalfDayPresent)
-            //const totalNonWorked = (hr_list.filter(hr => hr === 0).length) * shift * 60 //
-            const totalWorked = ((totalhr * 60) + totalmin + totalHalfDayPresent) - totalShift//(totalShift - totalNonWorked)
-            const hr_bal = (Math.trunc(totalWorked / 60) + (totalWorked % 60) / 100).toFixed(2)
-
-            return res.status(200).json({ graphData: result, balance: hr_bal })
+            from_date = new Date(Date.UTC(current_year, current_month - 1, 26))
+            to_date = new Date(Date.UTC(current_year, current_month, 25))
         }
-    })
+        const q = `select pdate,totalhrs,updated_status from attendance where emp_id=? and pdate>=date(?) and pdate<=date(?) order by pdate`
+        db.query(q, [emp_id, from_date, to_date], async (err, result) => {
+            if (err) {
+                //console.log(err)
+                return res.status(500).json('error occured!')
+            }
+            else {
+                const find_user_shift_query = `select shift from usermanagement where employee_id = ?`
+                const find_user_shift_value = [emp_id]
+
+                const shift_result = await db.promise().query(find_user_shift_query, find_user_shift_value)
+                const shift = shift_result[0][0].shift
+
+                const attendanceData = result.filter(data => data.updated_status !== 'CL' && data.updated_status !== 'SL')
+                // const hr_list = attendanceData.map(a => a.totalhrs <= 4 ? 0 : a.totalhrs)
+                // //const hr_list = result.map(a => a.totalhrs <= 4 ? 0 :a.updated_status==='CL'?0:a.updated_status==='SL'?0: a.totalhrs)
+                // console.log('list',hr_list,attendanceData)
+                // const totalhr = hr_list.reduce((acc, curr_value) => acc + (Math.trunc(curr_value)), 0)
+                // const totalmin = hr_list.reduce((acc, curr_value) => acc + (curr_value % 1).toFixed(2) * 100, 0)
+                // const totalShift = hr_list.length * 9 * 60 //in min
+                // const totalNonWorked = (hr_list.filter(hr => hr <= 4).length) * 9 * 60
+                // const totalWorked = ((totalhr * 60) + totalmin) - (totalShift - totalNonWorked)
+                // const hr_bal = (Math.trunc(totalWorked / 60) + (totalWorked % 60) / 100).toFixed(2)
+                //console.log('bal_hr', hr_bal)
+                //const data = result.reverse()
+                //console.log(result)
+                const hr_list = attendanceData.filter(data => data.updated_status === 'XX' || data.updated_status === 'XA').map(a => a.totalhrs)
+                console.log(hr_list)
+                const totalhr = hr_list.reduce((acc, curr_value) => acc + (Math.trunc(curr_value)), 0)
+                const totalmin = hr_list.reduce((acc, curr_value) => acc + (curr_value % 1).toFixed(2) * 100, 0)
+                const totalShift = hr_list.length * shift * 60 //in min
+                const halfDayShift = attendanceData.filter(data => data.updated_status === 'XL' && data.totalhrs >= 4).map(att => att.totalhrs)
+                const totalHalfDayShift = halfDayShift.length * 4 * 60
+                const totalhrHalfDayShift = halfDayShift.reduce((acc, curr_value) => acc + (Math.trunc(curr_value)), 0)
+                const totalminHalfDayShift = halfDayShift.reduce((acc, curr_value) => acc + (curr_value % 1).toFixed(2) * 100, 0)
+                //const halfDayShiftWorked = halfDayShift.length*4
+
+                //const abbsent = attendance.filter(att=>)
+                const totalHalfDayPresent = ((totalhrHalfDayShift * 60) + totalminHalfDayShift) - totalHalfDayShift
+                //console.log('half',totalHalfDayShift,halfDayShift,totalhrHalfDayShift,totalminHalfDayShift)
+                console.log('half', totalHalfDayPresent)
+                //const totalNonWorked = (hr_list.filter(hr => hr === 0).length) * shift * 60 //
+                const totalWorked = ((totalhr * 60) + totalmin + totalHalfDayPresent) - totalShift//(totalShift - totalNonWorked)
+                const hr_bal = (Math.trunc(totalWorked / 60) + (totalWorked % 60) / 100).toFixed(2)
+
+                return res.status(200).json({ graphData: result, balance: hr_bal })
+            }
+        })
+    }
+    else {
+        res.status(406).json('Unauthorized! not allowed to perform action.')
+    }
+
 }

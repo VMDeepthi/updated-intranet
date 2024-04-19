@@ -47,6 +47,7 @@ import ViewGallery from './Components/Admin/ManageOfficeGallary/ViewGallery'
 import UserAccessManagement from './Components/Admin/UserManagement/UserAccessManagement'
 import { UserAccessProvider } from './Components/context/UserAccessContext'
 import SalaryManagement from './Components/Accounts/SalaryManagement/SalaryManagement'
+import GenerateAttendance from './Components/Admin/LeaveManagement/GenerateAttendance'
 
 
 export default function App() {
@@ -95,6 +96,7 @@ export default function App() {
               <Route path='/upload-gallery' element={<AdminProtectedRoute component={<UploadGallary />} />} />
               <Route path='/view-gallery' element={<AdminProtectedRoute component={<ViewGallery />} />} />
               <Route path='/salary-management' element={<AdminProtectedRoute component={<SalaryManagement />} />} />
+              <Route path='/generate-attendance' element={<AdminProtectedRoute component={<GenerateAttendance />} />} />
 
               
             </Routes>

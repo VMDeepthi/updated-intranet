@@ -14,11 +14,32 @@ const db = mysql.createConnection({
     password:process.env.DB_PASSWORD,
     host:process.env.DB_HOST,
     database:process.env.DB_DATABASE,
+    
+    enableKeepAlive: true,
+  keepAliveInitialDelay: 0,
+
 })
 
+// setInterval(()=>{
+//     console.log('trying')
+//    //`` db.ping()
+//     db.connect((err)=>{
+//         if (err){
+//             console.log(err)
+            
+//         }
+//         else {
+//             console.log('connected')
+//         }
+//     })
+    
+
+// },20000)
 
 
 export default db
+
+
 
 
 // if (req.checkAuth.isAuth && req.checkAuth.user_type === 'admin') {

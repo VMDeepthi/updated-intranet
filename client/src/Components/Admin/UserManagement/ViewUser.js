@@ -1066,14 +1066,14 @@ function ViewUser() {
             <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 5, ml: { xs: 8 } }}>
                 <div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography variant='h5' component={'h5'} m={2} textAlign={'center'} >View Users</Typography>
-                    <div style={{ height: '400px', width: '95%' }}>
-                        <Card >
+                    <div style={{ height: '400px', width: '97%', }}>
+                        <Card sx={{pt:2}}>
 
                             <DataTable
-                                title=" "
+                                
                                 fixedHeader={true}
 
-                                fixedHeaderScrollHeight='300px'
+                                fixedHeaderScrollHeight='350px'
                                 columns={columns}
                                 data={filterUserData}
                                 pagination

@@ -1,4 +1,5 @@
 import db from "../config/connectiondb.js";
+import CryptoJS from"crypto-js"
 
 export const uploadsalarydata = (req, res) => {
     //console.log(req.body)
@@ -76,7 +77,8 @@ export const viewsalarydata = (req, res) => {
         db.query(check_salary_data_query, check_salary_data_values, async (err, result) => {
             if (err) return res.status(500).json('error occured!')
             else {
-                return res.status(200).json(result)
+                const data = CryptoJS.AES.encrypt(JSON.stringify(result),process.env.DATA_ENCRYPTION_SECRETE).toString()
+                return res.status(200).json(data)
             }
         })
 

@@ -31,15 +31,15 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 //import CssBaseline from '@mui/material/CssBaseline';
 import BusinessIcon from '@mui/icons-material/Business';
-import { AccountBalanceWallet, AccountBox, AddAPhoto, AddAlert, AddPhotoAlternate, AdsClick, Announcement, BadgeRounded, Balance, BrowseGallery, Campaign, CardTravel, CreditScore, Description, EventAvailable, ExpandLess, ExpandMore, ForwardToInbox, GroupAdd, Insights, Key, LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, MoreTime, NoteAdd, Paid, Payments, PersonAdd, RequestQuote, Send, Settings, SupervisedUserCircle, TrendingUp, UploadFile, WorkHistory, WorkOff, Wysiwyg } from '@mui/icons-material';
+import { AccountBalanceWallet, AccountBox, AddAPhoto, AddAlert, AddPhotoAlternate, AdsClick, Announcement, BadgeRounded, Balance, BrowseGallery, Campaign, CardTravel, CreditScore, Description, EventAvailable, ExpandLess, ExpandMore, ForwardToInbox, GroupAdd, Insights, Key, LocalLibrary, LockOpen, LockReset, Logout, ManageHistory, ModelTraining, MoreTime, NoteAdd, Paid, Payments, PersonAdd, RequestQuote, Send, Settings, SupervisedUserCircle, TrendingUp, UploadFile, WorkHistory, WorkOff, Wysiwyg } from '@mui/icons-material';
 
 
 import { CgListTree } from 'react-icons/cg'
-import { Collapse,  Stack, colors } from '@mui/material';
+import { Collapse, Stack, colors } from '@mui/material';
 
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import StoreIcon from '@mui/icons-material/Store';
-import { useContext,  useState } from 'react';
+import { useContext, useState } from 'react';
 import { Avatar } from '@mui/material';
 import UserContext from '../../context/UserContext';
 //import Cookies from 'js-cookie';
@@ -314,7 +314,7 @@ export default function AdminNavBar(props) {
             sx={{ display: { xs: 'block', sm: 'block' } }}
           >
             <Link href="/" underline="none">
-            <img src={process.env.REACT_APP_BACKEND_SERVER+'/logo/BCGLOGO.png'} alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '90%', height: '50px' }} />
+              <img src={process.env.REACT_APP_BACKEND_SERVER + '/logo/BCGLOGO.png'} alt='logo' style={{ marginTop: '5px', marginLeft: '10px', width: '90%', height: '50px' }} />
 
             </Link>
           </Typography>
@@ -343,16 +343,16 @@ export default function AdminNavBar(props) {
 
             </Stack> */}
             <Stack spacing={-0.5} m={1}>
-                <Typography  variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center', color: 'black', fontSize: '22px', paddingTop:'4px' }}>
-                
-               Hi {`${userDetails.first_name}!  `}
-                </Typography>
-                {/* <Typography variant='subtitle2' color={'ButtonText'} sx={{ color: 'gray',alignItems:'center' }}>
+              <Typography variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center', color: 'black', fontSize: '22px', paddingTop: '4px' }}>
+
+                Hi {`${userDetails.first_name}!  `}
+              </Typography>
+              {/* <Typography variant='subtitle2' color={'ButtonText'} sx={{ color: 'gray',alignItems:'center' }}>
                   {userDetails.designation}
                 </Typography> */}
-                </Stack>
+            </Stack>
 
-                <IconButton
+            <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
@@ -407,7 +407,7 @@ export default function AdminNavBar(props) {
               pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes(text) ?
                 <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => handleNavigation(index)}>
                   <ListItemButton
-                  
+
                     title={text}
                     sx={{
                       minHeight: 45,
@@ -446,7 +446,7 @@ export default function AdminNavBar(props) {
                       minHeight: 45,
                       justifyContent: 'center',
                       px: 1.5,
-                      
+
                     }}
                   >
                     <ListItemIcon
@@ -463,7 +463,7 @@ export default function AdminNavBar(props) {
 
 
                     </ListItemIcon>
-                   
+
                   </ListItemButton>
                 </ListItem>
 
@@ -555,7 +555,7 @@ export default function AdminNavBar(props) {
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
-                        ml:1.2,
+                        ml: 1.2,
                         justifyContent: 'center',
 
                       }}
@@ -564,7 +564,7 @@ export default function AdminNavBar(props) {
                       <BusinessIcon />
                       {expandedPage === 'Company Management' ? <ExpandLess /> : <ExpandMore />}
                     </ListItemIcon>
-                   
+
 
                   </ListItemButton>
                   <Divider />
@@ -590,7 +590,7 @@ export default function AdminNavBar(props) {
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
-                        ml:1.2,
+                        ml: 1.2,
                         justifyContent: 'center',
 
                       }}
@@ -599,7 +599,7 @@ export default function AdminNavBar(props) {
                       <LocalLibrary />
                       {expandedPage === 'Company Page Management' ? <ExpandLess /> : <ExpandMore />}
                     </ListItemIcon>
-                   
+
 
                   </ListItemButton>
                   <Divider />
@@ -626,7 +626,7 @@ export default function AdminNavBar(props) {
                       <ListItemIcon
                         sx={{
                           minWidth: 0,
-                          ml:1.2,
+                          ml: 1.2,
                           justifyContent: 'center',
 
                         }}
@@ -636,7 +636,7 @@ export default function AdminNavBar(props) {
                         {expandedPage === 'User Management' ? <ExpandLess /> : <ExpandMore />}
 
                       </ListItemIcon>
-                     
+
                     </ListItemButton>
 
                   </ListItem>
@@ -663,7 +663,7 @@ export default function AdminNavBar(props) {
                       <ListItemIcon
                         sx={{
                           minWidth: 0,
-                          ml:1.2,
+                          ml: 1.2,
                           justifyContent: 'center',
 
                         }}
@@ -672,7 +672,7 @@ export default function AdminNavBar(props) {
                         <Campaign />
                         {expandedPage === 'Announcements' ? <ExpandLess /> : <ExpandMore />}
                       </ListItemIcon>
-                      
+
 
                     </ListItemButton>
 
@@ -700,7 +700,7 @@ export default function AdminNavBar(props) {
                       <ListItemIcon
                         sx={{
                           minWidth: 0,
-                          ml:1.2,
+                          ml: 1.2,
 
                           justifyContent: 'center',
 
@@ -710,7 +710,7 @@ export default function AdminNavBar(props) {
                         <AddPhotoAlternate />
                         {expandedPage === 'Manage Office Gallery' ? <ExpandLess /> : <ExpandMore />}
                       </ListItemIcon>
-                     
+
 
                     </ListItemButton>
 
@@ -738,7 +738,7 @@ export default function AdminNavBar(props) {
                       <ListItemIcon
                         sx={{
                           minWidth: 0,
-                          ml:1.2,
+                          ml: 1.2,
                           justifyContent: 'center',
 
                         }}
@@ -747,7 +747,7 @@ export default function AdminNavBar(props) {
                         <ManageHistory />
                         {expandedPage === 'Leave Management' ? <ExpandLess /> : <ExpandMore />}
                       </ListItemIcon>
-                      
+
 
                     </ListItemButton>
 
@@ -758,15 +758,15 @@ export default function AdminNavBar(props) {
                 : null
             }
 
-           {/* ---------------------------------------------salary management--------------------------------------------------------- */}
+            {/* ---------------------------------------------salary management--------------------------------------------------------- */}
             {
               pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('SalaryManagement') ?
-              <Divider sx={{ fontSize: 12, fontWeight: 'bold' }}>Accounts</Divider>
-              :null
+                <Divider sx={{ fontSize: 12, fontWeight: 'bold' }}>Accounts</Divider>
+                : null
 
 
             }
-            
+
             {
               pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('SalaryManagement') ?
                 <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/salary-management')}>
@@ -1199,7 +1199,7 @@ export default function AdminNavBar(props) {
 
             {/*---------------user manegement-----------------------*/}
             {
-              pagesToBeNotAccessed !== null && (!pagesToBeNotAccessed.includes('AddUser') || !pagesToBeNotAccessed.includes('ViewUsers') || !pagesToBeNotAccessed.includes('UserAccessManagement') ||!pagesToBeNotAccessed.includes('Experience')) ?
+              pagesToBeNotAccessed !== null && (!pagesToBeNotAccessed.includes('AddUser') || !pagesToBeNotAccessed.includes('ViewUsers') || !pagesToBeNotAccessed.includes('UserAccessManagement') || !pagesToBeNotAccessed.includes('Experience')) ?
 
                 <ListItem disablePadding sx={{ display: 'block' }} onClick={() => handleExpand('User Management')} >
                   <ListItemButton
@@ -1547,7 +1547,7 @@ export default function AdminNavBar(props) {
                     <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Leave Management</Typography>} />
                     {expandedPage === 'Leave Management' ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
-                  
+
 
                   <Collapse in={expandedPage === 'Leave Management'} timeout={'auto'} unmountOnExit>
                     <List>
@@ -1603,6 +1603,36 @@ export default function AdminNavBar(props) {
                                 <EventAvailable />
                               </ListItemIcon>
                               <ListItemText primary={<Typography sx={{ fontSize: 15 }}>View Attendance</Typography>} />
+                            </ListItemButton>
+                          </ListItem>
+
+                          : null
+
+                      }
+
+                      {
+                        pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('GenerateAttendance') ?
+                          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/generate-attendance")}>
+                            <ListItemButton
+                              sx={{
+                                minHeight: 45,
+                                justifyContent: 'center',
+                                px: 1.5,
+                              }}
+                            >
+                              <ListItemIcon
+                                sx={{
+                                  minWidth: 0,
+                                  mr: 3,
+                                  ml: 3,
+                                  justifyContent: 'center',
+
+                                }}
+
+                              >
+                                <ModelTraining />
+                              </ListItemIcon>
+                              <ListItemText primary={<Typography sx={{ fontSize: 15 }}>Generate Attendance</Typography>} />
                             </ListItemButton>
                           </ListItem>
 
@@ -1732,7 +1762,7 @@ export default function AdminNavBar(props) {
                           : null
 
                       }
-                      
+
                     </List>
 
                   </Collapse>
@@ -1746,13 +1776,13 @@ export default function AdminNavBar(props) {
 
             {
               pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('SalaryManagement') ?
-              <Divider > Accounts Features </Divider>
-              :null
+                <Divider > Accounts Features </Divider>
+                : null
 
 
             }
             {/* ---------------------------------------------salary management--------------------------------------------------------- */}
-            
+
             {
               pagesToBeNotAccessed !== null && !pagesToBeNotAccessed.includes('SalaryManagement') ?
                 <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/salary-management')} >
@@ -1779,7 +1809,7 @@ export default function AdminNavBar(props) {
                 : null
             }
 
-            
+
           </List>
         </Box>
       </Drawer>

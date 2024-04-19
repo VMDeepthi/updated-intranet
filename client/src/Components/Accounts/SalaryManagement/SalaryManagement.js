@@ -1,7 +1,7 @@
 import { Box, Button, Chip, Collapse, Container, Fade, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, Switch, TextField, Typography, styled } from '@mui/material'
 import React, {useMemo, useState } from 'react'
 
-import { CloudSync, CloudUpload, Delete, FileDownload, FileUpload, Search } from '@mui/icons-material'
+import { CloudSync, CloudUpload, Delete, Download, FileDownload, FileUpload, Search } from '@mui/icons-material'
 import { useDropzone } from 'react-dropzone'
 import DataTable, { defaultThemes } from 'react-data-table-component'
 import axios from 'axios'
@@ -10,6 +10,7 @@ import * as XLSX from "xlsx";
 import Loader from '../../Comman/Loader'
 import swal from 'sweetalert'
 import AccessNavBar from '../../Comman/NavBar/AccessNavBar'
+import CryptoJS from 'crypto-js'
 
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -298,6 +299,8 @@ function SalaryManagement() {
         }
     }
 
+    
+
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: currentYear - 2000 + 1 }, (_, index) => 2000 + index).reverse();
     const handleDisplayPayslip = async (e) => {
@@ -306,16 +309,106 @@ function SalaryManagement() {
 
         axios.post("/api/viewsalarydata", viewDetailsFields)
             .then((res) => {
-                setSalaryDetails(res.data);
-                setFilteredSalaryDetails(res.data)
-                setLoader(false)
+                const decrypted = JSON.parse(CryptoJS.AES.decrypt(res.data,process.env.REACT_APP_DATA_ENCRYPTION_SECRETE).toString(CryptoJS.enc.Utf8))
+        //console.log(decrypted)
+
+       
+        if(decrypted!==''){
+            setSalaryDetails(decrypted);
+            setFilteredSalaryDetails(decrypted)
+           
+
+        }
+        setLoader(false)
+                
             })
-            .catch(() => {
-                toast.error("unable to fetch data");
+            .catch((err) => {
+                toast.error(err.response.data);
                 setLoader(false)
             });
 
     };
+
+    function convertArrayOfObjectsToCSV(array) {
+        let result;
+        const columnDelimiter = ',';
+        const lineDelimiter = '\n';
+        const keys = Object.keys(array[0]);
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+        array.forEach(item => {
+            let ctr = 0;
+            keys.forEach(key => {
+                if (ctr > 0) result += columnDelimiter;
+
+                result += item[key];
+
+                ctr++;
+            });
+            result += lineDelimiter;
+        });
+        return result;
+    }
+
+    const handleDownloadTemplate= ()=>{
+        const link = document.createElement('a');
+            const data = [ {
+                
+                "empid": 1,
+                "MONTH": "Dec-23",
+                "EMPLOYEE NAME": "X Y Z",
+                "empsalorgbasic": 15000,
+                "empsalorghra": 6000,
+                "empsalorgconv": 1600,
+                "empsalorgedu": 0,
+                "empsalorgshift": 0,
+                "empsaltravel": 0,
+                "empsalmedical": 0,
+                "empsalorgsundrycreditothers": 317,
+                "emporggross": 22917,
+                "empsalorgepf": 1800,
+                "empsalorgesi": 0,
+                "empsalorgpt": 200,
+                "A0": 30,
+                "B0": 30,
+                "empsalbasic": 15000,
+                "empsalhra": 6000,
+                "empsalconv": 1600,
+                "empsaledu": 0,
+                "empsalshift": 0,
+                "T/H": 0,
+                "empsalmed": 0,
+                "empsallta": 0,
+                "empsalsundrycreditothers": 317,
+                "empsallaptop": 0,
+                "empsalinternet": 0,
+                "empsalclientincentive": 0,
+                "empsalincentive": 0,
+                "empsalbonus": 0,
+                "empsalawards": 0,
+                "empsalothers": 0,
+                "empsalgross": 22917,
+                "empsalepf": 1800,
+                "empsalesi": 0,
+                "empsalpt": 200,
+                "empsalitax": 0,
+                "empsalsodexo": 0,
+                "empsaldebitother": 0,
+                "empsaldeductions": 2000,
+                "empsalnet": 20917
+            },]
+            let csv = convertArrayOfObjectsToCSV(data);
+            if (csv == null) return;
+            const filename = 'Salary Uploads Templete';
+            if (!csv.match(/^data:text\/csv/i)) {
+                csv = `data:text/csv;charset=utf-8,${csv}`;
+            }
+            link.setAttribute('href', encodeURI(csv));
+            link.setAttribute('download', filename);
+            link.click();
+        
+    }
 
     //table header
     const subHeaderViewSalaryDetailsMemo = useMemo(() => {
@@ -434,7 +527,10 @@ function SalaryManagement() {
                         <Grid container spacing={2} display={'flex'} justifyContent={'center'}  >
                             <Grid item xs={12} sm={12} lg={12}>
                                 <Paper elevation={1} sx={{ p: 1, "&:hover": { boxShadow: 8 } }}>
-                                    <Container sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    <Container  sx={{ display: 'flex', justifyContent: 'space-between', alignItems:'center' }}>
+                                        <Box sx={{m:1}}>
+                                        <Button variant='outlined' size='small' color='secondary' endIcon={<Download />} onClick={handleDownloadTemplate}>Download Templete</Button>
+                                        </Box>
                                         <FormControlLabel
                                             control={<MaterialUISwitch sx={{ m: 1 }} onChange={e => {
                                                 handleUploadModeClear()

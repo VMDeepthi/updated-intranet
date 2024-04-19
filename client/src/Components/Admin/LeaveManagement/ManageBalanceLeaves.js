@@ -1,6 +1,5 @@
 import { Badge, Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Stack, TextField, Typography, Select, Autocomplete, Checkbox, FormControlLabel, Switch, Collapse, FormHelperText } from '@mui/material'
-import React, { useContext, useEffect, useState } from 'react'
-import UserContext from '../../context/UserContext'
+import React, { useEffect, useState } from 'react'
 import { AccountBalanceWallet, CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material'
 import axios from 'axios'
 import Loader from '../../Comman/Loader'
@@ -97,7 +96,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 
 function ManageBalanceLeaves() {
-    const { userDetails } = useContext(UserContext)
+    
     const [loader, setLoader] = useState(true)
     const [users, setUsers] = useState([])
     const [currentBalance, setCurrentBalance] = useState('')
@@ -108,7 +107,7 @@ function ManageBalanceLeaves() {
         emp_id: '',
         manageType: '',
         no_of_leaves: 0,
-        date: '',
+        date: new Date().toLocaleString('en-CA').slice(0,10),
         reference: '',
         totalLeaves: 0,
         selectedUser: null
@@ -119,7 +118,7 @@ function ManageBalanceLeaves() {
         manage_type: '',
         departments: [],
         no_of_leaves: 0,
-        date: '',
+        date: new Date().toLocaleString('en-CA').slice(0,10),
         reference: '',
         auto: false,
         carrie_forward_leaves: 0
@@ -221,7 +220,7 @@ function ManageBalanceLeaves() {
             emp_id: '',
             manageType: '',
             no_of_leaves: '',
-            date: '',
+            date: new Date().toLocaleString('en-CA').slice(0,10),
             reference: '',
             totalLeaves: 0,
             selectedUser: null
@@ -267,7 +266,7 @@ function ManageBalanceLeaves() {
             manage_type: '',
             departments: [],
             no_of_leaves: 0,
-            date: '',
+            date: new Date().toLocaleString('en-CA').slice(0,10),
             reference: '',
             auto: false,
             carrie_forward_leaves: 0
@@ -395,8 +394,9 @@ function ManageBalanceLeaves() {
                                                                     type='date'
                                                                     size='small'
                                                                     required
+                                                                    disabled
                                                                     value={multipleModeManageFields.date}
-                                                                    onChange={e => setMultipleModeManageFields({ ...multipleModeManageFields, date: e.target.value })}
+                                                                    //onChange={e => setMultipleModeManageFields({ ...multipleModeManageFields, date: e.target.value })}
                                                                     label='Date'
                                                                     InputLabelProps={{ shrink: true, required: true }}
 
@@ -511,7 +511,8 @@ function ManageBalanceLeaves() {
                                                                     size='small'
                                                                     required
                                                                     value={singleModeManageFields.date}
-                                                                    onChange={e => setSingleModeManageFields({ ...singleModeManageFields, date: e.target.value })}
+                                                                    disabled
+                                                                    //onChange={e => setSingleModeManageFields({ ...singleModeManageFields, date: e.target.value })}
                                                                     label='Date'
                                                                     InputLabelProps={{ shrink: true, required: true }}
 

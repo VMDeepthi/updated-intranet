@@ -76,6 +76,7 @@ function UserAccessManagement() {
                 ViewGallery: true,
                 UploadAttendance: true,
                 ViewAttendance: true,
+                GenerateAttendance:true,
                 CreateReportingStructure: true,
                 ViewReportingStructure: true,
                 HistorylogAdmin: true,
