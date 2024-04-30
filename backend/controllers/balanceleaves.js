@@ -219,13 +219,13 @@ export const generateattendance = (req, res) => {
                                 const startDate = new Date(year, month - 1, 26).toLocaleString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }).slice(0, 10).split('/').reverse().join('-')
                                 const endDate = new Date(year, month, 25).toLocaleString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }).slice(0, 10).split('/').reverse().join('-')
 
-                                const check_attendance_query = `select * from attendance where pdate = ?`
-                                const check_attendance_values = [endDate]
+                                const check_attendance_query = `select * from attendance where pdate in (?)`
+                                const check_attendance_values = [[startDate,endDate]]
 
                                 let attendance_result = await db.promise().query(check_attendance_query, check_attendance_values)
                                 attendance_result = attendance_result[0]
 
-                                if (attendance_result.length !== dbresult) {
+                                if (attendance_result.length >= dbresult.length*2) {
                                     const workingDays = {
                                         9: fiveDaysWorkingDays,
                                         8: sixDaysWorkingDays
@@ -340,7 +340,7 @@ export const generateattendance = (req, res) => {
 
                                 }
                                 else {
-                                    return res.status(406).json('Please upload all employees attendance data till 25th of selected month!')
+                                    return res.status(406).json('Please upload all employees attendance data till 26th of last month to 25th of selected month!')
                                 }
 
                             }
