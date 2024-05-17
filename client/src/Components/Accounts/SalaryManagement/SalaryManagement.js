@@ -721,7 +721,7 @@ function SalaryManagement() {
                                                 </Stack>
 
                                             </Box>
-                                            <Box sx={{ minHeight: '330px', mt: 1, width: '100%' }}>
+                                            <Box sx={{ minHeight: '320px', mt: 1, width: '100%' }}>
                                                 <Collapse in={filteredSalaryDetails === null} timeout={'auto'} unmountOnExit>
                                                     <Box sx={{ maxHeight: '300px', width: '100%', display: 'flex', justifyContent: 'center', }}>
                                                         <img style={{ objectFit: 'contain', width: '100%', height: 'auto' }} src='salaryDetails.png' alt='salaryDetails' />
