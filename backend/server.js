@@ -73,6 +73,6 @@ app.use('/api/',salaryManagementRoute)
 
 
 
-app.listen(8080,()=>{
+app.listen(8880,()=>{
     console.log('Hii server is running at: http://localhost:8080/')
 })

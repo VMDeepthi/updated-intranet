@@ -13,7 +13,7 @@ import { AccountCircle, LockPerson, Visibility, VisibilityOff } from '@mui/icons
 import LoginIcon from '@mui/icons-material/Login';
 import { UserAccessContext } from '../../context/UserAccessContext';
 import Marquee from 'react-fast-marquee';
-import CryptoJS from 'crypto-js';
+
 
 function Login() {
   const [loginDetails, setLoginDetails] = useState({ email: '', password: '' });
@@ -45,8 +45,7 @@ function Login() {
     axios.post('/api/login', loginDetails)
       .then((res) => {
         setLoadLogin(false);
-        const decrypted = JSON.parse(CryptoJS.AES.decrypt(res.data,process.env.REACT_APP_DATA_ENCRYPTION_SECRETE).toString(CryptoJS.enc.Utf8))
-        handleUserDetails(decrypted);
+        handleUserDetails(res.data);
         updateAccess()
         navigate('/', { replace: true });
       })
@@ -68,7 +67,10 @@ function Login() {
       <Grid container sx={{ border: '13px solid transparent', borderImage: 'linear-gradient(135deg, #7873f5 10%, #ec77ab  100%);', borderImageSlice: 1, minHeight: '100vh' }} >
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <Box sx={{ p: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '13px solid transparent', borderImage: 'linear-gradient(135deg, #7873f5 10%, #ec77ab  100%);', borderImageSlice: 1, borderRadius: '10px' }} >
-            <img style={{ objectFit: 'contain', width: '220px', height: '60px' }} src='bcglogo.png' alt='logo' />
+            <Box sx={{ width: {xs:'220px', xl:'280px'}, height: {xs:'60px',xl:'80px'}}}>
+            <img style={{ objectFit: 'contain', width: '100%', height: '100%' }} src='bcglogo.png' alt='logo' />
+            </Box>
+            
             {/* <Stack spacing={-0.5}>
               <Typography variant="subtitle1" color={'ButtonText'} style={{ textAlign: "center", justifyContent: "center", alignItems: 'center', color: 'gray', fontSize: '20px' }}>
                 {time.clock}
@@ -79,8 +81,8 @@ function Login() {
           </Box>
         </Grid>
         <Grid item lg={6} md={12} sm={12} xs={12} sx={{ backgroundColor: '#f6f6ff', height: 'auto' }} >
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height:'auto' }} >
-            <img style={{ marginTop: 'auto', objectFit: 'contain', maxWidth: '100%', maxHeight: '500px', borderTopRightRadius: '90px', borderTopLeftRadius: '90px' }} src='x4.gif' alt='loginPic' />
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-center', flexDirection: 'column', height: { xs: 'auto', sm: 'auto', md: '400px', lg: '500px', xl: '850px' } }} >
+            <img style={{ objectFit: 'fill', maxWidth: '100%', height:'100%', borderTopRightRadius: '140px', borderTopLeftRadius: '90px' }} src='x4.gif' alt='loginPic' />
             {/* <svg width="auto" height="500px" 
      >
   <image objectFit='contain' href="x1.gif" x="0" y="0" maxHeight="auto"maxWidth="100%" />
@@ -88,7 +90,7 @@ function Login() {
           </Box>
         </Grid>
         <Grid item lg={6} md={12} sm={12} xs={12} sx={{ backgroundColor: '#f6f6ff' }} >
-          <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', p: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', p: 2, height: { xs: 'auto', sm: '500px', md: 'auto', lg: '500px', xl: '850px' } }}>
             <Box
               component="form"
               onSubmit={handleLogin}
@@ -97,10 +99,11 @@ function Login() {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '100%',
+                marginTop:'auto',
+                width:'100%'
               }}
             >
-              <Stack spacing={2}>
+              <Stack spacing={2} sx={{width:'100%'}} >
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, sm: 1, md: 2, lg: 2 }}   >
                   <>
                     <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '100%' }}>
@@ -119,7 +122,7 @@ function Login() {
                     </Box>
 
                   </>
-                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                     <LockPerson sx={{ color: 'action.active', mr: 0.5, fontSize: 35 }} />
                     <FormControl fullWidth sx={{ width: '100%' }} variant="outlined">
                       <InputLabel size='small' required>Password</InputLabel>
@@ -145,7 +148,7 @@ function Login() {
                       />
                     </FormControl>
                   </Box>
-                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <LoadingButton
                       style={{ backgroundColor: '#1771f5', color: 'white' }} // Set background color to purple and text color to white
                       type='submit'
@@ -161,13 +164,13 @@ function Login() {
               </Stack>
             </Box>
 
-            <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+            <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width:'100%'}}>
               <Button style={{ color: '#002db3', }} onClick={() => navigate('/forgotpassword', { relative: true })} sx={{ m: 1 }}>forgot password?</Button>
             </Container>
-            <Paper elevation={24} sx={{ p: 1, height: '100%', width: '100%', maxWidth: '600px', margin: 'auto', overflow: 'hidden' }} spacing={2}>
-  <Box sx={{ p: 0.5, mt: 1, justifyContent: 'center', alignItems: 'center', textAlign: 'justify', maxWidth: '100%', maxHeight: '100%', fontFamily: 'Miso-Light', overflow: 'auto' }}>
-   <Typography component={'h3'} color={'#ff34ee'} variant='p' textAlign={'center'}>WELCOME TO BRIGHTCOMGROUP</Typography>
-                <Box sx={{ fontSize: '13px', color: '#212529' }}>
+            <Paper elevation={24} sx={{ p: 1, height: '80%', width: '100%', margin: 'auto', overflow: 'hidden' }} spacing={2}>
+  <Box sx={{ p: 0.5, mt:1, justifyContent: 'center', alignItems: 'center', textAlign: 'justify', maxWidth: '100%', maxHeight: '100%', overflow: 'auto', fontFamily:'Miso-Light' }}>
+   <Typography  color={'#ff34ee'}  sx={{fontSize:{xs:'14px',lg:'16px', xl:'25px'}, fontWeight:'bold', fontFamily:'Miso-Light' }} textAlign={'center'}>WELCOME TO BRIGHTCOMGROUP</Typography>
+                <Box sx={{ mt:0.5, fontSize: {xs:'13px',lg:'12.5px',xl:'20px'}, color: '#212529' }}>
                   <Typography variant="p" display="block" mt={1}  >
                     Brightcom Group consolidates Ad-tech, New Media and IoT based businesses across the globe, primarily in the digital eco-system. Our divisions include Brightcom Media, VoloMP, Consumer Products and Dyomo. Brightcom Group?s consumer products division is focused on IoT. Our LIFE product is dedicated to the future of communication and information management in which everyday objects will be connected to the internet, also known as the ?Internet of Things? (IoT).
                   </Typography>
@@ -205,7 +208,7 @@ function Login() {
               background: 'linear-gradient(135deg, #7873f5 10%, #ec77ab  100%);',
               padding: '10px',
               textAlign: 'center',
-              position: {xs:'sticky',sm:'sticky',md:'fixed',lg:'fixed',xl:'fixed'},
+              position: { xs: 'sticky', sm: 'sticky', md: 'sticky', lg: 'fixed', xl: 'fixed' },
               bottom: 0,
               left: 0,
               right: 0,

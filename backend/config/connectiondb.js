@@ -7,6 +7,12 @@ import 'dotenv/config'
 //     password:'pass',
 //     database:'ecart'   
 // })
+function keepAlive() { 
+  console.log('re-connecting')
+  db.ping();     
+    
+}
+setInterval(keepAlive, 14400000); 
 
 const db = mysql.createConnection({
     
@@ -20,30 +26,6 @@ const db = mysql.createConnection({
 
 })
 
-// setInterval(()=>{
-//     console.log('trying')
-//    //`` db.ping()
-//     db.connect((err)=>{
-//         if (err){
-//             console.log(err)
-            
-//         }
-//         else {
-//             console.log('connected')
-//         }
-//     })
-    
-
-// },20000)
-
 
 export default db
 
-
-
-
-// if (req.checkAuth.isAuth && req.checkAuth.user_type === 'admin') {
-// }
-// else {
-//     res.status(406).json('Unauthorized! not allowed to perform action.')
-// }
