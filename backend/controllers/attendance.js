@@ -500,7 +500,7 @@ export const UploadFile = async (req, res) => {
 
 export const viewattendance = (req, res) => {
     if (req.checkAuth.isAuth) {
-        const q = `select * from attendance order by pdate desc limit 500`
+        const q = `select * from attendance where pdate=(select pdate from attendance order by pdate desc limit 1);`
         db.query(q, (err, result) => {
             if (err) return res.status(500).json('error occured!')
             else {
