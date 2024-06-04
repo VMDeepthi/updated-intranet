@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { Navigate, useNavigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
-
+import CryptoJS from 'crypto-js';
 import { Box, Button, FormControl, Grid, IconButton, InputAdornment, Container, InputLabel, OutlinedInput, Paper, Typography, Stack, } from '@mui/material';
 
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -45,7 +45,8 @@ function Login() {
     axios.post('/api/login', loginDetails)
       .then((res) => {
         setLoadLogin(false);
-        handleUserDetails(res.data);
+        const decrypted = JSON.parse(CryptoJS.AES.decrypt(res.data,process.env.REACT_APP_DATA_ENCRYPTION_SECRETE).toString(CryptoJS.enc.Utf8))
+        handleUserDetails(decrypted);
         updateAccess()
         navigate('/', { replace: true });
       })

@@ -268,18 +268,21 @@ export const generateattendance = (req, res) => {
 
                                                 const find_employees_result = await db.promise().query(finding_leaves_query, finding_employees_values)
                                                 const balanceLeaves = find_employees_result[0]
+                                                //console.log('bal',balanceLeaves)
 
                                                 const  last_total_balacance_result = await db.promise().query(last_total_balacance_query, last_total_balacance_values)
                                                 const totalBal = (last_total_balacance_result[0]).length===0?0:(last_total_balacance_result[0][0])['total_leaves']
-                                                console.log('balance', find_employees_result[0], totalBal)
+                                                //console.log('balance', i.employee_id, totalBal,last_total_balacance_result)
 
 
 
                                                 const bal = balanceLeaves[0]
+                                                //console.log(bal)
                                                 
                                                 const openLeaves = balanceLeaves.length === 0 ? totalBal : bal['total_leaves']+bal['debit']-bal['credit']
                                                 const newLeavesAdded = balanceLeaves.length === 0 ? 0 : balanceLeaves.map(data => data.credit).reduce((prev, curr) => prev + curr)
                                                 const adjustedLeaves = totalApprovedLeaves + totalUnapprovedLeaves
+                                                //console.log('stats', i.employee_id,openLeaves,newLeavesAdded, adjustedLeaves)
                                                 let lossOfPays;
                                                 // if (totalBal === undefined) {
                                                 //     if (0 - totalUnapprovedLeaves < 0) {
@@ -299,10 +302,10 @@ export const generateattendance = (req, res) => {
                                                         lossOfPays = 0
                                                     }
                                                 //}
-
+                                                //console.log('stats', i.employee_id,openLeaves,newLeavesAdded, adjustedLeaves, lossOfPays,balanceLeaves.length)
                                                 //const lossOfPays = balanceLeaves.length===0?0-totalUnapprovedLeaves <0?adjustedLeaves:0:(balanceLeaves[balanceLeaves.length-1])['total_leaves']-totalUnapprovedLeaves<0?adjustedLeaves:0 //balanceLeaves.length===0?(0-totalApprovedLeaves< 0 ? adjustedLeaves : 0):((balanceLeaves[balanceLeaves.length - 1])['total_leaves'] - totalUnapprovedLeaves) < 0 ? adjustedLeaves : 0
-                                                const monthBalanceLeaves = balanceLeaves.length === undefined ? 0 - totalUnapprovedLeaves : openLeaves - (totalUnapprovedLeaves+totalApprovedLeaves)
-                                                console.log('monthbal', monthBalanceLeaves, adjustedLeaves, lossOfPays)
+                                                const monthBalanceLeaves = balanceLeaves.length === 0 ? 0 - totalUnapprovedLeaves : totalBal - totalUnapprovedLeaves
+                                                //console.log('monthbal', monthBalanceLeaves, adjustedLeaves, lossOfPays)
 
                                                 //deduction
 
